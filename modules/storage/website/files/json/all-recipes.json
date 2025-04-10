@@ -1,0 +1,500 @@
+[
+  {
+    "id": "dominos-pizza-night",
+    "title": "Domino's Pizza Night",
+    "day": "friday",
+    "description": "Carry-out Pizza for an Easy (if not healthy) Friday night.",
+    "link": "https://example.com/spaghetti-placeholder",
+    "sections": [
+      {
+        "title": "🍽️ Our Order",
+        "type": "list",
+        "items": [
+          "1 Medium Pan Pizza with Extra Cheese",
+          "1 Medium Pan Pizza with Ham & Pineapple"
+        ]
+      },
+      {
+        "title": "🍟 Nutrition Estimate (Per Slice)",
+        "type": "list",
+        "items": [
+          "Pan Pizza Base:190 cal, 7g fat, 3.5g sat fat, 26g carbs, 5g protein",
+          "+ Extra Cheese (per slice):+110 cal, +8g fat, +6g protein",
+          "+ Ham & Pineapple (per slice):+10 cal (ham), +10 cal (pineapple)",
+          "Extra Cheese Slice:~300 calories, 15g fat, 11g protein",
+          "Ham & Pineapple Slice:~210 calories, 7g fat, 6g protein"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pams-ranch-chicken",
+    "title": "Pam's Ranch Chicken",
+    "day": "wednesday",
+    "description": "Served with Roasted Broccoli & Baked Potato",
+    "link": "https://example.com/spaghetti-placeholder",
+    "sections": [
+      {
+        "title": "🛒 Quick Ingredient Checklist",
+        "type": "categorized-ingredients",
+        "items": {
+          "freezer": [
+            "1 large head broccoli (or frozen florets)"
+          ],
+          "refrigerator": [
+            "4 boneless skinless chicken breasts",
+            "1/2 cup mayonnaise",
+            "1/2 cup parmesan cheese (fresh grated)",
+            "Butter, sour cream, toppings (for baked potato)"
+          ],
+          "pantry": [
+            "1 oz ranch dressing mix",
+            "1/2 cup breadcrumbs",
+            "4 russet potatoes",
+            "Olive oil, salt, pepper, garlic powder (for broccoli)",
+            "Cooking spray"
+          ],
+          "other": []
+        }
+      },
+      {
+        "title": "🧑‍🍳 Recipe",
+        "type": "steps",
+        "items": [
+          "Preheat oven to 375°F. Spray a 9×13-inch baking dish with cooking spray.",
+          "In a shallow plate, mix ranch dressing mix, parmesan cheese, and breadcrumbs.",
+          "In another plate, add mayonnaise.",
+          "Dredge chicken in mayo, then in breadcrumb mixture. Place in prepared dish.",
+          "Bake for 40 minutes, or until internal temperature hits 165°F.",
+          "Chop broccoli into florets. Toss with olive oil, salt, pepper, and garlic powder.",
+          "Spread on a baking sheet and roast at 400°F for 20–25 minutes until crispy at the edges.",
+          "Scrub potatoes and prick with a fork. Rub with oil and salt.",
+          "Bake directly on oven rack at 425°F for 45–60 minutes until soft.",
+          "Serve with butter, sour cream, and desired toppings."
+        ]
+      },
+      {
+        "title": "🍽️ Estimated Nutrition (Per Serving)",
+        "type": "list",
+        "items": [
+          "Calories: ~600",
+          "Protein: ~45g",
+          "Carbs: ~35g",
+          "Fat: ~28g",
+          "Fiber: ~6g"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "spaghetti",
+    "title": "Spaghetti",
+    "day": "monday",
+    "description": "Simple stovetop spaghetti",
+    "link": "https://example.com/spaghetti-placeholder",
+    "sections": [
+      {
+        "title": "🛒 Quick Ingredient Checklist",
+        "type": "categorized-ingredients",
+        "items": {
+          "freezer": [],
+          "refrigerator": [
+            "1 lb ground beef or turkey",
+            "1 can (28oz) crushed tomatoes",
+            "Fresh basil",
+            "Parmesan cheese"
+          ],
+          "pantry": [
+            "1 lb dried spaghetti",
+            "Olive oil",
+            "Chopped onion",
+            "Garlic cloves",
+            "Tomato paste",
+            "Dried oregano",
+            "Crushed red pepper flakes",
+            "Water, broth, or dry red wine",
+            "Salt & black pepper"
+          ],
+          "other": []
+        }
+      },
+      {
+        "title": "🧑‍🍳 Recipe",
+        "type": "list",
+        "items": [
+          "1 lb dried spaghetti",
+          "1 lb ground meat (beef or turkey)",
+          "3 tbsp olive oil",
+          "1 cup chopped onion",
+          "3 garlic cloves (1 tbsp), minced",
+          "2 tbsp tomato paste",
+          "1/2 tsp dried oregano",
+          "Pinch crushed red pepper flakes",
+          "1 cup water, broth, or red wine",
+          "1 (28oz) can crushed tomatoes",
+          "Salt & fresh ground black pepper",
+          "Handful fresh basil leaves, plus extra for serving",
+          "Grated parmesan cheese, for serving",
+          "Heat olive oil in a large pot over medium-high heat.",
+          "Add ground meat and cook until browned (8 minutes), breaking up as it cooks.",
+          "Add onions and cook until softened (5 minutes).",
+          "Stir in garlic, tomato paste, oregano, red pepper flakes; cook for 1 minute.",
+          "Pour in water/broth/wine and scrape up any bits from the bottom.",
+          "Add crushed tomatoes, 3/4 tsp salt, and black pepper; stir to combine.",
+          "Simmer uncovered for 25 minutes, stirring and adjusting seasoning as needed.",
+          "Meanwhile, cook pasta in salted water according to package (check early for doneness).",
+          "Remove sauce from heat, stir in fresh basil, then toss with cooked pasta.",
+          "Let sit 1 minute to absorb, toss again, and serve with parmesan cheese."
+        ]
+      },
+      {
+        "title": "🍽️ Estimated Nutrition (Per Serving)",
+        "type": "list",
+        "items": [
+          "Calories: ~500",
+          "Protein: ~28g",
+          "Carbs: ~50g",
+          "Fat: ~18g",
+          "Fiber: ~5g"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tacos",
+    "title": "Tacos",
+    "day": "tuesday",
+    "description": "Miles Crockpot Tacos",
+    "link": "https://example.com/spaghetti-placeholder",
+    "sections": [
+      {
+        "title": "🛒 Quick Ingredient Checklist",
+        "type": "categorized-ingredients",
+        "items": {
+          "freezer": [],
+          "refrigerator": [
+            "3 lbs boneless skinless chicken breasts",
+            "1 (14.5 oz) can diced tomatoes",
+            "Toppings: cheese, sour cream, tomatoes, lettuce, avocado, hot sauce, etc."
+          ],
+          "pantry": [
+            "3/4 cup diced onion",
+            "1 (4.5 oz) can diced green chiles",
+            "Corn or flour tortillas",
+            "Taco seasoning (3 heaping tablespoons)",
+            "Vegetable oil (if frying tortillas)"
+          ],
+          "other": []
+        }
+      },
+      {
+        "title": "🧑‍🍳 Recipe",
+        "type": "steps",
+        "items": [
+          "Place chicken breasts in the bottom of the slow cooker insert.",
+          "Sprinkle taco seasoning evenly over the chicken.",
+          "Top with diced onion, then pour tomatoes and green chiles over the top (do not stir).",
+          "Cover and cook on LOW for 6–8 hours or HIGH for 4–5 hours.",
+          "Remove lid and shred the chicken using two forks.",
+          "Add chopped cilantro and stir to combine.",
+          "Serve in tortillas or burrito bowls with your favorite toppings.",
+          "Optional: Use leftovers for enchiladas or nachos!"
+        ]
+      },
+      {
+        "title": "🍽️ Estimated Nutrition (Per Serving)",
+        "type": "list",
+        "items": [
+          "Calories: ~420",
+          "Protein: ~35g",
+          "Carbs: ~18g (plus tortilla/topping dependent)",
+          "Fat: ~16g",
+          "Fiber: ~3g"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "butter-chicken",
+    "title": "Butter Chicken",
+    "day": "",
+    "description": "Creamy Indian-inspired chicken in a tomato butter sauce",
+    "link": "https://example.com/spaghetti-placeholder",
+    "sections": [
+      {
+        "title": "🛒 Quick Ingredient Checklist",
+        "type": "categorized-ingredients",
+        "items": {
+          "freezer": [],
+          "refrigerator": [
+            "1 cup butter",
+            "1 onion",
+            "1 tablespoon minced garlic",
+            "3 cups heavy cream",
+            "1 ½ pounds skinless, boneless chicken breast"
+          ],
+          "pantry": [
+            "1 (15 ounce) can tomato sauce",
+            "2 teaspoons salt",
+            "1 teaspoon cayenne pepper",
+            "1 teaspoon garam masala",
+            "2 tablespoons vegetable oil",
+            "2 tablespoons tandoori masala"
+          ],
+          "other": []
+        }
+      },
+      {
+        "title": "🧑‍🍳 Recipe",
+        "type": "steps",
+        "items": [
+          "Preheat oven to 375°F (190°C).",
+          "Melt 2 tablespoons butter in a skillet over medium heat.",
+          "Add minced onion and garlic. Cook until onion caramelizes to dark brown (about 15 minutes).",
+          "In a separate saucepan, combine heavy cream, tomato sauce, remaining butter, salt, cayenne pepper, and garam masala. Bring to a simmer.",
+          "Reduce heat to medium-low, cover, and simmer for 30 minutes, stirring occasionally.",
+          "Stir in caramelized onions.",
+          "While sauce simmers, toss chicken with vegetable oil and season with tandoori masala.",
+          "Spread chicken on a baking sheet and bake for ~12 minutes, until no longer pink in the center.",
+          "Add cooked chicken to the sauce and simmer for 5 more minutes before serving."
+        ]
+      },
+      {
+        "title": "🍽️ Estimated Nutrition (Per Serving)",
+        "type": "list",
+        "items": [
+          "Calories: ~650",
+          "Protein: ~40g",
+          "Carbs: ~12g",
+          "Fat: ~50g",
+          "Fiber: ~1g"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hot-honey-ground-beef-bowls",
+    "title": "Hot Honey Ground Beef Bowls",
+    "day": "",
+    "description": "Sweet potato and avocado taco bowls with seasoned beef, cottage cheese, and hot honey.",
+    "link": "https://example.com/spaghetti-placeholder",
+    "sections": [
+      {
+        "title": "🛒 Quick Ingredient Checklist",
+        "type": "categorized-ingredients",
+        "items": {
+          "freezer": [],
+          "refrigerator": [
+            "1 lb 93/7 lean ground beef",
+            "2 avocados",
+            "1 cup 2% low fat cottage cheese"
+          ],
+          "pantry": [
+            "2 large sweet potatoes",
+            "2 tbsp tomato paste",
+            "1 packet taco seasoning (or homemade equivalent)",
+            "Hot honey (e.g., Mike’s or Zab’s)",
+            "Salt, pepper, cinnamon",
+            "Olive oil or cooking spray"
+          ],
+          "other": []
+        }
+      },
+      {
+        "title": "🧑‍🍳 Recipe",
+        "type": "steps",
+        "items": [
+          "Preheat oven to 425°F. Line a half baking sheet with parchment paper.",
+          "Peel and wash sweet potatoes. Cut into ~1/4\" cubes.",
+          "Spread cubes on baking sheet, lightly spray with oil, and season with salt, pepper, and cinnamon.",
+          "Bake sweet potatoes for 30 minutes, flipping halfway through. Re-season at halfway point if desired.",
+          "While potatoes bake, heat a skillet over medium-high and cook ground beef until fully browned (about 5 minutes). Drain excess fat.",
+          "Add tomato paste, taco seasoning, and a splash of water. Cook 1–2 more minutes until well mixed. Remove from heat.",
+          "To serve, build bowls with roasted sweet potatoes, seasoned beef, cottage cheese, and sliced avocado.",
+          "Drizzle with hot honey to finish. Enjoy!"
+        ]
+      },
+      {
+        "title": "🍽️ Estimated Nutrition (Per Serving)",
+        "type": "list",
+        "items": [
+          "Calories: ~550",
+          "Protein: ~35g",
+          "Carbs: ~35g",
+          "Fat: ~30g",
+          "Fiber: ~6g"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "shrimp-bowl-with-avocado-crema",
+    "title": "Shrimp Bowl with Avocado Crema",
+    "day": "",
+    "description": "A delicious and healthy shrimp bowl topped with creamy avocado crema, perfect for a quick meal.",
+    "link": "https://example.com/spaghetti-placeholder",
+    "sections": [
+      {
+        "title": "🛒 Quick Ingredient Checklist",
+        "type": "categorized-ingredients",
+        "items": {
+          "freezer": [
+            "1 pound large shrimp, peeled and deveined",
+            "1 cup fresh or frozen corn kernels"
+          ],
+          "refrigerator": [
+            "1 avocado, pitted and peeled",
+            "½ cup roughly chopped cilantro",
+            "4 tablespoons low-fat plain yogurt",
+            "4 scallions, sliced"
+          ],
+          "pantry": [
+            "1 tablespoon finely chopped chipotle chile in adobo",
+            "3 tablespoons avocado oil",
+            "1 tablespoon lime juice",
+            "½ teaspoon salt",
+            "¾ teaspoon ground cumin",
+            "¾ teaspoon garlic powder",
+            "4 cups cauliflower rice",
+            "2 tablespoons water",
+            "1 cup canned no-salt-added black beans"
+          ],
+          "other": [
+            "Lime wedges for serving"
+          ]
+        }
+      },
+      {
+        "title": "👩‍🍳 Recipe",
+        "type": "steps",
+        "items": [
+          "Stir shrimp, chipotle and 1 tablespoon oil together in a medium bowl. Set aside.",
+          "Place avocado, 1/2 cup cilantro, yogurt, lime juice and 1/8 teaspoon salt in a mini food processor. Process until mostly smooth.",
+          "Heat 1 tablespoon oil in a large nonstick skillet over medium-high heat. Add the shrimp and cook, stirring once or twice, until just cooked through, about 4 minutes. Transfer to a bowl and cover to keep warm.",
+          "Add the remaining 1 tablespoon oil, 1/2 teaspoon cumin, 1/2 teaspoon garlic powder and 1/4 teaspoon salt. Stir to combine. Add cauliflower rice, scallions and water. Cook, stirring, until tender, about 5 minutes.",
+          "Combine beans with the remaining 1/4 teaspoon cumin, 1/4 teaspoon garlic powder and 1/8 teaspoon salt in a small bowl.",
+          "Combine corn and the remaining 2 tablespoons cilantro in another small bowl.",
+          "To serve, divide the cauliflower mixture among 4 bowls. Top with the shrimp, beans, corn and avocado crema."
+        ]
+      },
+      {
+        "title": "🍽️ Estimated Nutrition (Per Serving)",
+        "type": "list",
+        "items": [
+          "Calories: ~400",
+          "Protein: ~30g",
+          "Carbohydrates: ~45g",
+          "Fat: ~15g",
+          "Fiber: ~10g"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tuna-melt",
+    "title": "Tuna Melt",
+    "day": "",
+    "description": "A classic tuna melt sandwich with a delicious blend of tuna, mayonnaise, and vegetables, topped with melted cheddar cheese.",
+    "link": "https://therecipecritic.com/tuna-melt/#wprm-recipe-container-98096",
+    "sections": [
+      {
+        "title": "🛒 Quick Ingredient Checklist",
+        "type": "categorized-ingredients",
+        "items": {
+          "freezer": [],
+          "refrigerator": [
+            "16 ounces tuna fish, drained",
+            "1/4 cup mayonnaise",
+            "1/4 cup celery, finely chopped",
+            "1/4 cup red onion, finely chopped",
+            "1 tablespoon dijon mustard",
+            "2 tablespoons parsley, chopped",
+            "8 slices cheddar cheese",
+            "tomato, sliced",
+            "1/4 cup butter, softened"
+          ],
+          "pantry": [
+            "salt and pepper, to taste",
+            "16 slices bread"
+          ],
+          "other": []
+        }
+      },
+      {
+        "title": "👩‍🍳 Recipe",
+        "type": "steps",
+        "items": [
+          "In a medium sized bowl combine the tuna, mayonnaise, celery, red onion, dijon mustard, parsley, salt and pepper.",
+          "Butter one side of each slice of bread. Putting the butter side down add the cheese on the unbuttered side. Add the tuna mixture on top. Top with tomato and additional cheese.",
+          "Skillet Method: Preheat a skillet to medium heat. Add the sandwich on the skillet and heat for about 2-3 minutes until cheese starts to melt and it is golden brown. Flip to the other side and cook until the cheese is fully melted and sandwich is golden brown.",
+          "Broiler Method: Preheat a broiler. Spread the bread butter side up and toast for a couple of minutes. Top with cheese, tuna mixture and Broil for 2-3 minutes until cheese is melted."
+        ]
+      },
+      {
+        "title": "🍽️ Estimated Nutrition (Per Serving)",
+        "type": "list",
+        "items": [
+          "Calories: ~400",
+          "Protein: ~25g",
+          "Carbohydrates: ~30g",
+          "Fat: ~20g"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "healthy-air-fryer-turkey-meatballs-with-zoodles",
+    "title": "Healthy Air Fryer Turkey Meatballs with Zoodles",
+    "day": "",
+    "description": "A delicious and healthy meal featuring turkey meatballs cooked in an air fryer, served with spiralized zucchini noodles.",
+    "link": "https://www.foodnetwork.com/recipes/food-network-kitchen/healthy-air-fryer-turkey-meatballs-with-zoodles-9483246",
+    "sections": [
+      {
+        "title": "🛒 Quick Ingredient Checklist",
+        "type": "categorized-ingredients",
+        "items": {
+          "freezer": [],
+          "refrigerator": [
+            "1 1/2 pounds zoodles (spiralized zucchini noodles, from about 3 medium zucchinis)",
+            "8 ounces ground turkey",
+            "1/4 cup whole milk",
+            "1/4 cup ricotta"
+          ],
+          "pantry": [
+            "Kosher salt",
+            "1/3 cup plain breadcrumbs",
+            "2 tablespoons chopped fresh parsley",
+            "1 tablespoon finely grated Parmesan, plus more for serving",
+            "1/2 teaspoon dried oregano",
+            "Freshly ground black pepper",
+            "1 1/4 cups jarred tomato sauce"
+          ],
+          "other": []
+        }
+      },
+      {
+        "title": "👩‍🍳 Recipe",
+        "type": "steps",
+        "items": [
+          "Toss the zoodles with a good pinch of salt in a large bowl. Let sit until the zoodles begin to soften and release some excess liquid, about 10 minutes. Pat them dry and set aside.",
+          "Meanwhile, combine the breadcrumbs and milk in a medium bowl and let sit while the breadcrumbs soften and absorb most of the liquid, about 5 minutes.",
+          "Add the turkey, ricotta, parsley, Parmesan, oregano, 1/2 teaspoon salt and several grinds of pepper to the breadcrumb mixture, then mix thoroughly with your hands to combine. Form into 12 meatballs (each about 1 1/2 tablespoons and 1 inch wide).",
+          "Preheat an air fryer to 400 degrees F. Add the meatballs, leaving some space between each for air circulation. Air fry until golden brown on the outside and just cooked through, about 10 minutes, turning the meatballs about halfway through the cooking time.",
+          "Meanwhile, warm the tomato sauce in a medium saucepan set over medium heat. Add the meatballs to the sauce, lower the heat to low and keep warm.",
+          "Season the zoodles with a 1/4 teaspoon salt and several grinds of pepper. Air fry at 400 degrees F, tossing halfway through, until tender and starting to brown at the edges, 5 to 6 minutes.",
+          "Divide the zoodles between 2 dinner plates or shallow bowls, then top each with 6 meatballs and spoon the warm tomato sauce over top. Serve with a sprinkle of Parmesan."
+        ]
+      },
+      {
+        "title": "🍽️ Estimated Nutrition (Per Serving)",
+        "type": "list",
+        "items": [
+          "Calories: ~350",
+          "Protein: ~30g",
+          "Carbohydrates: ~20g",
+          "Fat: ~15g"
+        ]
+      }
+    ]
+  }
+]

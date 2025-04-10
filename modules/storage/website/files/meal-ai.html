@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Meal Tools</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="main-container">
+    <nav>
+      <a href="meals.html">🏠 Home</a>
+      <button id="logoutBtn" class="logout-button" onclick="logout()">🚪 Logout</button>
+    </nav>
+
+    <main class="bento-box" id="mainContent" style="display: none;">
+      <div class="container" style="text-align: center;">
+        <h1>🤖 Meal Planning with AI</h1>
+        <p>Enter a recipe below. Our AI will generate a downloadable JSON for your meal planner.</p>
+
+        <textarea
+          id="recipeInput"
+          class="ai-input-box"
+          rows="14"
+          style="width: 100%; border-radius: 12px; padding: 1rem; font-family: monospace; font-size: 1rem;"
+        ></textarea>
+
+        <br>
+        <button onclick="submitToAI()" class="tool-button">Generate JSON</button>
+
+        <div id="result" style="margin-top: 2rem;"></div>
+      </div>
+    </main>
+
+    <footer class="footer" style="text-align: center; padding: 20px; margin-top: auto;">
+      <div class="container">
+        <p>© 2025 Meals.Stellation.One</p>
+        <p style="font-size: 0.8em; color: var(--text-muted);">
+          API Gateway: <span id="apiId"></span> | Lambda: <span id="lambdaName"></span>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script>
+    const COGNITO_DOMAIN = 'https://us-east-1s3w0rq4v6.auth.us-east-1.amazoncognito.com';
+    const CLIENT_ID = '1qi2sj7lbi13k4v21b5rr7d6nm';
+    const REDIRECT_URI = 'https://meals.stellation.one/meal-ai.html';
+
+    const code = new URLSearchParams(window.location.search).get('code');
+    if (code) {
+      fetch(`${COGNITO_DOMAIN}/oauth2/token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code',
+          client_id: CLIENT_ID,
+          code,
+          redirect_uri: REDIRECT_URI
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.id_token) {
+          sessionStorage.setItem('id_token', data.id_token);
+          sessionStorage.setItem('access_token', data.access_token);
+          window.location.href = REDIRECT_URI;
+        } else {
+          alert('Failed to authenticate.');
+        }
+      })
+      .catch(err => {
+        console.error('Login failed:', err);
+        alert('Login failed. Check console for details.');
+      });
+    } else {
+      const token = sessionStorage.getItem('id_token');
+      if (token) {
+        document.getElementById('mainContent').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
+      } else {
+        const loginUrl = `${COGNITO_DOMAIN}/login?client_id=${CLIENT_ID}&response_type=code&scope=email+openid+profile&redirect_uri=${REDIRECT_URI}`;
+        window.location.href = loginUrl;
+      }
+    }
+
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = `${COGNITO_DOMAIN}/logout?client_id=${CLIENT_ID}&logout_uri=https://meals.stellation.one`;
+    }
+
+    async function submitToAI() {
+      const input = document.getElementById("recipeInput").value.trim();
+      if (!input) {
+        alert("Please paste a recipe first!");
+        return;
+      }
+
+      const resultEl = document.getElementById("result");
+      resultEl.innerHTML = "⏳ Processing...";
+
+      try {
+        const response = await fetch(API_CONFIG.api_endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem('id_token')}`  // Add token for auth
+          },
+          body: JSON.stringify({ text: input })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Request failed");
+        }
+        const json = await response.json();
+
+        const blob = new Blob([JSON.stringify(json, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+
+        resultEl.innerHTML = `
+          ✅ Recipe JSON ready!<br>
+          <a href="${url}" download="${json.id || 'recipe'}.json" class="tool-button">⬇️ Download JSON</a>
+        `;
+      } catch (err) {
+        console.error(err);
+        resultEl.innerHTML = "❌ Failed to generate recipe. Please try again.";
+      }
+    }
+
+    document.getElementById('apiId').textContent = API_CONFIG.gateway_id;
+    document.getElementById('lambdaName').textContent = API_CONFIG.lambda_name;
+  </script>
+</body>
+</html>
