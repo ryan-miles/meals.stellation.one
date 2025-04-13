@@ -1,0 +1,185 @@
+{
+    "Functions": [
+        {
+            "FunctionName": "recipe-ai-function",
+            "FunctionArn": "arn:aws:lambda:us-east-1:243728312407:function:recipe-ai-function",
+            "Runtime": "nodejs18.x",
+            "Role": "arn:aws:iam::243728312407:role/recipe-ai-function-exec-role",
+            "Handler": "index.handler",
+            "CodeSize": 6293806,
+            "Description": "",
+            "Timeout": 65,
+            "MemorySize": 128,
+            "LastModified": "2025-04-09T20:23:24.000+0000",
+            "CodeSha256": "230LplUsw40HSvI0dE9AmrsRWwwNBNdmRpl/FDobB98=",
+            "Version": "$LATEST",
+            "Environment": {
+                "Variables": {
+                    "GEMINI_API_KEY_SECRET": "/meals-stellation/gemini-api-key",
+                    "OPENAI_API_KEY_SECRET": "/meals-stellation/openai-api-key"
+                }
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "ec52394d-2362-4d0d-9c06-ed7be699dc38",
+            "PackageType": "Zip",
+            "Architectures": [
+                "x86_64"
+            ],
+            "EphemeralStorage": {
+                "Size": 512
+            },
+            "SnapStart": {
+                "ApplyOn": "None",
+                "OptimizationStatus": "Off"
+            },
+            "LoggingConfig": {
+                "LogFormat": "Text",
+                "LogGroup": "/aws/lambda/recipe-ai-function"
+            }
+        },
+        {
+            "FunctionName": "StopEC2Instances",
+            "FunctionArn": "arn:aws:lambda:us-east-1:243728312407:function:StopEC2Instances",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::243728312407:role/LambdaEC2SchedulerRole",
+            "Handler": "lambda_function.lambda_handler",
+            "CodeSize": 641,
+            "Description": "",
+            "Timeout": 10,
+            "MemorySize": 128,
+            "LastModified": "2024-05-10T23:14:57.000+0000",
+            "CodeSha256": "rJpRzI9gTKwnCPj+jkmMa2Ru3jyz7z9b45IA1U+vl7s=",
+            "Version": "$LATEST",
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "46864c22-1693-453f-b27c-e8f05bd2daef",
+            "PackageType": "Zip",
+            "Architectures": [
+                "x86_64"
+            ],
+            "EphemeralStorage": {
+                "Size": 512
+            },
+            "SnapStart": {
+                "ApplyOn": "None",
+                "OptimizationStatus": "Off"
+            },
+            "LoggingConfig": {
+                "LogFormat": "Text",
+                "LogGroup": "/aws/lambda/StopEC2Instances"
+            }
+        },
+        {
+            "FunctionName": "RecipeToJSONGemini",
+            "FunctionArn": "arn:aws:lambda:us-east-1:243728312407:function:RecipeToJSONGemini",
+            "Runtime": "nodejs18.x",
+            "Role": "arn:aws:iam::243728312407:role/service-role/RecipeToJSONGemini-role-rukjhm59",
+            "Handler": "index.handler",
+            "CodeSize": 2128276,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2025-03-30T23:02:49.000+0000",
+            "CodeSha256": "l2nF+79lwbTCn1HvAEz6IOE6/dVi+cCxTvCQsjDn/Gc=",
+            "Version": "$LATEST",
+            "Environment": {
+                "Variables": {
+                    "GEMINI_API_KEY": "AIzaSyATzKvXO30bJbgUDNiQODPF0T2mlVRiMmE"
+                }
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "a27e5772-2a44-4e3f-846a-18db9a64e18e",
+            "PackageType": "Zip",
+            "Architectures": [
+                "x86_64"
+            ],
+            "EphemeralStorage": {
+                "Size": 512
+            },
+            "SnapStart": {
+                "ApplyOn": "None",
+                "OptimizationStatus": "Off"
+            },
+            "LoggingConfig": {
+                "LogFormat": "Text",
+                "LogGroup": "/aws/lambda/RecipeToJSONGemini"
+            }
+        },
+        {
+            "FunctionName": "StartEC2Instances",
+            "FunctionArn": "arn:aws:lambda:us-east-1:243728312407:function:StartEC2Instances",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::243728312407:role/LambdaEC2SchedulerRole",
+            "Handler": "lambda_function.lambda_handler",
+            "CodeSize": 636,
+            "Description": "",
+            "Timeout": 10,
+            "MemorySize": 128,
+            "LastModified": "2024-05-10T23:13:10.000+0000",
+            "CodeSha256": "voijqbqWi0y6YpjWc9dqAEs1s+gEQEPAapsCuIzGWuc=",
+            "Version": "$LATEST",
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "ef3daf7b-5fa6-4874-9fea-fd3d0de177b5",
+            "PackageType": "Zip",
+            "Architectures": [
+                "x86_64"
+            ],
+            "EphemeralStorage": {
+                "Size": 512
+            },
+            "SnapStart": {
+                "ApplyOn": "None",
+                "OptimizationStatus": "Off"
+            },
+            "LoggingConfig": {
+                "LogFormat": "Text",
+                "LogGroup": "/aws/lambda/StartEC2Instances"
+            }
+        },
+        {
+            "FunctionName": "RecipeToJSONAI",
+            "FunctionArn": "arn:aws:lambda:us-east-1:243728312407:function:RecipeToJSONAI",
+            "Runtime": "nodejs18.x",
+            "Role": "arn:aws:iam::243728312407:role/service-role/RecipeToJSONAI-role-v78vxpti",
+            "Handler": "index.handler",
+            "CodeSize": 2267172,
+            "Description": "",
+            "Timeout": 12,
+            "MemorySize": 128,
+            "LastModified": "2025-04-04T21:47:57.000+0000",
+            "CodeSha256": "LrNHeHPB3Uvo8p5UKZjmXy88Bxal2Voj4rnAM9U9zRY=",
+            "Version": "$LATEST",
+            "Environment": {
+                "Variables": {
+                    "OPENAI_API_KEY": "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"
+                }
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "69ad4b62-3810-482d-b1c2-1d4878d0a7eb",
+            "PackageType": "Zip",
+            "Architectures": [
+                "x86_64"
+            ],
+            "EphemeralStorage": {
+                "Size": 512
+            },
+            "SnapStart": {
+                "ApplyOn": "None",
+                "OptimizationStatus": "Off"
+            },
+            "LoggingConfig": {
+                "LogFormat": "Text",
+                "LogGroup": "/aws/lambda/RecipeToJSONAI"
+            }
+        }
+    ]
+}

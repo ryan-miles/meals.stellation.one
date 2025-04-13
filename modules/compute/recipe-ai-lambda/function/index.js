@@ -3,8 +3,8 @@ import { SecretsManager } from '@aws-sdk/client-secrets-manager';
 
 const secretsManager = new SecretsManager();
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Origin': 'https://meals.stellation.one',
+  'Access-Control-Allow-Headers': 'Content-Type,Authorization',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
 
@@ -35,6 +35,19 @@ async function initializeOpenAI() {
 }
 
 export async function handler(event) {
+  // Handle OPTIONS preflight
+  if (
+    event.requestContext &&
+    event.requestContext.http &&
+    event.requestContext.http.method === 'OPTIONS'
+  ) {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: JSON.stringify({ message: 'CORS preflight OK' })
+    };
+  }
+
   try {
     // Parse input
     const body = JSON.parse(event.body || '{}');

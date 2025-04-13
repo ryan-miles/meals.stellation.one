@@ -1,0 +1,11 @@
+{
+    "UserPools": [
+        {
+            "Id": "us-east-1_s3w0RQ4v6",
+            "Name": "Meal-AI",
+            "LambdaConfig": {},
+            "LastModifiedDate": "2025-03-30T09:56:11.685000-04:00",
+            "CreationDate": "2025-03-30T09:55:53.090000-04:00"
+        }
+    ]
+}

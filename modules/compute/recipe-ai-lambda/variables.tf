@@ -15,13 +15,12 @@ variable "environment" {
 }
 
 variable "gemini_api_key_secret" {
-  description = "Name of the AWS Secrets Manager secret containing the Gemini API key"
+  description = "Name or ARN of the secret for the gemini API key"
   type        = string
-  default     = "/meals-stellation/gemini-api-key"
 }
 
 variable "project_name" {
   description = "Name of the project"
   type        = string
-  default     = "meals" # You can change this default value as needed
+  default     = "meals"
 }

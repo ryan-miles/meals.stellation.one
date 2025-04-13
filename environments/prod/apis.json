@@ -1,0 +1,82 @@
+{
+    "Items": [
+        {
+            "ApiEndpoint": "https://4lvids54z2.execute-api.us-east-1.amazonaws.com",
+            "ApiId": "4lvids54z2",
+            "ApiKeySelectionExpression": "$request.header.x-api-key",
+            "CorsConfiguration": {
+                "AllowCredentials": false,
+                "AllowHeaders": [
+                    "content-type",
+                    "authorization"
+                ],
+                "AllowMethods": [
+                    "POST",
+                    "OPTIONS"
+                ],
+                "AllowOrigins": [
+                    "*",
+                    "https://meals.stellation.one"
+                ],
+                "MaxAge": 0
+            },
+            "CreatedDate": "2025-03-30T23:04:48+00:00",
+            "DisableExecuteApiEndpoint": false,
+            "Name": "meal-ai-gemini",
+            "ProtocolType": "HTTP",
+            "RouteSelectionExpression": "$request.method $request.path",
+            "Tags": {}
+        },
+        {
+            "ApiEndpoint": "https://h2nljkpm48.execute-api.us-east-1.amazonaws.com",
+            "ApiId": "h2nljkpm48",
+            "ApiKeySelectionExpression": "$request.header.x-api-key",
+            "CorsConfiguration": {
+                "AllowCredentials": false,
+                "AllowHeaders": [
+                    "content-type",
+                    "authorization"
+                ],
+                "AllowMethods": [
+                    "POST",
+                    "OPTIONS"
+                ],
+                "AllowOrigins": [
+                    "https://meals.stellation.one"
+                ],
+                "MaxAge": 300
+            },
+            "CreatedDate": "2025-04-08T20:14:34+00:00",
+            "DisableExecuteApiEndpoint": false,
+            "Name": "recipe-ai-api",
+            "ProtocolType": "HTTP",
+            "RouteSelectionExpression": "$request.method $request.path",
+            "Tags": {}
+        },
+        {
+            "ApiEndpoint": "https://rmjojhlt42.execute-api.us-east-1.amazonaws.com",
+            "ApiId": "rmjojhlt42",
+            "ApiKeySelectionExpression": "$request.header.x-api-key",
+            "CorsConfiguration": {
+                "AllowCredentials": false,
+                "AllowHeaders": [
+                    "content-type"
+                ],
+                "AllowMethods": [
+                    "POST",
+                    "OPTIONS"
+                ],
+                "AllowOrigins": [
+                    "*"
+                ],
+                "MaxAge": 0
+            },
+            "CreatedDate": "2025-03-30T14:44:42+00:00",
+            "DisableExecuteApiEndpoint": false,
+            "Name": "meal-ai",
+            "ProtocolType": "HTTP",
+            "RouteSelectionExpression": "$request.method $request.path",
+            "Tags": {}
+        }
+    ]
+}
