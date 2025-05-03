@@ -1,0 +1,63 @@
+{
+  "id": "shrimp-bowl-with-avocado-crema",
+  "title": "Shrimp Bowl with Avocado Crema",
+  "day": "",
+  "description": "A delicious and healthy shrimp bowl topped with creamy avocado crema, perfect for a quick meal.",
+  "link": "https://example.com/spaghetti-placeholder",
+  "sections": [
+    {
+      "title": "🛒 Quick Ingredient Checklist",
+      "type": "categorized-ingredients",
+      "items": {
+        "freezer": [
+          "1 pound large shrimp, peeled and deveined",
+          "1 cup fresh or frozen corn kernels"
+        ],
+        "refrigerator": [
+          "1 avocado, pitted and peeled",
+          "½ cup roughly chopped cilantro",
+          "4 tablespoons low-fat plain yogurt",
+          "4 scallions, sliced"
+        ],
+        "pantry": [
+          "1 tablespoon finely chopped chipotle chile in adobo",
+          "3 tablespoons avocado oil",
+          "1 tablespoon lime juice",
+          "½ teaspoon salt",
+          "¾ teaspoon ground cumin",
+          "¾ teaspoon garlic powder",
+          "4 cups cauliflower rice",
+          "2 tablespoons water",
+          "1 cup canned no-salt-added black beans"
+        ],
+        "other": [
+          "Lime wedges for serving"
+        ]
+      }
+    },
+    {
+      "title": "👩‍🍳 Recipe",
+      "type": "steps",
+      "items": [
+        "Stir shrimp, chipotle and 1 tablespoon oil together in a medium bowl. Set aside.",
+        "Place avocado, 1/2 cup cilantro, yogurt, lime juice and 1/8 teaspoon salt in a mini food processor. Process until mostly smooth.",
+        "Heat 1 tablespoon oil in a large nonstick skillet over medium-high heat. Add the shrimp and cook, stirring once or twice, until just cooked through, about 4 minutes. Transfer to a bowl and cover to keep warm.",
+        "Add the remaining 1 tablespoon oil, 1/2 teaspoon cumin, 1/2 teaspoon garlic powder and 1/4 teaspoon salt. Stir to combine. Add cauliflower rice, scallions and water. Cook, stirring, until tender, about 5 minutes.",
+        "Combine beans with the remaining 1/4 teaspoon cumin, 1/4 teaspoon garlic powder and 1/8 teaspoon salt in a small bowl.",
+        "Combine corn and the remaining 2 tablespoons cilantro in another small bowl.",
+        "To serve, divide the cauliflower mixture among 4 bowls. Top with the shrimp, beans, corn and avocado crema."
+      ]
+    },
+    {
+      "title": "🍽️ Estimated Nutrition (Per Serving)",
+      "type": "list",
+      "items": [
+        "Calories: ~400",
+        "Protein: ~30g",
+        "Carbohydrates: ~45g",
+        "Fat: ~15g",
+        "Fiber: ~10g"
+      ]
+    }
+  ]
+}
