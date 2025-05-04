@@ -1,0 +1,28 @@
+{
+  "id": "dominos-pizza-night",
+  "title": "Domino's Pizza Night",
+  "day": "friday",
+  "description": "Carry-out Pizza for an Easy (if not healthy) Friday night.",
+  "link": "https://example.com/spaghetti-placeholder",
+  "sections": [
+    {
+      "title": "🍽️ Our Order",
+      "type": "list",
+      "items": [
+        "1 Medium Pan Pizza with Extra Cheese",
+        "1 Medium Pan Pizza with Ham & Pineapple"
+      ]
+    },
+    {
+      "title": "🍟 Nutrition Estimate (Per Slice)",
+      "type": "list",
+      "items": [
+        "Pan Pizza Base:190 cal, 7g fat, 3.5g sat fat, 26g carbs, 5g protein",
+        "+ Extra Cheese (per slice):+110 cal, +8g fat, +6g protein",
+        "+ Ham & Pineapple (per slice):+10 cal (ham), +10 cal (pineapple)",
+        "Extra Cheese Slice:~300 calories, 15g fat, 11g protein",
+        "Ham & Pineapple Slice:~210 calories, 7g fat, 6g protein"
+      ]
+    }
+  ]
+}
