@@ -1,0 +1,3 @@
+@echo off
+echo Running Terraform Plan...
+terraform plan
