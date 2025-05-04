@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "date-fns": "^4.1.0",
-    "inquirer": "^12.5.0"
-  }
-}

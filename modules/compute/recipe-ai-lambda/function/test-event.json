@@ -1,7 +1,0 @@
-{
-  "body": "{\"text\": \"Spaghetti and Meatballs\n\nIngredients:\n- 1 pound spaghetti\n- 1 pound ground beef\n- 1 egg\n- 1/4 cup breadcrumbs\n- 1 jar marinara sauce\n\nInstructions:\n1. Cook spaghetti according to package directions\n2. Mix beef, egg, and breadcrumbs\n3. Form meatballs\n4. Brown meatballs in pan\n5. Add sauce and simmer\n6. Serve over pasta\"}",
-  "httpMethod": "POST",
-  "headers": {
-    "Content-Type": "application/json"
-  }
-}
