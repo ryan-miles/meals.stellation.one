@@ -1,10 +1,9 @@
-
 const fs = require("fs");
 const path = require("path");
 const inquirer = require("inquirer").default;
 const { parseISO, isValid } = require("date-fns");
 
-const recipesDir = path.join(__dirname, "..", "recipes");
+const recipesDir = path.join(__dirname, "..", "json", "recipes");
 const scheduleFile = path.join(__dirname, "..", "schedule.json");
 
 async function main() {

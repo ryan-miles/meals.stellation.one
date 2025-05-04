@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const recipesDir = path.join(__dirname, "..", "recipes");
+const recipesDir = path.join(__dirname, "..", "json", "recipes");
 const outputFile = path.join(__dirname, "..", "all-recipes.json");
 
 const buildAllRecipes = () => {
