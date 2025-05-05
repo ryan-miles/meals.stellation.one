@@ -23,8 +23,7 @@ jobs:
         run: |
           aws s3 sync website/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
 
-      - name: Invalidate CloudFront Cache
-        uses: aws-actions/aws-cloudfront-invalidate-action@v1 # Use version tag instead of commit SHA
-        with:
-          distribution-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-          paths: "/*" # Invalidate all files
+          - name: Invalidate CloudFront cache
+          run: aws cloudfront create-invalidation \
+               --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+               --paths '/*'
