@@ -56,7 +56,6 @@ meals.stellation.one/
 │   ├── .github/workflows/
 │   │   └── deploy.yml        # GitHub Action CI/CD pipeline for website
 │   ├── images/
-│   │   ├── ryan_miles.png
 │   │   └── tes-tile.png      # Background pattern
 │   └── favicon.ico
 │
