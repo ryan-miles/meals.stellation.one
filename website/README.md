@@ -1,6 +1,6 @@
 # 🍽️ meals.stellation.one — Miles Family Meal Planner
 
-A sleek, static web app for planning and presenting the weekly meals and grocery list for the Miles family. Designed for speed, style, and simplicity using pure HTML/CSS/JS, deployed via AWS (S3 + CloudFront).
+A sleek, static web app for planning and presenting the weekly meals and grocery list for the Miles family. Designed for speed, style, and simplicity using pure HTML/CSS/JS, deployed via AWS (S3 + CloudFront). The AI features are powered by an AWS Lambda function managed with Terraform.
 
 Live site: [meals.stellation.one](https://meals.stellation.one)
 
@@ -10,48 +10,69 @@ Live site: [meals.stellation.one](https://meals.stellation.one)
 
 ```
 meals.stellation.one/
-├── meals.html              # Landing hub for the weekly plan
-├── monday.html             # Daily meal pages (Mon–Fri)
-├── tuesday.html
-├── wednesday.html
-├── thursday.html
-├── friday.html
-├── week.html               # Grocery list view
-├── all-recipes.html        # Dynamic recipe browser
-├── meal-ai.html            # Cognito-authenticated AI tool
+├── website/                  # Static frontend files served via S3/CloudFront
+│   ├── meals.html            # Landing hub for the weekly plan
+│   ├── monday.html           # Daily meal pages (Mon–Fri)
+│   ├── tuesday.html
+│   ├── wednesday.html
+│   ├── thursday.html
+│   ├── friday.html
+│   ├── week.html             # Grocery list view
+│   ├── all-recipes.html      # Dynamic recipe browser
+│   ├── meal-ai.html          # Cognito-authenticated AI tool (interfaces with Lambda)
+│   │
+│   ├── all-recipes.json      # 🔄 Auto-generated from /json/recipes/*.json
+│   ├── schedule.json         # Weekly mapping of meals to days
+│   │
+│   ├── css/
+│   │   └── styles.css
+│   │
+│   ├── js/
+│   │   ├── config.js         # API endpoint configuration
+│   │   ├── loadRecipe.js     # Loads daily meals
+│   │   ├── loadWeek.js       # Populates weekly grid
+│   │   └── loadGroceryList.js# Builds grocery checklist
+│   │
+│   ├── json/
+│   │   └── recipes/          # Source-of-truth JSON recipes
+│   │       ├── butter-chicken.json
+│   │       ├── dominos-pizza-night.json
+│   │       ├── hothoney-groundbeef-bowls.json
+│   │       ├── meatballs-with-zoodles.json
+│   │       ├── pams-ranch-chicken.json
+│   │       ├── Shakshuka.json
+│   │       ├── shrimp-bowl-with-avocado-crema.json
+│   │       ├── spaghetti.json
+│   │       ├── spinach-artichoke-gnocchi-skillet-with-feta.json
+│   │       ├── tacos.json
+│   │       └── tuna-melt.json
+│   │
+│   ├── scripts/              # Node.js helper scripts
+│   │   ├── buildAllRecipes.js
+│   │   ├── setWeeklySchedule.js
+│   │   ├── validateAllRecipes.js
+│   │   └── validateRecipe.js
+│   │
+│   ├── .github/workflows/
+│   │   └── deploy.yml        # GitHub Action CI/CD pipeline for website
+│   ├── images/
+│   │   ├── ryan_miles.png
+│   │   └── tes-tile.png      # Background pattern
+│   └── favicon.ico
 │
-├── all-recipes.json        # 🔄 Auto-generated from /recipes/*.json
-├── schedule.json           # Weekly mapping of meals to days
-│
-├── css/
-│   └── styles.css
-│
-├── js/
-│   ├── loadRecipe.js       # Loads daily meals
-│   ├── loadWeek.js         # Populates weekly grid
-│   └── loadGroceryList.js  # Builds grocery checklist
-│
-├── recipes/                # Source-of-truth JSON recipes
-│   ├── butter-chicken.json
-│   ├── classic-protein-bowl.json
-│   ├── hot-honey-ground-beef-bowls.json
-│   ├── pams-ranch-chicken.json
-│   ├── shrimp-bowl-with-avocado-crema.json
-│   ├── spaghetti.json
-│   ├── tacos.json
-│   └── dominos-pizza-night.json
-│
-├── scripts/
-│   ├── buildAllRecipes.js
-│   ├── validateRecipe.js
-│   └── validateAllRecipes.js
-│
-├── .github/workflows/
-│   └── deploy.yml          # GitHub Action CI/CD pipeline
-├── images/
-│   ├── ryan_miles.png
-│   └── tes-tile.png        # Background pattern
-└── favicon.ico
+└── meals-gemini-api/         # Backend API (Lambda + API Gateway)
+    ├── lambda_code/          # Node.js code for the Lambda function
+    │   ├── index.js
+    │   ├── package.json
+    │   └── test-G-API.ps1    # Local test script
+    └── terraform/            # Terraform IaC for Lambda, API Gateway, IAM roles
+        ├── main.tf
+        ├── providers.tf
+        ├── variables.tf
+        ├── lambda_deployment_package.zip # Built Lambda code
+        ├── apply.bat         # Helper scripts for Terraform commands
+        ├── destroy.bat
+        └── plan.bat
 ```
 
 ---
@@ -81,8 +102,8 @@ meals.stellation.one/
 
 ### AI Tooling (`meal-ai.html`)
 - Protected by **Amazon Cognito Hosted UI**
-- Accepts raw text → returns downloadable recipe JSON
-- Integrated with API Gateway backend
+- Accepts raw text → sends to backend API → returns downloadable recipe JSON
+- Backend: **AWS Lambda** function (Node.js) fronted by **API Gateway**, deployed via **Terraform**.
 
 ---
 
@@ -107,11 +128,13 @@ Used exclusively on `meal-ai.html`. Basic flow:
 ## 🛠 Tech Stack
 
 - **Frontend:** Pure HTML, CSS (custom properties), vanilla JS
-- **Data:** Static `.json` files in `/recipes` + `schedule.json`
+- **Backend API:** AWS Lambda (Node.js), API Gateway
+- **Infrastructure as Code (IaC):** Terraform (for backend API)
+- **Data:** Static `.json` files in `/website/json/recipes` + `schedule.json`
 - **Build Scripts:** Node.js (uses `date-fns`, `inquirer`)
-- **CI/CD:** GitHub Actions → AWS S3 sync + CloudFront invalidate
-- **Deploy Target:**  
-  - AWS Account: `243728312407`  
+- **CI/CD:** GitHub Actions → AWS S3 sync + CloudFront invalidate (for frontend)
+- **Deploy Target (Frontend):**
+  - AWS Account: `243728312407`
   - Region: `us-east-1`
 
 ---
@@ -123,16 +146,20 @@ Used exclusively on `meal-ai.html`. Basic flow:
 3. Edit `schedule.json` or add recipes in `/recipes/`
 4. Validate:
 ```bash
-node scripts/validateAllRecipes.js
+node website/scripts/validateAllRecipes.js
 ```
 5. Build `all-recipes.json`:
 ```bash
-node scripts/buildAllRecipes.js
+node website/scripts/buildAllRecipes.js
 ```
-6. Serve locally:
+6. Serve locally (from `website` directory):
 ```bash
+cd website
 npx serve .
 ```
+7. (Optional) Test/Deploy Backend API:
+   - Navigate to `meals-gemini-api/terraform`
+   - Use `plan.bat`, `apply.bat`, `destroy.bat`
 
 ---
 
@@ -150,7 +177,7 @@ npx serve .
 }
 ```
 
-### Individual Recipes (`/recipes/*.json`)
+### Individual Recipes (`/website/json/recipes/*.json`)
 Each contains:
 - `id`, `title`, `description`, `day` (optional)
 - `sections`: list of ingredients, steps, and nutrition blocks
