@@ -1,6 +1,6 @@
 # 🍽️ meals.stellation.one — Miles Family Meal Planner
 
-A sleek, static web app for planning and presenting the weekly meals and grocery list for the Miles family. Designed for speed, style, and simplicity using pure HTML/CSS/JS, deployed via AWS (S3 + CloudFront). The AI features are powered by an AWS Lambda function managed with Terraform.
+A sleek, static web app for planning and presenting the weekly meals and grocery list for the Miles family. Designed for speed, style, and simplicity using pure HTML/CSS/JS, deployed via AWS (S3 + CloudFront). The AI features and surprise meal plan generator are powered by AWS Lambda functions managed with Terraform.
 
 Live site: [meals.stellation.one](https://meals.stellation.one)
 
@@ -20,19 +20,15 @@ meals.stellation.one/
 │   ├── week.html             # Grocery list view
 │   ├── all-recipes.html      # Dynamic recipe browser
 │   ├── meal-ai.html          # Cognito-authenticated AI tool (interfaces with Lambda)
-│   │
 │   ├── all-recipes.json      # 🔄 Auto-generated from /json/recipes/*.json
-│   ├── schedule.json         # Weekly mapping of meals to days
-│   │
+│   ├── schedule.json         # Weekly mapping of meals to days (updated by Lambda)
 │   ├── css/
 │   │   └── styles.css
-│   │
 │   ├── js/
 │   │   ├── config.js         # API endpoint configuration
 │   │   ├── loadRecipe.js     # Loads daily meals
 │   │   ├── loadWeek.js       # Populates weekly grid
 │   │   └── loadGroceryList.js# Builds grocery checklist
-│   │
 │   ├── json/
 │   │   └── recipes/          # Source-of-truth JSON recipes
 │   │       ├── butter-chicken.json
@@ -46,13 +42,12 @@ meals.stellation.one/
 │   │       ├── spinach-artichoke-gnocchi-skillet-with-feta.json
 │   │       ├── tacos.json
 │   │       └── tuna-melt.json
-│   │
 │   ├── scripts/              # Node.js helper scripts
 │   │   ├── buildAllRecipes.js
 │   │   ├── setWeeklySchedule.js
+│   │   ├── surprisePlan.js   # Local random plan generator
 │   │   ├── validateAllRecipes.js
 │   │   └── validateRecipe.js
-│   │
 │   ├── .github/workflows/
 │   │   └── deploy.yml        # GitHub Action CI/CD pipeline for website
 │   ├── images/
@@ -60,17 +55,31 @@ meals.stellation.one/
 │   │   └── tes-tile.png      # Background pattern
 │   └── favicon.ico
 │
-└── meals-gemini-api/         # Backend API (Lambda + API Gateway)
-    ├── lambda_code/          # Node.js code for the Lambda function
+├── meals-gemini-api/         # AI recipe generator backend (Lambda + API Gateway)
+│   ├── lambda_code/
+│   │   ├── index.js
+│   │   ├── package.json
+│   │   └── test-G-API.ps1
+│   └── terraform/
+│       ├── main.tf
+│       ├── providers.tf
+│       ├── variables.tf
+│       ├── lambda_deployment_package.zip
+│       ├── apply.bat
+│       ├── destroy.bat
+│       └── plan.bat
+│
+└── surprisePlan/             # Surprise meal plan generator backend (Lambda + API Gateway)
+    ├── lambda_code/
     │   ├── index.js
     │   ├── package.json
-    │   └── test-G-API.ps1    # Local test script
-    └── terraform/            # Terraform IaC for Lambda, API Gateway, IAM roles
+    │   └── test-G-API.ps1
+    └── terraform/
         ├── main.tf
         ├── providers.tf
         ├── variables.tf
-        ├── lambda_deployment_package.zip # Built Lambda code
-        ├── apply.bat         # Helper scripts for Terraform commands
+        ├── lambda_deployment_package.zip
+        ├── apply.bat
         ├── destroy.bat
         └── plan.bat
 ```
@@ -159,6 +168,9 @@ npx serve .
 ```
 7. (Optional) Test/Deploy Backend API:
    - Navigate to `meals-gemini-api/terraform`
+   - Use `plan.bat`, `apply.bat`, `destroy.bat`
+8. (Optional) Test/Deploy Surprise Plan API:
+   - Navigate to `surprisePlan/terraform`
    - Use `plan.bat`, `apply.bat`, `destroy.bat`
 
 ---
