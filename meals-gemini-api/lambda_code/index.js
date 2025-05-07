@@ -61,6 +61,15 @@ async function initializeGoogleAI() {
   return genAI;
 }
 
+// Utility to slugify a string (e.g., "Green Masala Eggs" -> "green-masala-eggs")
+function slugify(str) {
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with dashes
+    .replace(/^-+|-+$/g, '')     // Trim leading/trailing dashes
+    .replace(/--+/g, '-');       // Replace multiple dashes with one
+}
+
 export async function handler(event) {
   console.log("Received event:", JSON.stringify(event, null, 2));
 
@@ -115,9 +124,8 @@ export async function handler(event) {
 
     // --- Call Gemini API ---
     console.log("Sending request to Gemini API (gemini-1.5-flash)...");
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"}); // Use the confirmed model
-    // Simple prompt - adjust as needed for better formatting
-    const prompt = `Please format the following recipe text clearly, separating ingredients and instructions. Ensure proper line breaks and list formatting:\n\n${recipeText}`;
+    // Updated prompt: ask for title, description, and sections, but NOT an ID
+    const prompt = `Please format the following recipe as a JSON object with the following fields:\n- \"title\": the recipe title (string)\n- \"description\": a short description (string)\n- \"sections\": an array of sections, each with a \"title\", \"type\", and \"items\" or \"content\" (for ingredients, steps, etc.)\nDo NOT include an \"id\" field. Do NOT include any extra text. Only return the JSON object.\nHere is the recipe text:\n${recipeText}`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
@@ -125,15 +133,31 @@ export async function handler(event) {
 
     console.log("Received response from Gemini API.");
 
-    // --- Return Success Response ---
+    // --- Parse and add ID ---
+    let recipeJson;
+    try {
+      recipeJson = JSON.parse(aiResponseText);
+    } catch (e) {
+      console.error("Failed to parse AI response as JSON:", aiResponseText);
+      throw new Error("AI did not return valid JSON.");
+    }
+    if (!recipeJson.title) {
+      throw new Error("AI response missing 'title' field.");
+    }
+    const slug = slugify(recipeJson.title);
+    recipeJson.id = slug; // Set the ID to the slug
+
+    // --- Return filename and recipe JSON ---
     return {
       statusCode: 200,
       headers: {
-        ...corsHeaders, // Include CORS headers
-        'Content-Type': 'application/json' // Set correct content type
+        ...corsHeaders,
+        'Content-Type': 'application/json'
       },
-      // Structure the response as expected by the frontend
-      body: JSON.stringify({ generatedRecipe: aiResponseText }),
+      body: JSON.stringify({
+        filename: `${slug}.json`,
+        recipe: recipeJson
+      }),
     };
 
   } catch (error) {

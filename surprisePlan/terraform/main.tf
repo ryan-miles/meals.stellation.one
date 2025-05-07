@@ -166,8 +166,8 @@ resource "aws_lambda_permission" "api_gateway_invoke" {
 # --- EventBridge Rule for Scheduled Lambda Trigger ---
 resource "aws_cloudwatch_event_rule" "weekly_surprise_plan" {
   name                = "${var.function_name}-weekly-trigger"
-  description         = "Trigger Lambda every Saturday night at 12:01 AM"
-  schedule_expression = "cron(1 0 ? * SUN *)" # 12:01 AM Sunday UTC (which is Saturday 8:01 PM EST)
+  description         = "Trigger Lambda every 2 minutes for testing"
+  schedule_expression = "rate(2 minutes)" # Run every 2 minutes for testing
   tags                = var.project_tags
 }
 
