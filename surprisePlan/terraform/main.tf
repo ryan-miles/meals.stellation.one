@@ -160,6 +160,28 @@ resource "aws_lambda_permission" "api_gateway_invoke" {
   source_arn = "${aws_apigatewayv2_api.surprise_api.execution_arn}/*/*"
 }
 
+# --- EventBridge Rule for Scheduled Lambda Trigger ---
+resource "aws_cloudwatch_event_rule" "weekly_surprise_plan" {
+  name                = "${var.function_name}-weekly-trigger"
+  description         = "Trigger Lambda every Saturday night at 12:01 AM"
+  schedule_expression = "cron(1 0 ? * SUN *)" # 12:01 AM Sunday UTC (which is Saturday 8:01 PM EST)
+  tags                = var.project_tags
+}
+
+resource "aws_cloudwatch_event_target" "lambda_target" {
+  rule      = aws_cloudwatch_event_rule.weekly_surprise_plan.name
+  target_id = "surprisePlanLambdaTarget"
+  arn       = aws_lambda_function.surprise_planner.arn
+}
+
+resource "aws_lambda_permission" "allow_eventbridge" {
+  statement_id  = "AllowExecutionFromEventBridge"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.surprise_planner.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.weekly_surprise_plan.arn
+}
+
 # --- Output the API Endpoint URL ---
 # Makes it easy to find the URL after deployment
 
