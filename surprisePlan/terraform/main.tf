@@ -48,7 +48,10 @@ data "aws_iam_policy_document" "lambda_permissions_policy" {
     actions = [
       "s3:PutObject",
     ]
-    resources = ["arn:aws:s3:::${var.s3_bucket_name}/${var.s3_schedule_key}"]
+    resources = [
+      "arn:aws:s3:::${var.s3_bucket_name}/${var.s3_schedule_key}",
+      "arn:aws:s3:::${var.s3_bucket_name}/schedule.json" # <-- add this line
+    ]
   }
 }
 
