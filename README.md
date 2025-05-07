@@ -175,6 +175,81 @@ npx serve .
 
 ---
 
+## 🧩 How It All Works Together
+
+### Data Flow
+
+1. **Recipe Creation**: Recipes are created (manually or via AI) and saved as `/website/json/recipes/*.json`.
+2. **Recipe Indexing**: Run `buildAllRecipes.js` to generate `all-recipes.json` (used by the frontend).
+3. **Weekly Plan**: `schedule.json` is updated (by Lambda or manually) to map days to recipe IDs.
+4. **Frontend**: `meals.html` and other pages use `all-recipes.json` and `schedule.json` to display the plan.
+
+---
+
+## 🛠 Scripts in /website/scripts/
+
+- **buildAllRecipes.js**: Scans `/json/recipes/*.json` and generates `all-recipes.json` for the frontend. Run this after adding or editing any recipe file.
+- **setWeeklySchedule.js**: Manually set the weekly meal plan (updates `schedule.json`).
+- **surprisePlan.js**: Locally generate a random meal plan for testing (mimics Lambda behavior).
+- **validateAllRecipes.js**: Validates all recipe files for correct structure.
+- **validateRecipe.js**: Validates a single recipe file.
+
+---
+
+## 🤖 Using the AI Recipe Generator (meal-ai.html)
+
+1. Open `meal-ai.html` and log in via Cognito.
+2. Enter your recipe idea and submit.
+3. Download the generated JSON file.
+4. Place the file in `/website/json/recipes/`.
+5. Run `node website/scripts/buildAllRecipes.js` to update `all-recipes.json`.
+
+---
+
+## 🧪 Local Dev Workflow (Expanded)
+
+1. Clone repo
+2. Open `meals.html` or any weekday file in a browser
+3. Add or edit recipes in `/website/json/recipes/`
+4. Validate recipes:
+```bash
+node website/scripts/validateAllRecipes.js
+```
+5. Build `all-recipes.json`:
+```bash
+node website/scripts/buildAllRecipes.js
+```
+6. Edit or update `schedule.json` (manually, with `setWeeklySchedule.js`, or via Lambda)
+7. Serve locally (from `website` directory):
+```bash
+cd website
+npx serve .
+```
+8. (Optional) Test/Deploy Backend API:
+   - Navigate to `meals-gemini-api/terraform`
+   - Use `plan.bat`, `apply.bat`, `destroy.bat`
+9. (Optional) Test/Deploy Surprise Plan API:
+   - Navigate to `surprisePlan/terraform`
+   - Use `plan.bat`, `apply.bat`, `destroy.bat`
+
+---
+
+## 🛠 Troubleshooting & Tips
+
+- **If a day is missing on the frontend:**
+  - Check that `schedule.json` uses recipe IDs that exactly match those in `all-recipes.json` (case-sensitive).
+  - Ensure all weekdays (monday–friday) are present as keys in `schedule.json`.
+- **If a new recipe isn’t showing up:**
+  - Make sure you’ve run `buildAllRecipes.js` after adding it.
+  - Validate the new recipe with `validateRecipe.js`.
+- **If the AI tool output isn’t working:**
+  - Download the JSON, place it in `/website/json/recipes/`, and rebuild `all-recipes.json`.
+- **Automated vs. Manual Steps:**
+  - Lambda (surprisePlan) can update `schedule.json` automatically on a schedule.
+  - Scripts in `/website/scripts/` are for local/manual updates and validation.
+
+---
+
 ## 🧬 Data Format
 
 ### `schedule.json`
