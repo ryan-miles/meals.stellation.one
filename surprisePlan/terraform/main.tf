@@ -53,6 +53,16 @@ data "aws_iam_policy_document" "lambda_permissions_policy" {
       "arn:aws:s3:::${var.s3_bucket_name}/schedule.json" # <-- add this line
     ]
   }
+
+  statement {
+    sid = "AllowCloudFrontInvalidation"
+    actions = [
+      "cloudfront:CreateInvalidation"
+    ]
+    resources = [
+      "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/E1N2YV51Q8UVH"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "lambda_permissions" {
@@ -92,9 +102,10 @@ resource "aws_lambda_function" "surprise_planner" {
 
   environment {
     variables = {
-      S3_BUCKET_NAME   = var.s3_bucket_name
-      S3_RECIPES_PREFIX = var.s3_recipes_prefix
-      S3_SCHEDULE_KEY  = var.s3_schedule_key
+      S3_BUCKET_NAME             = var.s3_bucket_name
+      S3_RECIPES_PREFIX          = var.s3_recipes_prefix
+      S3_SCHEDULE_KEY            = var.s3_schedule_key
+      CLOUDFRONT_DISTRIBUTION_ID = "E1N2YV51Q8UVH" # <-- Add this line
     }
   }
 
@@ -167,6 +178,7 @@ resource "aws_lambda_permission" "api_gateway_invoke" {
 resource "aws_cloudwatch_event_rule" "weekly_surprise_plan" {
   name                = "${var.function_name}-weekly-trigger"
   description         = "Trigger Lambda every 2 minutes for testing"
+#  schedule_expression = "cron(30 0 ? * SAT *)"
   schedule_expression = "rate(2 minutes)" # Run every 2 minutes for testing
   tags                = var.project_tags
 }

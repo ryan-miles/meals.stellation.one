@@ -1,4 +1,5 @@
 import { S3Client, ListObjectsV2Command, PutObjectCommand } from "@aws-sdk/client-s3";
+import { CloudFrontClient, CreateInvalidationCommand } from "@aws-sdk/client-cloudfront";
 
 const REGION = process.env.AWS_REGION || "us-east-1";
 const BUCKET_NAME = process.env.S3_BUCKET_NAME;
@@ -88,6 +89,30 @@ export async function handler() {
     };
     await writeScheduleToS3(BUCKET_NAME, SCHEDULE_KEY, newSchedule);
     console.log(`✅ Successfully generated and saved random schedule for week starting ${weekStartDate}`);
+
+    // --- CloudFront Invalidation ---
+    const distributionId = process.env.CLOUDFRONT_DISTRIBUTION_ID;
+    if (distributionId) {
+      const cfClient = new CloudFrontClient({ region: REGION });
+      const invalidationParams = {
+        DistributionId: distributionId,
+        InvalidationBatch: {
+          CallerReference: `invalidate-${Date.now()}`,
+          Paths: {
+            Quantity: 1,
+            Items: ["/*"]
+          }
+        }
+      };
+      try {
+        const invalidationResult = await cfClient.send(new CreateInvalidationCommand(invalidationParams));
+        console.log(`✅ CloudFront invalidation created: ${invalidationResult.Invalidation?.Id}`);
+      } catch (cfErr) {
+        console.error("CloudFront invalidation failed:", cfErr);
+      }
+    } else {
+      console.warn("CLOUDFRONT_DISTRIBUTION_ID not set, skipping invalidation.");
+    }
   } catch (error) {
     console.error('Error generating or saving schedule:', error);
   }
