@@ -5,6 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Meal Tools</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Basic styling for recipe display - adjust as needed in styles.css */
+    .recipe-display {
+      text-align: left;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .recipe-display h2 {
+      margin-top: 0;
+      color: var(--primary-color); /* Assuming you have a primary color variable */
+    }
+    .recipe-display h3 {
+      margin-top: 15px;
+      color: var(--secondary-color); /* Assuming secondary color */
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+    .recipe-display ul {
+      list-style-type: disc;
+      margin-left: 20px;
+      padding-left: 0;
+    }
+    .recipe-display li {
+      margin-bottom: 5px;
+      line-height: 1.6;
+    }
+    .recipe-display p {
+        white-space: pre-wrap; /* To respect newlines in instruction items */
+    }
+  </style>
 </head>
 <body>
   <div class="main-container">
@@ -48,6 +80,7 @@
     const CLIENT_ID = '1qi2sj7lbi13k4v21b5rr7d6nm';
     const REDIRECT_URI = 'https://meals.stellation.one/meal-ai.html';
 
+    // --- Cognito Auth Code (no changes needed here) ---
     const code = new URLSearchParams(window.location.search).get('code');
     if (code) {
       fetch(`${COGNITO_DOMAIN}/oauth2/token`, {
@@ -65,7 +98,7 @@
         if (data.id_token) {
           sessionStorage.setItem('id_token', data.id_token);
           sessionStorage.setItem('access_token', data.access_token);
-          window.location.href = REDIRECT_URI;
+          window.location.href = REDIRECT_URI.split('?')[0]; // Remove query params on redirect
         } else {
           alert('Failed to authenticate.');
         }
@@ -89,33 +122,68 @@
       sessionStorage.clear();
       window.location.href = `${COGNITO_DOMAIN}/logout?client_id=${CLIENT_ID}&logout_uri=https://meals.stellation.one`;
     }
+    // --- End Cognito Auth Code ---
 
-    // Helper function to create a safe filename
-    function sanitizeFilename(name) {
-      if (!name || typeof name !== 'string') return 'recipe'; // Fallback
 
-      // Get the first line
-      let firstLine = name.split('\n')[0].trim();
+    // --- NEW FUNCTION TO RENDER RECIPE DATA ---
+    function displayRecipe(recipeData) {
+        let html = '<div class="recipe-display">';
 
-      // Remove common markdown formatting first (like **, #)
-      firstLine = firstLine.replace(/^\**|\**$/g, '').trim(); // Remove leading/trailing asterisks
-      // *** Add this line to remove leading '#' and space ***
-      firstLine = firstLine.replace(/^#+\s*/, '').trim();    // Remove leading '#' characters and space
+        if (recipeData.title) {
+            html += `<h2>${escapeHtml(recipeData.title)}</h2>`;
+        }
+        if (recipeData.description) {
+            html += `<p><em>${escapeHtml(recipeData.description)}</em></p>`;
+        }
+        if (recipeData.link) {
+            html += `<p><a href="${escapeHtml(recipeData.link)}" target="_blank">Source Link</a></p>`;
+        }
+        if (recipeData.day) {
+            html += `<p><strong>Date:</strong> ${escapeHtml(recipeData.day)}</p>`;
+        }
 
-      // Remove "Recipe" and related chars (case-insensitive)
-      firstLine = firstLine.replace(/^(recipe|generated recipe)\s*[:-]?\s*/i, '') // Remove leading "Recipe", "Generated Recipe", etc.
-                           .replace(/\s*(recipe)$/i, '') // Remove trailing " Recipe"
-                           .trim();
-
-      // Remove invalid filename characters, replace spaces with underscores, limit length
-      const sanitized = firstLine
-        .replace(/[<>:"/\\|?*]+/g, '') // Remove invalid filename chars
-        .replace(/\s+/g, '_')          // Replace spaces with underscores
-        .substring(0, 50);             // Limit length
-
-      // Ensure it doesn't return an empty string
-      return sanitized || 'recipe';
+        if (recipeData.sections && recipeData.sections.length > 0) {
+            recipeData.sections.forEach(section => {
+                html += `<h3>${escapeHtml(section.title)}</h3>`;
+                if (section.items && section.items.length > 0) {
+                    // For 'steps' or general text, treat items as paragraphs or preformatted text
+                    // For 'checklist', 'ingredients', 'nutrition', treat as a list
+                    if (section.type === 'steps' || section.type === 'text') { // Assuming 'text' might be a type
+                        section.items.forEach(item => {
+                           // Replace newline characters from AI with <br> for HTML display
+                           html += `<p>${escapeHtml(item).replace(/\n/g, '<br>')}</p>`;
+                        });
+                    } else { // Default to list for checklist, ingredients, nutrition
+                        html += '<ul>';
+                        section.items.forEach(item => {
+                            html += `<li>${escapeHtml(item)}</li>`;
+                        });
+                        html += '</ul>';
+                    }
+                } else {
+                    html += '<p><em>No items listed for this section.</em></p>';
+                }
+            });
+        }
+        html += '</div>';
+        return html;
     }
+
+    // Helper to escape HTML to prevent XSS
+    function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') {
+            console.warn("escapeHtml received non-string input:", unsafe);
+            return ''; // Or return String(unsafe) if you want to try and display it
+        }
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+    }
+    // --- END NEW FUNCTION ---
+
 
     async function submitToAI() {
       const input = document.getElementById("recipeInput").value.trim();
@@ -142,22 +210,18 @@
           try {
             errorData = await response.json();
           } catch (e) {
-            // If response is not JSON, use the generic message
             console.error("Response was not valid JSON:", await response.text());
           }
           throw new Error(errorData.message || "Request failed");
         }
 
-        // 1. Get the response object from Lambda
         const responseData = await response.json();
-        console.log("Response data from Lambda:", responseData); // Good to keep for debugging
+        console.log("Response data from Lambda:", responseData);
 
-        // 2. Extract the recipe object and the filename directly
-        const recipeObjectForDownload = responseData.generatedRecipe; // This is the actual recipe data
-        const serverProvidedFilename = responseData.filename;     // This is "green-masala-eggs.json" (or similar)
+        const recipeObjectForDownloadAndDisplay = responseData.generatedRecipe;
+        const serverProvidedFilename = responseData.filename;
 
-        // 3. Check if the recipe object and filename exist
-        if (typeof recipeObjectForDownload === 'undefined') {
+        if (typeof recipeObjectForDownloadAndDisplay === 'undefined') {
             console.error("Response data from Lambda:", responseData);
             throw new Error("AI response did not contain the expected 'generatedRecipe' object.");
         }
@@ -166,19 +230,21 @@
             throw new Error("AI response did not contain a valid 'filename' field ending with .json.");
         }
 
-        // 4. Create blob and URL from the recipeObjectForDownload
-        //    The recipeObjectForDownload is ALREADY the JSON object that the AI prepared for you.
-        const blob = new Blob([JSON.stringify(recipeObjectForDownload, null, 2)], { type: "application/json" });
+        const blob = new Blob([JSON.stringify(recipeObjectForDownloadAndDisplay, null, 2)], { type: "application/json" });
         const url = URL.createObjectURL(blob);
 
-        // 5. Update result HTML with the download link using the server-provided filename
-        resultEl.innerHTML = `
-          ✅ Recipe JSON ready!<br>
-          <a href="${url}" download="${serverProvidedFilename}" class="tool-button">⬇️ Download JSON (${serverProvidedFilename})</a>
-        `;
+        // --- UPDATE RESULT HTML ---
+        let resultHTML = '<div>✅ Recipe JSON ready!</div>'; // Main status message
+        resultHTML += `<div style="margin-top: 10px;"><a href="${url}" download="${serverProvidedFilename}" class="tool-button">⬇️ Download JSON (${escapeHtml(serverProvidedFilename)})</a></div>`;
+
+        // Add the recipe display
+        resultHTML += displayRecipe(recipeObjectForDownloadAndDisplay);
+
+        resultEl.innerHTML = resultHTML;
+        // --- END UPDATE ---
 
       } catch (err) {
-        console.error("Error in submitToAI:", err); // Log the full error
+        console.error("Error in submitToAI:", err);
         resultEl.innerHTML = `❌ Failed to generate recipe. Error: ${err.message}. Please try again.`;
       }
     }
