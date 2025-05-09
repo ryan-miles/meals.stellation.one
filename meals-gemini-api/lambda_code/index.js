@@ -19,7 +19,6 @@ let genAI; // GoogleGenerativeAI client instance
 let geminiApiKey; // Cache the key within the Lambda execution environment
 let model; // Gemini model instance
 
-// Function to get secret value (expecting plain text)
 async function getSecretValue(secretName) {
   if (!secretName) {
     throw new Error("Secret name environment variable (GEMINI_API_KEY_SECRET_NAME) is not set.");
@@ -39,7 +38,6 @@ async function getSecretValue(secretName) {
   }
 }
 
-// Initialize Google AI client (fetches key and initializes model if not already cached)
 async function initializeGoogleAI() {
   if (!genAI) {
     if (!geminiApiKey) {
@@ -53,17 +51,14 @@ async function initializeGoogleAI() {
     console.log('Google Generative AI client initialized.');
   }
   if (!model) {
-    // Initialize the model (e.g., gemini-1.5-flash)
-    // You can make the model name an environment variable too if needed.
     model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     console.log('Gemini model (gemini-1.5-flash) initialized.');
   }
   return { genAI, model };
 }
 
-// Utility to slugify a string
 function slugify(str) {
-  if (!str) return ''; // Handle cases where title might be missing before slugification
+  if (!str) return '';
   return str
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -95,7 +90,7 @@ export async function handler(event) {
 
   console.log("Handling POST request (Full Gemini Logic)");
   try {
-    await initializeGoogleAI(); // Ensures genAI and model are initialized
+    await initializeGoogleAI();
 
     if (!event.body) {
       console.error("Request body is missing");
@@ -116,7 +111,6 @@ export async function handler(event) {
     }
     const recipeText = requestBody.recipeText;
 
-    // Updated, more detailed prompt for Gemini
     const detailedPrompt = `You are a structured data formatter. Convert the following plain text recipe into a JSON object.
 The JSON object must have the following fields:
 - "title": A string for the recipe title.
@@ -141,7 +135,6 @@ ${recipeText}`;
 
     console.log("Received response from Gemini API.");
 
-    // Robust JSON parsing
     const jsonMatch = aiResponseText.match(/\{[\s\S]*\}/);
     if (!jsonMatch || !jsonMatch[0]) {
       console.error("No valid JSON object found in Gemini response:", aiResponseText);
@@ -156,14 +149,19 @@ ${recipeText}`;
       throw new Error("AI did not return valid JSON content after extraction.");
     }
 
+    // ADDED LOGGING HERE:
+    console.log("Received recipeJson from AI:", JSON.stringify(recipeJson, null, 2));
+
     if (!recipeJson.title) {
-      // You might want to make title optional or handle this more gracefully
-      // For now, we'll assume title is essential for the slug.
-      console.warn("AI response missing 'title' field. Slug will be empty.");
-      // throw new Error("AI response missing 'title' field.");
+      console.warn("AI response missing 'title' field. Defaulting slug.");
     }
-    const slug = slugify(recipeJson.title || 'untitled-recipe'); // Generate slug, handle missing title
-    recipeJson.id = slug; // Add the generated ID
+    const slug = slugify(recipeJson.title || 'untitled-recipe');
+    recipeJson.id = slug;
+
+    // AND HERE:
+    console.log("Generated slug:", slug);
+
+    console.log("Returning successful response with generatedRecipe.");
 
     return {
       statusCode: 200,
@@ -173,7 +171,7 @@ ${recipeText}`;
       },
       body: JSON.stringify({
         filename: `${slug}.json`,
-        recipe: recipeJson
+        generatedRecipe: recipeJson
       }),
     };
 
