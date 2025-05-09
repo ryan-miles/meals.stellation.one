@@ -51,8 +51,8 @@ async function initializeGoogleAI() {
     console.log('Google Generative AI client initialized.');
   }
   if (!model) {
-    model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    console.log('Gemini model (gemini-1.5-flash) initialized.');
+    model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    console.log('Gemini model (gemini-2.0-flash) initialized.');
   }
   return { genAI, model };
 }
@@ -111,16 +111,22 @@ export async function handler(event) {
     }
     const recipeText = requestBody.recipeText;
 
-    const detailedPrompt = `You are a structured data formatter. Convert the following plain text recipe into a JSON object.
+const detailedPrompt = `You are a structured data formatter. Convert the following plain text recipe into a JSON object.
 The JSON object must have the following fields:
 - "title": A string for the recipe title.
-- "day": A string for the date in "YYYY-MM-DD" format. If not available in the text, use the current date or leave empty.
+- "day": A string for the date in "YYYY-MM-DD" format. If not available in the text, use an empty string.
 - "description": A brief string describing the recipe.
 - "link": A string for the source URL if available in the text, otherwise an empty string.
-- "sections": An array of section objects. Each section object must have:
-  - "title": A string for the section title (e.g., "Ingredients", "Instructions", "Nutrition").
-  - "type": A string indicating the type of section. This should be one of: "ingredients", "steps", "nutrition".
-  - "items": An array of strings. For "ingredients", these are formatted ingredients. For "steps", these are numbered instructions. For "nutrition", these are nutrition facts.
+- "sections": An array of section objects. The array should ideally include the following sections in this order if the information can be derived from the recipe text:
+  1. A section with "type": "checklist", "title": "Quick Ingredient Checklist". Its "items" should be a list of all ingredients, suitable for a checklist. If possible, try to group these items by categories like "Pantry", "Refrigerator", "Produce" by adding sub-headings or prefixes to the items.
+  2. A section with "type": "ingredients", "title": "Ingredients". Its "items" should be the detailed list of ingredients with quantities.
+  3. A section with "type": "steps", "title": "Instructions". Its "items" should be the numbered cooking steps.
+  4. A section with "type": "nutrition", "title": "Estimated Nutrition". Its "items" should list estimated nutrition facts (e.g., "Calories: 300", "Protein: 20g"). If nutrition information is not present and cannot be reasonably estimated, this section's items can be empty or the section omitted.
+
+Each section object in the "sections" array must have:
+  - "title": A string for the section title as described above.
+  - "type": A string indicating the type of section (e.g., "checklist", "ingredients", "steps", "nutrition").
+  - "items": An array of strings, formatted appropriately for the section type.
 
 Do NOT include an "id" field in the JSON output.
 Do NOT include any extra text, comments, or markdown formatting outside the main JSON object. Only return the valid JSON object.
