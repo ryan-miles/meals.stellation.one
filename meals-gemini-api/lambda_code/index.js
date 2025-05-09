@@ -11,12 +11,13 @@ const allowedOrigin = "https://meals.stellation.one";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': allowedOrigin,
-  'Access-Control-Allow-Headers': 'Content-Type,Authorization', // Keep Authorization
+  'Access-Control-Allow-Headers': 'Content-Type,Authorization',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
 
 let genAI; // GoogleGenerativeAI client instance
 let geminiApiKey; // Cache the key within the Lambda execution environment
+let model; // Gemini model instance
 
 // Function to get secret value (expecting plain text)
 async function getSecretValue(secretName) {
@@ -29,79 +30,73 @@ async function getSecretValue(secretName) {
     const response = await secretsManager.send(command);
     console.log(`Successfully retrieved secret: ${secretName}`);
     if (response.SecretString) {
-      // Assuming the secret is stored as plain text, trim whitespace
       return response.SecretString.trim();
     }
-    // Handle binary secrets if needed, though unlikely for API keys
-    // if (response.SecretBinary) { ... }
     throw new Error(`SecretString is empty for ${secretName}`);
   } catch (error) {
     console.error(`Error retrieving secret ${secretName}:`, error);
-    // Rethrow the specific error for better debugging upstream
     throw error;
   }
 }
 
-// Initialize Google AI client (fetches key if not already cached)
+// Initialize Google AI client (fetches key and initializes model if not already cached)
 async function initializeGoogleAI() {
-  if (!genAI) { // Only initialize if the client doesn't exist
-    if (!geminiApiKey) { // Only fetch the key if it's not cached
+  if (!genAI) {
+    if (!geminiApiKey) {
       geminiApiKey = await getSecretValue(GEMINI_API_KEY_SECRET_NAME);
-      if (!geminiApiKey) { // Double check after retrieval
+      if (!geminiApiKey) {
         throw new Error(`Gemini API key retrieved from ${GEMINI_API_KEY_SECRET_NAME} is empty or invalid.`);
       }
       console.log('Successfully retrieved and cached Gemini API key.');
     }
-    // Initialize the client with the retrieved key
-    // Note: The GoogleGenerativeAI constructor expects the key directly.
-    // No need for x-goog-api-key header setup here, the library handles it.
     genAI = new GoogleGenerativeAI(geminiApiKey);
     console.log('Google Generative AI client initialized.');
   }
-  return genAI;
+  if (!model) {
+    // Initialize the model (e.g., gemini-1.5-flash)
+    // You can make the model name an environment variable too if needed.
+    model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    console.log('Gemini model (gemini-1.5-flash) initialized.');
+  }
+  return { genAI, model };
 }
 
-// Utility to slugify a string (e.g., "Green Masala Eggs" -> "green-masala-eggs")
+// Utility to slugify a string
 function slugify(str) {
+  if (!str) return ''; // Handle cases where title might be missing before slugification
   return str
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with dashes
-    .replace(/^-+|-+$/g, '')     // Trim leading/trailing dashes
-    .replace(/--+/g, '-');       // Replace multiple dashes with one
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/--+/g, '-');
 }
 
 export async function handler(event) {
   console.log("Received event:", JSON.stringify(event, null, 2));
 
-  // --- CORS Preflight Handling ---
   const requestOrigin = event.headers?.origin || event.headers?.Origin;
-  // Basic check - allow if origin matches or if it's an OPTIONS request (preflight)
   if (requestOrigin !== allowedOrigin && event.requestContext?.http?.method?.toUpperCase() !== 'OPTIONS') {
       console.error(`Origin mismatch: Request origin "${requestOrigin}" is not "${allowedOrigin}". Denying non-OPTIONS request.`);
       return {
-          statusCode: 403, // Forbidden
-          headers: { 'Content-Type': 'application/json' }, // No CORS headers for denied origin
+          statusCode: 403,
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ error: 'Origin not allowed' })
       };
   }
 
-  // Handle OPTIONS preflight request
   if (event.requestContext?.http?.method?.toUpperCase() === 'OPTIONS') {
     console.log("Handling OPTIONS preflight request");
     return {
       statusCode: 200,
-      headers: corsHeaders, // Send CORS headers back
+      headers: corsHeaders,
       body: JSON.stringify({ message: 'CORS preflight check successful' })
     };
   }
 
-  // --- Main Logic (POST requests) ---
   console.log("Handling POST request (Full Gemini Logic)");
   try {
-    // Ensure Google AI client is initialized (fetches secret on first call)
-    await initializeGoogleAI();
+    await initializeGoogleAI(); // Ensures genAI and model are initialized
 
-    // --- Body Parsing ---
     if (!event.body) {
       console.error("Request body is missing");
       return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Missing request body' }) };
@@ -109,45 +104,67 @@ export async function handler(event) {
     let requestBody;
     try {
       requestBody = JSON.parse(event.body);
-      console.log("Parsed request body."); // Don't log full body in production if sensitive
+      console.log("Parsed request body.");
     } catch (parseError) {
       console.error("Failed to parse request body:", parseError);
       return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Invalid JSON in request body' }) };
     }
 
-    // --- Input Validation ---
     if (!requestBody.recipeText || typeof requestBody.recipeText !== 'string' || requestBody.recipeText.trim() === '') {
       console.error("Missing or invalid 'recipeText' in parsed body");
       return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Missing or invalid recipeText field in JSON body' }) };
     }
     const recipeText = requestBody.recipeText;
 
-    // --- Call Gemini API ---
-    console.log("Sending request to Gemini API (gemini-1.5-flash)...");
-    // Updated prompt: ask for title, description, and sections, but NOT an ID
-    const prompt = `Please format the following recipe as a JSON object with the following fields:\n- \"title\": the recipe title (string)\n- \"description\": a short description (string)\n- \"sections\": an array of sections, each with a \"title\", \"type\", and \"items\" or \"content\" (for ingredients, steps, etc.)\nDo NOT include an \"id\" field. Do NOT include any extra text. Only return the JSON object.\nHere is the recipe text:\n${recipeText}`;
+    // Updated, more detailed prompt for Gemini
+    const detailedPrompt = `You are a structured data formatter. Convert the following plain text recipe into a JSON object.
+The JSON object must have the following fields:
+- "title": A string for the recipe title.
+- "day": A string for the date in "YYYY-MM-DD" format. If not available in the text, use the current date or leave empty.
+- "description": A brief string describing the recipe.
+- "link": A string for the source URL if available in the text, otherwise an empty string.
+- "sections": An array of section objects. Each section object must have:
+  - "title": A string for the section title (e.g., "Ingredients", "Instructions", "Nutrition").
+  - "type": A string indicating the type of section. This should be one of: "ingredients", "steps", "nutrition".
+  - "items": An array of strings. For "ingredients", these are formatted ingredients. For "steps", these are numbered instructions. For "nutrition", these are nutrition facts.
 
-    const result = await model.generateContent(prompt);
+Do NOT include an "id" field in the JSON output.
+Do NOT include any extra text, comments, or markdown formatting outside the main JSON object. Only return the valid JSON object.
+
+Here is the recipe text:
+${recipeText}`;
+
+    console.log("Sending request to Gemini API with detailed prompt...");
+    const result = await model.generateContent(detailedPrompt);
     const response = await result.response;
     const aiResponseText = await response.text();
 
     console.log("Received response from Gemini API.");
 
-    // --- Parse and add ID ---
+    // Robust JSON parsing
+    const jsonMatch = aiResponseText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch || !jsonMatch[0]) {
+      console.error("No valid JSON object found in Gemini response:", aiResponseText);
+      throw new Error('AI response did not contain a parsable JSON object.');
+    }
+
     let recipeJson;
     try {
-      recipeJson = JSON.parse(aiResponseText);
+      recipeJson = JSON.parse(jsonMatch[0]);
     } catch (e) {
-      console.error("Failed to parse AI response as JSON:", aiResponseText);
-      throw new Error("AI did not return valid JSON.");
+      console.error("Failed to parse extracted JSON from AI response:", jsonMatch[0], e);
+      throw new Error("AI did not return valid JSON content after extraction.");
     }
-    if (!recipeJson.title) {
-      throw new Error("AI response missing 'title' field.");
-    }
-    const slug = slugify(recipeJson.title);
-    recipeJson.id = slug; // Set the ID to the slug
 
-    // --- Return filename and recipe JSON ---
+    if (!recipeJson.title) {
+      // You might want to make title optional or handle this more gracefully
+      // For now, we'll assume title is essential for the slug.
+      console.warn("AI response missing 'title' field. Slug will be empty.");
+      // throw new Error("AI response missing 'title' field.");
+    }
+    const slug = slugify(recipeJson.title || 'untitled-recipe'); // Generate slug, handle missing title
+    recipeJson.id = slug; // Add the generated ID
+
     return {
       statusCode: 200,
       headers: {
@@ -162,17 +179,13 @@ export async function handler(event) {
 
   } catch (error) {
     console.error('Error processing POST request:', error);
-    // Provide a more specific error message if possible
     let errorMessage = 'Internal Server Error processing request';
     if (error instanceof Error) {
         errorMessage = error.message;
     }
-    // Check if it's a Google API error with specific details
-    if (error?.errorDetails) { // Check if errorDetails exists
+    if (error?.errorDetails) {
         console.error('Google API Error Details:', error.errorDetails);
-        // Potentially add more specific info to errorMessage based on errorDetails
     }
-    // Check for specific AWS SDK errors (e.g., Secrets Manager access denied)
     if (error.name === 'AccessDeniedException') {
         errorMessage = 'Lambda function does not have permission to access the secret.';
         console.error('AccessDeniedException: Check Lambda execution role IAM permissions for Secrets Manager.');
@@ -182,9 +195,9 @@ export async function handler(event) {
     }
 
     return {
-      statusCode: 500, // Use 500 for server-side errors
+      statusCode: 500,
       headers: corsHeaders,
-      body: JSON.stringify({ error: errorMessage }), // Return the error message
+      body: JSON.stringify({ error: errorMessage }),
     };
   }
 }
