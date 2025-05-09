@@ -4,7 +4,7 @@
     "title": "Domino's Pizza Night",
     "day": "friday",
     "description": "Carry-out Pizza for an Easy (if not healthy) Friday night.",
-    "link": "https://example.com/spaghetti-placeholder",
+    "link": "https://www.dominos.com/",
     "sections": [
       {
         "title": "🍽️ Our Order",
@@ -32,7 +32,7 @@
     "title": "Pam's Ranch Chicken",
     "day": "wednesday",
     "description": "Served with Roasted Broccoli & Baked Potato",
-    "link": "https://example.com/spaghetti-placeholder",
+    "link": "https://www.jocooks.com/recipes/baked-ranch-chicken/",
     "sections": [
       {
         "title": "🛒 Quick Ingredient Checklist",
@@ -91,7 +91,7 @@
     "title": "Spaghetti",
     "day": "monday",
     "description": "Simple stovetop spaghetti",
-    "link": "https://example.com/spaghetti-placeholder",
+    "link": "https://tastesbetterfromscratch.com/homemade-spaghetti-sauce/",
     "sections": [
       {
         "title": "🛒 Quick Ingredient Checklist",
@@ -165,7 +165,7 @@
     "title": "Tacos",
     "day": "tuesday",
     "description": "Miles Crockpot Tacos",
-    "link": "https://example.com/spaghetti-placeholder",
+    "link": "https://littlesunnykitchen.com/shredded-chicken-tacos/",
     "sections": [
       {
         "title": "🛒 Quick Ingredient Checklist",
@@ -219,7 +219,7 @@
     "title": "Butter Chicken",
     "day": "",
     "description": "Creamy Indian-inspired chicken in a tomato butter sauce",
-    "link": "https://example.com/spaghetti-placeholder",
+    "link": "https://gimmedelicious.com/easy-20-minute-butter-chicken/",
     "sections": [
       {
         "title": "🛒 Quick Ingredient Checklist",
@@ -277,7 +277,7 @@
     "title": "Hot Honey Ground Beef Bowls",
     "day": "",
     "description": "Sweet potato and avocado taco bowls with seasoned beef, cottage cheese, and hot honey.",
-    "link": "https://example.com/spaghetti-placeholder",
+    "link": "https://www.jaroflemons.com/hot-honey-ground-beef-bowls/",
     "sections": [
       {
         "title": "🛒 Quick Ingredient Checklist",
