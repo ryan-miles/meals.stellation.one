@@ -1,0 +1,200 @@
+{
+  "id": {
+    "S": "spaghetti"
+  },
+  "title": {
+    "S": "Spaghetti"
+  },
+  "day": {
+    "S": "monday"
+  },
+  "description": {
+    "S": "Simple stovetop spaghetti"
+  },
+  "link": {
+    "S": "https://tastesbetterfromscratch.com/homemade-spaghetti-sauce/"
+  },
+  "sections": {
+    "L": [
+      {
+        "M": {
+          "title": {
+            "S": "🛒 Quick Ingredient Checklist"
+          },
+          "type": {
+            "S": "categorized-ingredients"
+          },
+          "items": {
+            "M": {
+              "freezer": {
+                "L": []
+              },
+              "refrigerator": {
+                "L": [
+                  {
+                    "S": "1 lb ground beef or turkey"
+                  },
+                  {
+                    "S": "1 can (28oz) crushed tomatoes"
+                  },
+                  {
+                    "S": "Fresh basil"
+                  },
+                  {
+                    "S": "Parmesan cheese"
+                  }
+                ]
+              },
+              "pantry": {
+                "L": [
+                  {
+                    "S": "1 lb dried spaghetti"
+                  },
+                  {
+                    "S": "Olive oil"
+                  },
+                  {
+                    "S": "Chopped onion"
+                  },
+                  {
+                    "S": "Garlic cloves"
+                  },
+                  {
+                    "S": "Tomato paste"
+                  },
+                  {
+                    "S": "Dried oregano"
+                  },
+                  {
+                    "S": "Crushed red pepper flakes"
+                  },
+                  {
+                    "S": "Water, broth, or dry red wine"
+                  },
+                  {
+                    "S": "Salt & black pepper"
+                  }
+                ]
+              },
+              "other": {
+                "L": []
+              }
+            }
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🧑‍🍳 Recipe"
+          },
+          "type": {
+            "S": "list"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "1 lb dried spaghetti"
+              },
+              {
+                "S": "1 lb ground meat (beef or turkey)"
+              },
+              {
+                "S": "3 tbsp olive oil"
+              },
+              {
+                "S": "1 cup chopped onion"
+              },
+              {
+                "S": "3 garlic cloves (1 tbsp), minced"
+              },
+              {
+                "S": "2 tbsp tomato paste"
+              },
+              {
+                "S": "1/2 tsp dried oregano"
+              },
+              {
+                "S": "Pinch crushed red pepper flakes"
+              },
+              {
+                "S": "1 cup water, broth, or red wine"
+              },
+              {
+                "S": "1 (28oz) can crushed tomatoes"
+              },
+              {
+                "S": "Salt & fresh ground black pepper"
+              },
+              {
+                "S": "Handful fresh basil leaves, plus extra for serving"
+              },
+              {
+                "S": "Grated parmesan cheese, for serving"
+              },
+              {
+                "S": "Heat olive oil in a large pot over medium-high heat."
+              },
+              {
+                "S": "Add ground meat and cook until browned (8 minutes), breaking up as it cooks."
+              },
+              {
+                "S": "Add onions and cook until softened (5 minutes)."
+              },
+              {
+                "S": "Stir in garlic, tomato paste, oregano, red pepper flakes; cook for 1 minute."
+              },
+              {
+                "S": "Pour in water/broth/wine and scrape up any bits from the bottom."
+              },
+              {
+                "S": "Add crushed tomatoes, 3/4 tsp salt, and black pepper; stir to combine."
+              },
+              {
+                "S": "Simmer uncovered for 25 minutes, stirring and adjusting seasoning as needed."
+              },
+              {
+                "S": "Meanwhile, cook pasta in salted water according to package (check early for doneness)."
+              },
+              {
+                "S": "Remove sauce from heat, stir in fresh basil, then toss with cooked pasta."
+              },
+              {
+                "S": "Let sit 1 minute to absorb, toss again, and serve with parmesan cheese."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🍽️ Estimated Nutrition (Per Serving)"
+          },
+          "type": {
+            "S": "list"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Calories: ~500"
+              },
+              {
+                "S": "Protein: ~28g"
+              },
+              {
+                "S": "Carbs: ~50g"
+              },
+              {
+                "S": "Fat: ~18g"
+              },
+              {
+                "S": "Fiber: ~5g"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

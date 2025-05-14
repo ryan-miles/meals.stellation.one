@@ -1,0 +1,138 @@
+{
+  "id": {
+    "S": "spinach-artichoke-gnocchi"
+  },
+  "title": {
+    "S": "Spinach Artichoke Gnocchi Skillet with Feta"
+  },
+  "day": {
+    "S": ""
+  },
+  "description": {
+    "S": "A delicious and creamy gnocchi skillet featuring spinach, artichokes, and feta cheese."
+  },
+  "link": {
+    "S": "https://www.eatingwell.com/spinach-artichoke-gnocchi-skillet-with-feta-11684040"
+  },
+  "sections": {
+    "L": [
+      {
+        "M": {
+          "title": {
+            "S": "🛒 Quick Ingredient Checklist"
+          },
+          "type": {
+            "S": "categorized-ingredients"
+          },
+          "items": {
+            "M": {
+              "freezer": {
+                "L": [
+                  {
+                    "S": "1 (12-ounce) package frozen artichoke hearts, thawed and chopped"
+                  }
+                ]
+              },
+              "refrigerator": {
+                "L": [
+                  {
+                    "S": "3 medium cloves garlic"
+                  },
+                  {
+                    "S": "1 (5-ounce) package baby spinach"
+                  },
+                  {
+                    "S": "½ cup heavy cream"
+                  },
+                  {
+                    "S": "½ cup crumbled feta cheese"
+                  },
+                  {
+                    "S": "1 tablespoon thinly sliced fresh chives"
+                  }
+                ]
+              },
+              "pantry": {
+                "L": [
+                  {
+                    "S": "2 tablespoons extra-virgin olive oil"
+                  },
+                  {
+                    "S": "2 tablespoons unsalted butter"
+                  },
+                  {
+                    "S": "12 ounces gnocchi"
+                  },
+                  {
+                    "S": "2 tablespoons lemon juice"
+                  },
+                  {
+                    "S": "1 teaspoon Italian seasoning"
+                  }
+                ]
+              },
+              "other": {
+                "L": []
+              }
+            }
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "👩‍🍳 Recipe"
+          },
+          "type": {
+            "S": "steps"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Heat 2 tablespoons oil in a large nonstick skillet over medium heat. Add sliced garlic; cook, stirring often, until golden brown, about 5 minutes. Remove from heat; using a slotted spoon, transfer the garlic to a paper towel–lined plate. Reserve the oil in the pan."
+              },
+              {
+                "S": "Add 2 tablespoons butter to the oil in the pan; swirl over medium-high heat until melted. Add 12 ounces gnocchi; cook, stirring and tossing occasionally, until golden brown and crisp, 8 to 10 minutes. Spoon into a medium bowl. Reserve the oil in the pan."
+              },
+              {
+                "S": "Add 1 (5-ounce) package baby spinach and the chopped artichoke hearts to the pan; cook over medium heat, stirring and folding until the spinach has just wilted, about 2 minutes. Return the gnocchi to the pan; stir to combine."
+              },
+              {
+                "S": "Remove from heat; add ½ cup heavy cream and ¼ cup feta. Stir until incorporated and creamy, about 1 minute. Add 2 tablespoons lemon juice and 1 teaspoon Italian seasoning; stir to combine. Top with 1 tablespoon chives, the remaining ¼ cup feta and the reserved crispy garlic."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🍽️ Estimated Nutrition (Per Serving)"
+          },
+          "type": {
+            "S": "list"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Calories: ~400 kcal"
+              },
+              {
+                "S": "Protein: ~12g"
+              },
+              {
+                "S": "Carbohydrates: ~45g"
+              },
+              {
+                "S": "Fat: ~20g"
+              },
+              {
+                "S": "Fiber: ~5g"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

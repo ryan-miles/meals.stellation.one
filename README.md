@@ -188,6 +188,43 @@ Example section types:
 
 ---
 
+## ➕ How to Add a New Recipe
+
+Adding a new recipe to meals.stellation.one is simple and can be done with family favorites, original creations, or recipes found online. Here’s how:
+
+1. **Generate the Recipe JSON:**
+   - Open `meal-ai.html` in your browser.
+   - Enter the following details:
+     - A hyperlink to a website with more info about the recipe (optional but recommended)
+     - The list of ingredients needed
+     - Step-by-step recipe instructions
+   - Click **Generate JSON**. This will download a new recipe file (e.g., `something.json`).
+
+2. **Add the Recipe File:**
+   - Move the downloaded `.json` file into `website/json/recipes/`.
+
+3. **Update the Recipe Index:**
+   - From the project root, run:
+     ```bash
+     node website/scripts/buildAllRecipes.js
+     ```
+   - This script collects all recipe files in `website/json/recipes/` and updates `all-recipes.json` for the site.
+
+4. **Assign the Recipe to the Weekly Plan:**
+   - **Manual Option:**
+     - Run:
+       ```bash
+       node website/scripts/setWeeklySchedule.js
+       ```
+     - This script lets you pick recipes for each weekday (Mon–Fri) from all available recipes.
+   - **Automatic Option:**
+     - The `surprise-plan-lambda` function runs automatically early Saturday morning, randomly assigning recipes for the upcoming week.
+     - This updates the schedule so you get a fresh, surprise meal plan each week!
+
+Your new recipe will now appear in the recipe browser and can be included in the weekly meal plan.
+
+---
+
 ## 🎨 Styling
 
 - Custom CSS Grid + bento-box layout

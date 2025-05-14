@@ -1,0 +1,140 @@
+{
+  "id": {
+    "S": "tacos"
+  },
+  "title": {
+    "S": "Tacos"
+  },
+  "day": {
+    "S": "tuesday"
+  },
+  "description": {
+    "S": "Miles Crockpot Tacos"
+  },
+  "link": {
+    "S": "https://littlesunnykitchen.com/shredded-chicken-tacos/"
+  },
+  "sections": {
+    "L": [
+      {
+        "M": {
+          "title": {
+            "S": "🛒 Quick Ingredient Checklist"
+          },
+          "type": {
+            "S": "categorized-ingredients"
+          },
+          "items": {
+            "M": {
+              "freezer": {
+                "L": []
+              },
+              "refrigerator": {
+                "L": [
+                  {
+                    "S": "3 lbs boneless skinless chicken breasts"
+                  },
+                  {
+                    "S": "1 (14.5 oz) can diced tomatoes"
+                  },
+                  {
+                    "S": "Toppings: cheese, sour cream, tomatoes, lettuce, avocado, hot sauce, etc."
+                  }
+                ]
+              },
+              "pantry": {
+                "L": [
+                  {
+                    "S": "3/4 cup diced onion"
+                  },
+                  {
+                    "S": "1 (4.5 oz) can diced green chiles"
+                  },
+                  {
+                    "S": "Corn or flour tortillas"
+                  },
+                  {
+                    "S": "Taco seasoning (3 heaping tablespoons)"
+                  },
+                  {
+                    "S": "Vegetable oil (if frying tortillas)"
+                  }
+                ]
+              },
+              "other": {
+                "L": []
+              }
+            }
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🧑‍🍳 Recipe"
+          },
+          "type": {
+            "S": "steps"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Place chicken breasts in the bottom of the slow cooker insert."
+              },
+              {
+                "S": "Sprinkle taco seasoning evenly over the chicken."
+              },
+              {
+                "S": "Top with diced onion, then pour tomatoes and green chiles over the top (do not stir)."
+              },
+              {
+                "S": "Cover and cook on LOW for 6–8 hours or HIGH for 4–5 hours."
+              },
+              {
+                "S": "Remove lid and shred the chicken using two forks."
+              },
+              {
+                "S": "Add chopped cilantro and stir to combine."
+              },
+              {
+                "S": "Serve in tortillas or burrito bowls with your favorite toppings."
+              },
+              {
+                "S": "Optional: Use leftovers for enchiladas or nachos!"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🍽️ Estimated Nutrition (Per Serving)"
+          },
+          "type": {
+            "S": "list"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Calories: ~420"
+              },
+              {
+                "S": "Protein: ~35g"
+              },
+              {
+                "S": "Carbs: ~18g (plus tortilla/topping dependent)"
+              },
+              {
+                "S": "Fat: ~16g"
+              },
+              {
+                "S": "Fiber: ~3g"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

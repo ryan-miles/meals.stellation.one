@@ -1,0 +1,35 @@
+{
+  "id": { "S": "test-recipe" },
+  "title": { "S": "Test Recipe" },
+  "day": { "S": "monday" },
+  "description": { "S": "A simple test recipe for DynamoDB upload troubleshooting." },
+  "link": { "S": "https://example.com/test-recipe" },
+  "sections": {
+    "L": [
+      {
+        "M": {
+          "title": { "S": "Ingredients" },
+          "type": { "S": "list" },
+          "items": {
+            "L": [
+              { "S": "1 cup test ingredient" },
+              { "S": "2 tbsp test spice" }
+            ]
+          }
+        }
+      },
+      {
+        "M": {
+          "title": { "S": "Instructions" },
+          "type": { "S": "list" },
+          "items": {
+            "L": [
+              { "S": "Mix all ingredients." },
+              { "S": "Cook for 10 minutes." }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

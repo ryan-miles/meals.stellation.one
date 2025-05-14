@@ -4,14 +4,6 @@
 /website/node_modules/
 /website/package-lock.json
 /website/recipes/recipes/*.fixed.json
-/meals-gemini-api/lambda_code/node_modules/
-/meals-gemini-api/lambda_code/package-lock.json
-/meals-gemini-api/terraform/lambda_deployment_package.zip
-/meals-gemini-api/terraform/.terraform/
-/meals-gemini-api/terraform/*.tfstate*
-/surprisePlan/lambda_code/node_modules/
-/surprisePlan/lambda_code/package-lock.json
-/surprisePlan/terraform/lambda_deployment_package.zip
-/surprisePlan/terraform/.terraform/
-/surprisePlan/terraform/*.tfstate*
-
+/meals-gemini-api/*
+/surprisePlan/*
+/get-recipes-dynamo/*

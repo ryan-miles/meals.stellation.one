@@ -1,0 +1,134 @@
+{
+  "id": {
+    "S": "tuna-melt"
+  },
+  "title": {
+    "S": "Tuna Melt"
+  },
+  "day": {
+    "S": ""
+  },
+  "description": {
+    "S": "A classic tuna melt sandwich with a delicious blend of tuna, mayonnaise, and vegetables, topped with melted cheddar cheese."
+  },
+  "link": {
+    "S": "https://therecipecritic.com/tuna-melt/#wprm-recipe-container-98096"
+  },
+  "sections": {
+    "L": [
+      {
+        "M": {
+          "title": {
+            "S": "🛒 Quick Ingredient Checklist"
+          },
+          "type": {
+            "S": "categorized-ingredients"
+          },
+          "items": {
+            "M": {
+              "freezer": {
+                "L": []
+              },
+              "refrigerator": {
+                "L": [
+                  {
+                    "S": "16 ounces tuna fish, drained"
+                  },
+                  {
+                    "S": "1/4 cup mayonnaise"
+                  },
+                  {
+                    "S": "1/4 cup celery, finely chopped"
+                  },
+                  {
+                    "S": "1/4 cup red onion, finely chopped"
+                  },
+                  {
+                    "S": "1 tablespoon dijon mustard"
+                  },
+                  {
+                    "S": "2 tablespoons parsley, chopped"
+                  },
+                  {
+                    "S": "8 slices cheddar cheese"
+                  },
+                  {
+                    "S": "tomato, sliced"
+                  },
+                  {
+                    "S": "1/4 cup butter, softened"
+                  }
+                ]
+              },
+              "pantry": {
+                "L": [
+                  {
+                    "S": "salt and pepper, to taste"
+                  },
+                  {
+                    "S": "16 slices bread"
+                  }
+                ]
+              },
+              "other": {
+                "L": []
+              }
+            }
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "👩‍🍳 Recipe"
+          },
+          "type": {
+            "S": "steps"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "In a medium sized bowl combine the tuna, mayonnaise, celery, red onion, dijon mustard, parsley, salt and pepper."
+              },
+              {
+                "S": "Butter one side of each slice of bread. Putting the butter side down add the cheese on the unbuttered side. Add the tuna mixture on top. Top with tomato and additional cheese."
+              },
+              {
+                "S": "Skillet Method: Preheat a skillet to medium heat. Add the sandwich on the skillet and heat for about 2-3 minutes until cheese starts to melt and it is golden brown. Flip to the other side and cook until the cheese is fully melted and sandwich is golden brown."
+              },
+              {
+                "S": "Broiler Method: Preheat a broiler. Spread the bread butter side up and toast for a couple of minutes. Top with cheese, tuna mixture and Broil for 2-3 minutes until cheese is melted."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🍽️ Estimated Nutrition (Per Serving)"
+          },
+          "type": {
+            "S": "list"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Calories: ~400"
+              },
+              {
+                "S": "Protein: ~25g"
+              },
+              {
+                "S": "Carbohydrates: ~30g"
+              },
+              {
+                "S": "Fat: ~20g"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

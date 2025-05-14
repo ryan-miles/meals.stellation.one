@@ -1,0 +1,153 @@
+{
+  "id": {
+    "S": "pams-ranch-chicken"
+  },
+  "title": {
+    "S": "Pam's Ranch Chicken"
+  },
+  "day": {
+    "S": "wednesday"
+  },
+  "description": {
+    "S": "Served with Roasted Broccoli & Baked Potato"
+  },
+  "link": {
+    "S": "https://www.jocooks.com/recipes/baked-ranch-chicken/"
+  },
+  "sections": {
+    "L": [
+      {
+        "M": {
+          "title": {
+            "S": "🛒 Quick Ingredient Checklist"
+          },
+          "type": {
+            "S": "categorized-ingredients"
+          },
+          "items": {
+            "M": {
+              "freezer": {
+                "L": [
+                  {
+                    "S": "1 large head broccoli (or frozen florets)"
+                  }
+                ]
+              },
+              "refrigerator": {
+                "L": [
+                  {
+                    "S": "4 boneless skinless chicken breasts"
+                  },
+                  {
+                    "S": "1/2 cup mayonnaise"
+                  },
+                  {
+                    "S": "1/2 cup parmesan cheese (fresh grated)"
+                  },
+                  {
+                    "S": "Butter, sour cream, toppings (for baked potato)"
+                  }
+                ]
+              },
+              "pantry": {
+                "L": [
+                  {
+                    "S": "1 oz ranch dressing mix"
+                  },
+                  {
+                    "S": "1/2 cup breadcrumbs"
+                  },
+                  {
+                    "S": "4 russet potatoes"
+                  },
+                  {
+                    "S": "Olive oil, salt, pepper, garlic powder (for broccoli)"
+                  },
+                  {
+                    "S": "Cooking spray"
+                  }
+                ]
+              },
+              "other": {
+                "L": []
+              }
+            }
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🧑‍🍳 Recipe"
+          },
+          "type": {
+            "S": "steps"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Preheat oven to 375°F. Spray a 9×13-inch baking dish with cooking spray."
+              },
+              {
+                "S": "In a shallow plate, mix ranch dressing mix, parmesan cheese, and breadcrumbs."
+              },
+              {
+                "S": "In another plate, add mayonnaise."
+              },
+              {
+                "S": "Dredge chicken in mayo, then in breadcrumb mixture. Place in prepared dish."
+              },
+              {
+                "S": "Bake for 40 minutes, or until internal temperature hits 165°F."
+              },
+              {
+                "S": "Chop broccoli into florets. Toss with olive oil, salt, pepper, and garlic powder."
+              },
+              {
+                "S": "Spread on a baking sheet and roast at 400°F for 20–25 minutes until crispy at the edges."
+              },
+              {
+                "S": "Scrub potatoes and prick with a fork. Rub with oil and salt."
+              },
+              {
+                "S": "Bake directly on oven rack at 425°F for 45–60 minutes until soft."
+              },
+              {
+                "S": "Serve with butter, sour cream, and desired toppings."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🍽️ Estimated Nutrition (Per Serving)"
+          },
+          "type": {
+            "S": "list"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Calories: ~600"
+              },
+              {
+                "S": "Protein: ~45g"
+              },
+              {
+                "S": "Carbs: ~35g"
+              },
+              {
+                "S": "Fat: ~28g"
+              },
+              {
+                "S": "Fiber: ~6g"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

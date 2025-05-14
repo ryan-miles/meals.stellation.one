@@ -1,0 +1,152 @@
+{
+  "id": {
+    "S": "butter-chicken"
+  },
+  "title": {
+    "S": "Butter Chicken"
+  },
+  "day": {
+    "S": ""
+  },
+  "description": {
+    "S": "Creamy Indian-inspired chicken in a tomato butter sauce"
+  },
+  "link": {
+    "S": "https://gimmedelicious.com/easy-20-minute-butter-chicken/"
+  },
+  "sections": {
+    "L": [
+      {
+        "M": {
+          "title": {
+            "S": "🛒 Quick Ingredient Checklist"
+          },
+          "type": {
+            "S": "categorized-ingredients"
+          },
+          "items": {
+            "M": {
+              "freezer": {
+                "L": []
+              },
+              "refrigerator": {
+                "L": [
+                  {
+                    "S": "1 cup butter"
+                  },
+                  {
+                    "S": "1 onion"
+                  },
+                  {
+                    "S": "1 tablespoon minced garlic"
+                  },
+                  {
+                    "S": "3 cups heavy cream"
+                  },
+                  {
+                    "S": "1 ½ pounds skinless, boneless chicken breast"
+                  }
+                ]
+              },
+              "pantry": {
+                "L": [
+                  {
+                    "S": "1 (15 ounce) can tomato sauce"
+                  },
+                  {
+                    "S": "2 teaspoons salt"
+                  },
+                  {
+                    "S": "1 teaspoon cayenne pepper"
+                  },
+                  {
+                    "S": "1 teaspoon garam masala"
+                  },
+                  {
+                    "S": "2 tablespoons vegetable oil"
+                  },
+                  {
+                    "S": "2 tablespoons tandoori masala"
+                  }
+                ]
+              },
+              "other": {
+                "L": []
+              }
+            }
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🧑‍🍳 Recipe"
+          },
+          "type": {
+            "S": "steps"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Preheat oven to 375°F (190°C)."
+              },
+              {
+                "S": "Melt 2 tablespoons butter in a skillet over medium heat."
+              },
+              {
+                "S": "Add minced onion and garlic. Cook until onion caramelizes to dark brown (about 15 minutes)."
+              },
+              {
+                "S": "In a separate saucepan, combine heavy cream, tomato sauce, remaining butter, salt, cayenne pepper, and garam masala. Bring to a simmer."
+              },
+              {
+                "S": "Reduce heat to medium-low, cover, and simmer for 30 minutes, stirring occasionally."
+              },
+              {
+                "S": "Stir in caramelized onions."
+              },
+              {
+                "S": "While sauce simmers, toss chicken with vegetable oil and season with tandoori masala."
+              },
+              {
+                "S": "Spread chicken on a baking sheet and bake for ~12 minutes, until no longer pink in the center."
+              },
+              {
+                "S": "Add cooked chicken to the sauce and simmer for 5 more minutes before serving."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "M": {
+          "title": {
+            "S": "🍽️ Estimated Nutrition (Per Serving)"
+          },
+          "type": {
+            "S": "list"
+          },
+          "items": {
+            "L": [
+              {
+                "S": "Calories: ~650"
+              },
+              {
+                "S": "Protein: ~40g"
+              },
+              {
+                "S": "Carbs: ~12g"
+              },
+              {
+                "S": "Fat: ~50g"
+              },
+              {
+                "S": "Fiber: ~1g"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
