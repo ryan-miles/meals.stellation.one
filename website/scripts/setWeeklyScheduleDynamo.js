@@ -5,7 +5,7 @@ const { parseISO, isValid } = require("date-fns");
 const fetch = require("node-fetch");
 
 const apiUrl = "https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes"; // DynamoDB-backed API endpoint
-const scheduleFile = path.join(__dirname, "..", "scheduledynamo.json");
+const scheduleFile = path.join(__dirname, "..", "schedule.json");
 
 async function getRecipesFromApi() {
   const res = await fetch(apiUrl);
