@@ -4,15 +4,12 @@ async function loadWeekPlan() {
 
   try {
     const [scheduleRes, recipesRes] = await Promise.all([
-      fetch("scheduledynamo.json"),
+      fetch("schedule.json"),
       fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes")
     ]);
 
     const schedule = await scheduleRes.json();
     const recipes = await recipesRes.json();
-
-    console.log("[DEBUG] schedule:", schedule);
-    console.log("[DEBUG] recipes:", recipes);
 
     const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
     const html = [];
@@ -39,15 +36,9 @@ async function loadWeekPlan() {
     
     for (const day of weekdays) {
       const recipeId = schedule[day];
-      if (!recipeId) {
-        console.warn(`[DEBUG] No recipeId for day: ${day}`);
-        continue;
-      }
+      if (!recipeId) continue;
       const recipe = recipes.find(r => r && r.id === recipeId);
-      if (!recipe) {
-        console.warn(`[DEBUG] No recipe found for id: ${recipeId} on day: ${day}`);
-        continue;
-      }
+      if (!recipe) continue;
 
       html.push(`
         <a class="grid-item-link" href="${day}.html">
