@@ -32,7 +32,7 @@ async function loadRecipeForDay(day) {
     for (const section of recipe.sections) {
       html.push(`<section class="bento-box"><div class="container"><h3>${section.title}</h3>`);
 
-      if (section.type === "list") {
+      if (section.type === "list" || section.type === "checklist" || section.type === "ingredients" || section.type === "nutrition") {
         html.push("<ul>");
         for (const item of section.items) {
           html.push(`<li>${item}</li>`);
@@ -55,6 +55,13 @@ async function loadRecipeForDay(day) {
             html.push("</ul>");
           }
         }
+      } else if (Array.isArray(section.items)) {
+        // Fallback: render as <ul> if items is an array
+        html.push("<ul>");
+        for (const item of section.items) {
+          html.push(`<li>${item}</li>`);
+        }
+        html.push("</ul>");
       }
 
       html.push("</div></section>");
