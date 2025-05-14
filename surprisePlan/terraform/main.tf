@@ -54,6 +54,17 @@ data "aws_iam_policy_document" "lambda_permissions_policy" {
     ]
   }
 
+  # Permission to scan the DynamoDB meals-recipes table
+  statement {
+    sid = "AllowDynamoDBScanRecipes"
+    actions = [
+      "dynamodb:Scan"
+    ]
+    resources = [
+      "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/meals-recipes"
+    ]
+  }
+
   statement {
     sid = "AllowCloudFrontInvalidation"
     actions = [
@@ -178,8 +189,8 @@ resource "aws_lambda_permission" "api_gateway_invoke" {
 resource "aws_cloudwatch_event_rule" "weekly_surprise_plan" {
   name                = "${var.function_name}-weekly-trigger"
   description         = "Trigger Lambda every 2 minutes for testing"
-#  schedule_expression = "cron(30 0 ? * SAT *)"
-  schedule_expression = "rate(2 minutes)" # Run every 2 minutes for testing
+  schedule_expression = "cron(30 0 ? * SAT *)"
+#  schedule_expression = "rate(2 minutes)" # Run every 2 minutes for testing
   tags                = var.project_tags
 }
 
