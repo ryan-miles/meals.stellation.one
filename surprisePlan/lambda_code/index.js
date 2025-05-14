@@ -1,16 +1,19 @@
 import { S3Client, ListObjectsV2Command, PutObjectCommand } from "@aws-sdk/client-s3";
 import { CloudFrontClient, CreateInvalidationCommand } from "@aws-sdk/client-cloudfront";
+import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
 
 const REGION = process.env.AWS_REGION || "us-east-1";
 const BUCKET_NAME = process.env.S3_BUCKET_NAME;
 let SCHEDULE_KEY = process.env.S3_SCHEDULE_KEY || "schedule.json";
 let RECIPES_PREFIX = process.env.S3_RECIPES_PREFIX || "json/recipes/";
+const DYNAMO_TABLE = process.env.DYNAMODB_TABLE_NAME || "meals-recipes";
 
 // Remove leading 'website/' if present
 if (SCHEDULE_KEY.startsWith("website/")) SCHEDULE_KEY = SCHEDULE_KEY.replace(/^website\//, "");
 if (RECIPES_PREFIX.startsWith("website/")) RECIPES_PREFIX = RECIPES_PREFIX.replace(/^website\//, "");
 
 const s3 = new S3Client({ region: REGION });
+const dynamo = new DynamoDBClient({ region: REGION });
 
 function getNextMonday() {
   const today = new Date();
@@ -37,17 +40,11 @@ function shuffleArray(array) {
   return array;
 }
 
-async function listRecipeIdsFromS3(bucket, prefix) {
-  const command = new ListObjectsV2Command({ Bucket: bucket, Prefix: prefix });
-  const response = await s3.send(command);
-  if (!response.Contents) return [];
-  return response.Contents
-    .filter(item => item.Key.endsWith('.json') && item.Key !== prefix)
-    .map(item => {
-      const parts = item.Key.split('/');
-      const filename = parts[parts.length - 1];
-      return filename.replace('.json', '');
-    });
+async function listRecipeIdsFromDynamoDB() {
+  const command = new ScanCommand({ TableName: DYNAMO_TABLE, ProjectionExpression: "id" });
+  const response = await dynamo.send(command);
+  // id may be a string or { S: ... } depending on how items were written
+  return (response.Items || []).map(item => (item.id && item.id.S) ? item.id.S : item.id);
 }
 
 async function writeScheduleToS3(bucket, key, scheduleData) {
@@ -61,14 +58,14 @@ async function writeScheduleToS3(bucket, key, scheduleData) {
 }
 
 export async function handler() {
-  if (!BUCKET_NAME || !RECIPES_PREFIX || !SCHEDULE_KEY) {
+  if (!BUCKET_NAME || !SCHEDULE_KEY) {
     console.error("Missing required environment variables.");
     return;
   }
   try {
-    let recipeIds = await listRecipeIdsFromS3(BUCKET_NAME, RECIPES_PREFIX);
+    let recipeIds = await listRecipeIdsFromDynamoDB();
     if (recipeIds.length === 0) {
-      console.warn(`No recipe files found in s3://${BUCKET_NAME}/${RECIPES_PREFIX}`);
+      console.warn(`No recipes found in DynamoDB table ${DYNAMO_TABLE}`);
       return;
     }
     const nextMondayDate = getNextMonday();

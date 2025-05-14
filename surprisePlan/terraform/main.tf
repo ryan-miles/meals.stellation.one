@@ -178,8 +178,8 @@ resource "aws_lambda_permission" "api_gateway_invoke" {
 resource "aws_cloudwatch_event_rule" "weekly_surprise_plan" {
   name                = "${var.function_name}-weekly-trigger"
   description         = "Trigger Lambda every 2 minutes for testing"
-  schedule_expression = "cron(30 0 ? * SAT *)"
-#  schedule_expression = "rate(2 minutes)" # Run every 2 minutes for testing
+#  schedule_expression = "cron(30 0 ? * SAT *)"
+  schedule_expression = "rate(2 minutes)" # Run every 2 minutes for testing
   tags                = var.project_tags
 }
 
