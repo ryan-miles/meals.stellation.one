@@ -1,12 +1,11 @@
-
 async function loadWeekPlan() {
   const container = document.getElementById("week-grid");
   const header = document.getElementById("week-dates");
 
   try {
     const [scheduleRes, recipesRes] = await Promise.all([
-      fetch("schedule.json"),
-      fetch("all-recipes.json")
+      fetch("scheduledynamo.json"),
+      fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes")
     ]);
 
     const schedule = await scheduleRes.json();

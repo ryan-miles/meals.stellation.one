@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weekly Meal Plan</title>
+  <link rel="icon" href="favicon.ico" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .grid-item-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .tool-button {
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: var(--button-color);
+      color: var(--text-link);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .tool-button:hover {
+      background-color: var(--button-hover-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <main>
+
+      <!-- Title -->
+      <section class="bento-box">
+        <div class="container">
+          <h1 style="text-align: center;">Miles Family Meal Plan</h1>
+          <p style="text-align: center;">Here’s what’s for dinner this week 🍽️</p>
+        </div>
+      </section>
+
+      <!-- Weekly Date Range + Grid -->
+      <section class="bento-box">
+        <div class="container">
+          <p id="week-dates" style="text-align: center; font-weight: bold;"></p>
+          <div id="week-grid" class="week-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Tools Section -->
+      <section class="bento-box">
+        <div class="container" style="text-align: center;">
+          <div style="margin-top: 1rem;">
+            <a href="all-recipes.html">
+              <button class="tool-button">📚 View All Recipes</button>
+            </a>
+            <a href="week.html">
+              <button class="tool-button">🛒 View Grocery List</button>
+            </a>
+            <a href="meal-ai.html">
+              <button class="tool-button">🤖 AI Recipe Builder</button>
+            </a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScOQ-orNTxratec234eh6yhWd85AW6FamRJcYCgKqWRk29-Jg/viewform?usp=sharing" target="_blank">
+              <button class="tool-button">➕ Suggest a Recipe</button>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <footer class="footer">
+      <div>
+        <p>© 2025 Meals.Stellation.One | v3.0.0 | 2025.05.05.1419E</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/loadWeek.js"></script>
+</body>
+</html>
