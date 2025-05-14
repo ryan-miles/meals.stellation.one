@@ -1,5 +1,7 @@
 import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 // Use Lambda's provided AWS_REGION or default
 const secretsManager = new SecretsManagerClient({ region: process.env.AWS_REGION || "us-east-1" });
@@ -18,6 +20,11 @@ const corsHeaders = {
 let genAI; // GoogleGenerativeAI client instance
 let geminiApiKey; // Cache the key within the Lambda execution environment
 let model; // Gemini model instance
+
+// DynamoDB setup
+const dynamoClient = new DynamoDBClient({ region: process.env.AWS_REGION || "us-east-1" });
+const ddbDocClient = DynamoDBDocumentClient.from(dynamoClient);
+const RECIPES_TABLE = process.env.RECIPES_TABLE || "meals-recipes";
 
 async function getSecretValue(secretName) {
   if (!secretName) {
@@ -164,6 +171,22 @@ ${recipeText}`;
     const slug = slugify(recipeJson.title || 'untitled-recipe');
     recipeJson.id = slug;
 
+    // Insert into DynamoDB
+    try {
+      await ddbDocClient.send(new PutCommand({
+        TableName: RECIPES_TABLE,
+        Item: recipeJson
+      }));
+      console.log(`Inserted recipe ${slug} into DynamoDB table ${RECIPES_TABLE}`);
+    } catch (ddbErr) {
+      console.error("Failed to insert recipe into DynamoDB:", ddbErr);
+      return {
+        statusCode: 500,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: "Failed to save recipe to database", details: ddbErr.message }),
+      };
+    }
+
     // AND HERE:
     console.log("Generated slug:", slug);
 
@@ -177,7 +200,8 @@ ${recipeText}`;
       },
       body: JSON.stringify({
         filename: `${slug}.json`,
-        generatedRecipe: recipeJson
+        generatedRecipe: recipeJson,
+        savedToDynamo: true
       }),
     };
 

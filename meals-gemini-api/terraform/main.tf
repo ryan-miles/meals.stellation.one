@@ -36,6 +36,16 @@ data "aws_iam_policy_document" "lambda_permissions_policy" {
     resources = ["arn:aws:secretsmanager:${var.aws_region}:${data.aws_caller_identity.current.account_id}:secret:${var.gemini_secret_name}*"]
     # Note: Assumes secret name format like /path/to/secret. Adjust if using full ARN in var.gemini_secret_name.
   }
+
+  # Permission to write to DynamoDB meals-recipes table
+  statement {
+    actions = [
+      "dynamodb:PutItem"
+    ]
+    resources = [
+      "arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/meals-recipes"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "lambda_permissions" {
@@ -79,6 +89,7 @@ resource "aws_lambda_function" "gemini_generator" {
   environment {
     variables = {
       GEMINI_API_KEY_SECRET_NAME = var.gemini_secret_name
+      RECIPES_TABLE              = "meals-recipes"
     }
   }
 
