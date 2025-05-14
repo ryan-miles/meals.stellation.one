@@ -11,6 +11,9 @@ async function loadWeekPlan() {
     const schedule = await scheduleRes.json();
     const recipes = await recipesRes.json();
 
+    console.log("[DEBUG] schedule:", schedule);
+    console.log("[DEBUG] recipes:", recipes);
+
     const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
     const html = [];
 
@@ -34,11 +37,17 @@ async function loadWeekPlan() {
       }
     }
     
-
     for (const day of weekdays) {
       const recipeId = schedule[day];
-      const recipe = recipes.find(r => r.id === recipeId);
-      if (!recipe) continue;
+      if (!recipeId) {
+        console.warn(`[DEBUG] No recipeId for day: ${day}`);
+        continue;
+      }
+      const recipe = recipes.find(r => r && r.id === recipeId);
+      if (!recipe) {
+        console.warn(`[DEBUG] No recipe found for id: ${recipeId} on day: ${day}`);
+        continue;
+      }
 
       html.push(`
         <a class="grid-item-link" href="${day}.html">
@@ -48,7 +57,6 @@ async function loadWeekPlan() {
           </div>
         </a>
       `);
-      
     }
 
     container.innerHTML = html.join("");
