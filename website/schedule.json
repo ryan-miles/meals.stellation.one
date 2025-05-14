@@ -1,8 +1,8 @@
 {
-  "weekStart": "2025-05-05",
+  "weekStart": "2025-05-26",
   "monday": "spaghetti",
-  "tuesday": "chipotle-bowl-copycat-recipe",
-  "wednesday": "tacos",
-  "thursday": "butter-chicken",
-  "friday": "hothoney-groundbeef-bowls"
+  "tuesday": "butter-chicken",
+  "wednesday": "test-recipe",
+  "thursday": "tacos",
+  "friday": "tacos"
 }
