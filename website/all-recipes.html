@@ -61,7 +61,7 @@
       const container = document.getElementById("recipe-grid");
 
       try {
-        const res = await fetch("all-recipes.json");
+        const res = await fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes");
         const recipes = await res.json();
 
         container.innerHTML = recipes.map(recipe => `
