@@ -27,11 +27,9 @@ async function loadGroceryList() {
     // Get recipe IDs for the week
     const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
     const recipeIds = weekdays.map(day => schedule[day]).filter(Boolean);
-
-    // Find the recipe objects for the week
     const weekRecipes = recipeIds.map(id => recipes.find(r => r && r.id === id)).filter(Boolean);
 
-    // Aggregate all ingredients by storage type
+    // Aggregate all ingredients by storage type from sections/items
     const storageTypes = [
       { key: "freezer", label: "🥶 Freezer" },
       { key: "refrigerator", label: "🥬 Refrigerator" },
@@ -40,14 +38,21 @@ async function loadGroceryList() {
     const grouped = { freezer: [], refrigerator: [], pantry: [] };
 
     for (const recipe of weekRecipes) {
-      if (Array.isArray(recipe.ingredients)) {
-        for (const ing of recipe.ingredients) {
-          // Default to pantry if not specified
-          const storage = (ing.storage || "pantry").toLowerCase();
-          if (grouped[storage]) {
-            grouped[storage].push(ing);
-          } else {
-            grouped["pantry"].push(ing);
+      if (Array.isArray(recipe.sections)) {
+        for (const section of recipe.sections) {
+          if (section.items) {
+            for (const storage of ["freezer", "refrigerator", "pantry"]) {
+              if (Array.isArray(section.items[storage])) {
+                for (const ing of section.items[storage]) {
+                  // Store as string or object
+                  if (typeof ing === "string") {
+                    grouped[storage].push({ name: ing });
+                  } else if (typeof ing === "object" && ing !== null) {
+                    grouped[storage].push(ing);
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -57,7 +62,7 @@ async function loadGroceryList() {
     function uniqueIngredients(ings) {
       const seen = new Set();
       return ings.filter(ing => {
-        const key = `${ing.name}|${ing.unit||''}|${ing.note||''}`.toLowerCase();
+        const key = `${ing.name||ing}|${ing.unit||''}|${ing.note||''}`.toLowerCase();
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
@@ -76,7 +81,7 @@ async function loadGroceryList() {
           let line = `<li>`;
           if (ing.amount) line += `${ing.amount} `;
           if (ing.unit) line += `${ing.unit} `;
-          line += `${ing.name}`;
+          line += `${ing.name || ing}`;
           if (ing.note) line += ` <span class="note">(${ing.note})</span>`;
           line += `</li>`;
           html += line;
@@ -85,7 +90,6 @@ async function loadGroceryList() {
       }
       html += `</section>`;
     }
-
     container.innerHTML = html;
   } catch (err) {
     console.error(err);
