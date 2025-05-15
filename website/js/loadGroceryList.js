@@ -1,5 +1,6 @@
 async function loadGroceryList() {
   const container = document.getElementById("grocery-list-container");
+  const weekDates = document.getElementById("week-dates");
   container.innerHTML = "<p style='text-align:center;'>Loading grocery list...</p>";
 
   try {
@@ -10,6 +11,18 @@ async function loadGroceryList() {
     ]);
     const schedule = await scheduleRes.json();
     const recipes = await recipesRes.json();
+
+    // Set the week date range in the subtitle
+    if (schedule.weekStart && weekDates) {
+      const [year, month, day] = schedule.weekStart.split("-").map(Number);
+      const start = new Date(year, month - 1, day);
+      const end = new Date(start);
+      end.setDate(start.getDate() + 4);
+      const formatter = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" });
+      const startFormatted = formatter.format(start);
+      const endFormatted = formatter.format(end);
+      weekDates.textContent = `Covers meals for ${startFormatted} - ${endFormatted}, ${year}`;
+    }
 
     // Get recipe IDs for the week
     const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
