@@ -203,10 +203,10 @@ nav a {
   border-radius: 18px;
   box-shadow: 0 4px 24px 0 rgba(60,255,0,0.07), 0 2px 8px 0 rgba(0,0,0,0.18);
   border: 1.5px solid rgba(60,255,0,0.13);
-  min-height: 90px;
-  height: 90px;
-  width: 100%;
-  max-width: 180px;
+  min-height: 110px;
+  height: 110px;
+  width: 170px;
+  max-width: 170px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -214,6 +214,14 @@ nav a {
   padding: 0.7em 0.5em 0.7em 0.5em;
   margin: 0 auto;
   transition: box-shadow 0.2s;
+}
+
+/* Center the bottom row (Thursday/Friday) by adding an empty grid item in the last cell if needed */
+.week-grid .grid-item.empty {
+  background: none;
+  border: none;
+  box-shadow: none;
+  pointer-events: none;
 }
 
 .week-grid .grid-item h3, .week-grid .grid-item .weekday {
@@ -249,7 +257,8 @@ nav a {
   .week-grid .grid-item {
     max-width: 100%;
     min-width: 120px;
-    height: 90px;
+    width: 100%;
+    height: 110px;
   }
 }
 
