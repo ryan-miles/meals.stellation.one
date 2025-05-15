@@ -27,12 +27,32 @@
   padding: 0;
 }
 
+/* --- Modern Gradient Background: dark blue-grey to lime green center --- */
 body {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  background-image: url('/images/tes-tile.png');
-  background-repeat: repeat;
-  color: var(--text-body);
+  font-family: 'Inter', 'Trebuchet MS', Arial, sans-serif;
+  /* Remove green circle, use a nice dark blue-grey background */
+  background: #23272f;
+  min-height: 100vh;
+  color: #f3f4f6;
   line-height: 1.6;
+}
+
+/* --- Headline and Subheadline --- */
+h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
+}
+
+h2, .subheadline {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #e0e0e0;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 a {
@@ -55,6 +75,15 @@ header, footer {
   padding: .4em 0;
 }
 
+/* --- Footer --- */
+footer {
+  background: transparent;
+  color: #b0b0b0;
+  text-align: center;
+  padding: 2rem 0 1rem 0;
+  font-size: 1rem;
+}
+
 /* Navigation Bar */
 nav {
   display: flex;
@@ -68,19 +97,74 @@ nav a {
   font-weight: bold;
 }
 
+/* --- Top Navigation Bar --- */
+.top-nav {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 2.5rem auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1.2rem 2rem 0.5rem 2rem;
+  background: rgba(24, 26, 32, 0.85);
+  border-radius: 32px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
+  position: relative;
+  z-index: 10;
+}
+
+.top-nav .tool-button {
+  margin: 0 0.5em;
+  padding: 0.7em 1.7em;
+  font-size: 1rem;
+  border-radius: 999px;
+  background: #23272f;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.top-nav .tool-button:hover {
+  background: #3cff00;
+  color: #23272f;
+  box-shadow: 0 4px 16px 0 rgba(60,255,0,0.15);
+}
+
 /* Main Content Styling */
+/* --- Section Container --- */
 .container {
-  width: 80%;
-  margin: auto;
-  overflow: hidden;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 /* BentoBox Grid Sections */
-.bento-box {
-  margin: 20px 0;
-  padding: 20px;
-  background: var(--bento-color);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+/* --- Main Card/Box --- */
+.bento-box, .main-card {
+  background: linear-gradient(135deg, rgba(60,255,0,0.10) 0%, rgba(24,26,32,0.97) 80%);
+  border-radius: 24px;
+  box-shadow: 0 6px 32px 0 rgba(60,255,0,0.04), 0 6px 32px 0 rgba(0,0,0,0.25);
+  padding: 2.5rem 2rem;
+  margin: 2rem auto;
+  max-width: 700px;
+  width: 100%;
+  border: 1.5px solid rgba(60,255,0,0.13);
+}
+
+.bento-box.main-card:first-of-type {
+  background: none;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+/* --- Hide old tool section at bottom --- */
+.bento-box.main-card:last-of-type {
+  display: none !important;
 }
 
 /* Grid System */
@@ -91,10 +175,10 @@ nav a {
 }
 
 .grid-item {
-  border: 0px solid var(--header-color);
+  border: none;
   padding: 10px;
   text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 32px 0 rgba(0,0,0,0.18);
 }
 
 .grid-item h3 {
@@ -105,9 +189,68 @@ nav a {
 /* 🔥 NEW: Weekday Grid */
 .week-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1.2rem;
+  margin: 0 auto 1.5rem auto;
+  max-width: 600px;
+  justify-items: center;
+  align-items: stretch;
+}
+
+.week-grid .grid-item {
+  background: rgba(24,26,32,0.97);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(60,255,0,0.07), 0 2px 8px 0 rgba(0,0,0,0.18);
+  border: 1.5px solid rgba(60,255,0,0.13);
+  min-height: 90px;
+  height: 90px;
+  width: 100%;
+  max-width: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.7em 0.5em 0.7em 0.5em;
+  margin: 0 auto;
+  transition: box-shadow 0.2s;
+}
+
+.week-grid .grid-item h3, .week-grid .grid-item .weekday {
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.3em;
+  margin-top: 0;
+  text-align: center;
+}
+
+.week-grid .grid-item .recipe, .week-grid .grid-item a {
+  color: #3cff00;
+  font-size: 1.02rem;
+  font-weight: 500;
+  text-align: center;
+  word-break: break-word;
+  text-decoration: none;
+  margin: 0;
+}
+
+.week-grid .grid-item .recipe:hover, .week-grid .grid-item a:hover {
+  color: #7fff7f;
+  text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+  .week-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    max-width: 400px;
+  }
+  .week-grid .grid-item {
+    max-width: 100%;
+    min-width: 120px;
+    height: 90px;
+  }
 }
 
 /* 🔥 NEW: Week Dates Line */
@@ -126,6 +269,26 @@ nav a {
 
   nav a {
     margin: 0 10px;
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  h1 { font-size: 2rem; }
+  .bento-box, .main-card { padding: 1.2rem 0.5rem; }
+}
+
+/* --- Responsive Nav --- */
+@media (max-width: 700px) {
+  .top-nav {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.7rem 0.5rem 0.5rem 0.5rem;
+    border-radius: 0 0 24px 24px;
+  }
+  .top-nav .tool-button {
+    margin: 0.3em 0;
+    width: 100%;
   }
 }
 
@@ -201,21 +364,24 @@ nav a {
   cursor: pointer;
 }
 
+/* --- Tool Buttons --- */
 .tool-button {
-  font-size: 1rem;
-  font-weight: bold;
-  padding: 10px 20px;
-  margin: 10px;
-  background-color: var(--button-color);
-  color: var(--text-link);
+  background: #23272f;
+  color: #fff;
   border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.8em 2.2em;
+  margin: 0.5em 0.4em;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  display: inline-block;
 }
-
 .tool-button:hover {
-  background-color: var(--button-hover-color);
+  background: #ff6a3d;
+  color: #fff;
+  box-shadow: 0 4px 16px 0 rgba(255,106,61,0.15);
 }
 
 .logout-button {
@@ -234,7 +400,6 @@ nav a {
   background-color: #ddd;
 }
 
-
 .ai-input-box {
   width: 100%;
   min-height: 300px;
@@ -246,4 +411,146 @@ nav a {
   box-sizing: border-box;
   overflow: auto;
   white-space: pre-wrap;
+}
+
+/* --- Hide unused elements for clean look --- */
+/* header, nav, .logout-button, .dropbtn, .dropdown, .dropdown-content {
+  display: none !important;
+} */
+
+/* Modern Horizontal Nav Bar */
+.top-nav.menu-bar {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 2.5rem;
+  width: 100%;
+  max-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.menu-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0 2rem;
+  min-height: 56px;
+}
+.menu-list li {
+  margin: 0 1.2rem;
+  position: relative;
+}
+.menu-list a {
+  color: #f3f4f6;
+  font-size: 1.08rem;
+  font-weight: 400;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  transition: color 0.18s;
+  display: inline-block;
+}
+.menu-list a:hover,
+.menu-list a:focus {
+  color: #3cff00;
+}
+.menu-list li.active a {
+  color: #3cff00;
+  font-weight: 600;
+}
+
+/* Dropdown arrow for future use */
+.menu-list li.has-dropdown > a:after {
+  content: ' \25BC';
+  font-size: 0.7em;
+  margin-left: 0.3em;
+  vertical-align: middle;
+}
+
+@media (max-width: 700px) {
+  .menu-list {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem 1rem;
+  }
+  .menu-list li {
+    margin: 0.5rem 0;
+  }
+}
+
+/* Hamburger menu styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: auto;
+  /* Remove absolute positioning for better flex alignment */
+  position: static;
+  z-index: 1001;
+}
+.hamburger span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  margin: 5px 0;
+  background: linear-gradient(90deg, #7fff7f 0%, #00c853 100%);
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* Responsive nav bar */
+@media (max-width: 768px) {
+  .menu-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 0.5rem;
+  }
+  .menu-list {
+    display: none;
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background: #181f2a;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    border-radius: 0 0 16px 16px;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+    z-index: 1000;
+    transition: max-height 0.3s ease;
+  }
+  .menu-list.open {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+    margin-left: auto;
+    position: static;
+    top: unset;
+    right: unset;
+  }
+}
+
+/* Hamburger animation when open */
+.menu-bar.open .hamburger span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.menu-bar.open .hamburger span:nth-child(2) {
+  opacity: 0;
+}
+.menu-bar.open .hamburger span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
