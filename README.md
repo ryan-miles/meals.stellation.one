@@ -1,6 +1,6 @@
 # 🍽️ meals.stellation.one — Miles Family Meal Planner
 
-A sleek, static web app for planning and presenting the weekly meals and grocery list for the Miles family. Designed for speed, style, and simplicity using pure HTML/CSS/JS, deployed via AWS (S3 + CloudFront). The AI features are powered by an AWS Lambda function managed with Terraform.
+A sleek, static web app for planning and presenting the weekly meals and grocery list for the Miles family. Designed for speed, style, and simplicity using pure HTML/CSS/JS, deployed via AWS (S3 + CloudFront). AI-powered recipe JSON generation is handled by an AWS Lambda function managed with Terraform.
 
 Live site: [meals.stellation.one](https://meals.stellation.one)
 
@@ -10,105 +10,101 @@ Live site: [meals.stellation.one](https://meals.stellation.one)
 
 ```
 meals.stellation.one/
-├── website/                  # Static frontend files served via S3/CloudFront
-│   ├── meals.html            # Landing hub for the weekly plan
-│   ├── monday.html           # Daily meal pages (Mon–Fri)
+├── website/                        # Static frontend files served via S3/CloudFront
+│   ├── meals.html                  # Landing hub for the weekly plan (Mon–Fri)
+│   ├── monday.html                 # Daily meal pages (Mon–Fri)
 │   ├── tuesday.html
 │   ├── wednesday.html
 │   ├── thursday.html
 │   ├── friday.html
-│   ├── week.html             # Grocery list view
-│   ├── all-recipes.html      # Dynamic recipe browser
-│   ├── meal-ai.html          # Cognito-authenticated AI tool (interfaces with Lambda)
-│   │
-│   ├── all-recipes.json      # 🔄 Auto-generated from /json/recipes/*.json
-│   ├── schedule.json         # Weekly mapping of meals to days
-│   │
+│   ├── week.html                   # Grocery list view
+│   ├── all-recipes.html            # Dynamic recipe browser
+│   ├── meal-ai.html                # Cognito-authenticated AI tool (interfaces with Lambda)
+│   ├── all-recipes.json            # 🔄 Auto-generated from /json/recipes/*.json
+│   ├── schedule.json               # Weekly mapping of meals to days
 │   ├── css/
 │   │   └── styles.css
-│   │
 │   ├── js/
-│   │   ├── config.js         # API endpoint configuration
-│   │   ├── loadRecipe.js     # Loads daily meals
-│   │   ├── loadWeek.js       # Populates weekly grid
-│   │   └── loadGroceryList.js# Builds grocery checklist
-│   │
+│   │   ├── config.js               # API endpoint configuration
+│   │   ├── loadRecipe.js           # Loads daily meals
+│   │   ├── loadWeek.js             # Populates weekly grid
+│   │   └── loadGroceryList.js      # Builds grocery checklist
 │   ├── json/
-│   │   └── recipes/          # Source-of-truth JSON recipes
+│   │   └── recipes/                # Source-of-truth JSON recipes
 │   │       ├── butter-chicken.json
 │   │       ├── dominos-pizza-night.json
-│   │       ├── hothoney-groundbeef-bowls.json
+│   │       ├── hot-honey-ground-beef-bowls.json
 │   │       ├── meatballs-with-zoodles.json
 │   │       ├── pams-ranch-chicken.json
-│   │       ├── Shakshuka.json
 │   │       ├── shrimp-bowl-with-avocado-crema.json
 │   │       ├── spaghetti.json
 │   │       ├── spinach-artichoke-gnocchi-skillet-with-feta.json
 │   │       ├── tacos.json
 │   │       └── tuna-melt.json
-│   │
-│   ├── scripts/              # Node.js helper scripts
-│   │   ├── buildAllRecipes.js
-│   │   ├── setWeeklySchedule.js
-│   │   ├── validateAllRecipes.js
-│   │   └── validateRecipe.js
-│   │
+│   ├── scripts/                    # Node.js helper scripts
+│   │   ├── buildAllRecipes.js      # Builds all-recipes.json from recipes/
+│   │   ├── setWeeklySchedule.js    # Interactive CLI to set weekly plan
+│   │   ├── validateAllRecipes.js   # Validates all recipe files
+│   │   └── validateRecipe.js       # Validates a single recipe file
 │   ├── .github/workflows/
-│   │   └── deploy.yml        # GitHub Action CI/CD pipeline for website
+│   │   └── deploy.yml              # GitHub Action CI/CD pipeline for website
 │   ├── images/
-│   │   └── tes-tile.png      # Background pattern
+│   │   └── tes-tile.png            # Background pattern
 │   └── favicon.ico
 │
-└── meals-gemini-api/         # Backend API (Lambda + API Gateway)
-    ├── lambda_code/          # Node.js code for the Lambda function
-    │   ├── index.js
-    │   ├── package.json
-    │   └── test-G-API.ps1    # Local test script
-    └── terraform/            # Terraform IaC for Lambda, API Gateway, IAM roles
-        ├── main.tf
-        ├── providers.tf
-        ├── variables.tf
-        ├── lambda_deployment_package.zip # Built Lambda code
-        ├── apply.bat         # Helper scripts for Terraform commands
-        ├── destroy.bat
-        └── plan.bat
+├── meals-gemini-api/               # Backend API (Lambda + API Gateway)
+│   ├── lambda_code/                # Node.js code for the Lambda function
+│   │   ├── index.js
+│   │   ├── package.json
+│   │   └── test-G-API.ps1          # Local test script
+│   └── terraform/                  # Terraform IaC for Lambda, API Gateway, IAM roles
+│       ├── main.tf
+│       ├── providers.tf
+│       ├── variables.tf
+│       ├── lambda_deployment_package.zip # Built Lambda code
+│       ├── apply.bat
+│       ├── destroy.bat
+│       └── plan.bat
+└── surprisePlan/                   # Lambda for automatic weekly meal plan
+    ├── lambda_code/
+    └── terraform/
 ```
 
 ---
 
 ## 🧠 Key Concepts
 
-### Dynamic Weekly Plan (`meals.html`)
-- Displays date-ranged meal overview for Mon–Fri
-- JS-powered rendering via `loadWeek.js`
+### Dynamic Weekly Plan ([meals.html](website/meals.html))
+- Displays a date-ranged meal overview for Mon–Fri
+- JS-powered rendering via [`loadWeek.js`](website/js/loadWeek.js)
 - Includes shortcut buttons for:
   - 📚 All Recipes
   - 🛒 Grocery List
-  - 🤖 AI Recipe Generator
+  - 🤖 AI Recipe Builder
 
-### Individual Day Pages (`monday.html`, etc.)
-- Shared layout powered by `loadRecipe.js`
-- Fetches from `schedule.json` + `all-recipes.json`
+### Individual Day Pages ([monday.html](website/monday.html), etc.)
+- Shared layout powered by [`loadRecipe.js`](website/js/loadRecipe.js)
+- Fetches from [`schedule.json`](website/schedule.json) and [`all-recipes.json`](website/all-recipes.json)
 
-### Grocery List Builder (`week.html`)
-- Fully interactive checklist via `loadGroceryList.js`
+### Grocery List Builder ([week.html](website/week.html))
+- Fully interactive checklist via [`loadGroceryList.js`](website/js/loadGroceryList.js)
 - Categorized by `freezer`, `refrigerator`, `pantry`
-- Responsive + mobile-friendly design
+- Responsive and mobile-friendly design
 
-### Recipe Explorer (`all-recipes.html`)
-- Auto-generates cards from `all-recipes.json`
+### Recipe Explorer ([all-recipes.html](website/all-recipes.html))
+- Auto-generates cards from [`all-recipes.json`](website/all-recipes.json)
 - JS-driven client-side rendering
 
-### AI Tooling (`meal-ai.html`)
+### AI Tooling ([meal-ai.html](website/meal-ai.html))
 - Protected by **Amazon Cognito Hosted UI**
 - Accepts raw text → sends to backend API → returns downloadable recipe JSON
-- Backend: **AWS Lambda** function (Node.js) fronted by **API Gateway**, deployed via **Terraform**.
+- Backend: **AWS Lambda** function (Node.js) fronted by **API Gateway**, deployed via **Terraform**
 
 ---
 
 ## 🔐 Cognito Authentication
 
-Used exclusively on `meal-ai.html`. Basic flow:
+Used exclusively on [`meal-ai.html`](website/meal-ai.html). Basic flow:
 
 1. Redirect to Cognito-hosted login if no token
 2. Exchange auth code → access/id token
@@ -142,20 +138,20 @@ Used exclusively on `meal-ai.html`. Basic flow:
 
 1. Clone repo
 2. Open `meals.html` or any weekday file in a browser
-3. Edit `schedule.json` or add recipes in `/recipes/`
-4. Validate:
-```bash
-node website/scripts/validateAllRecipes.js
-```
-5. Build `all-recipes.json`:
-```bash
-node website/scripts/buildAllRecipes.js
-```
+3. Edit [`schedule.json`](website/schedule.json) or add recipes in [`/website/json/recipes/`](website/json/recipes/)
+4. Validate all recipes:
+   ```bash
+   node website/scripts/validateAllRecipes.js
+   ```
+5. Build [`all-recipes.json`](website/all-recipes.json):
+   ```bash
+   node website/scripts/buildAllRecipes.js
+   ```
 6. Serve locally (from `website` directory):
-```bash
-cd website
-npx serve .
-```
+   ```bash
+   cd website
+   npx serve .
+   ```
 7. (Optional) Test/Deploy Backend API:
    - Navigate to `meals-gemini-api/terraform`
    - Use `plan.bat`, `apply.bat`, `destroy.bat`
@@ -176,7 +172,7 @@ npx serve .
 }
 ```
 
-### Individual Recipes (`/website/json/recipes/*.json`)
+### Individual Recipes ([website/json/recipes/*.json](website/json/recipes/))
 Each contains:
 - `id`, `title`, `description`, `day` (optional)
 - `sections`: list of ingredients, steps, and nutrition blocks
@@ -190,25 +186,22 @@ Example section types:
 
 ## ➕ How to Add a New Recipe
 
-Adding a new recipe to meals.stellation.one is simple and can be done with family favorites, original creations, or recipes found online. Here’s how:
+Adding a new recipe is simple and can be done with family favorites, original creations, or recipes found online:
 
 1. **Generate the Recipe JSON:**
-   - Open `meal-ai.html` in your browser.
-   - Enter the following details:
-     - A hyperlink to a website with more info about the recipe (optional but recommended)
-     - The list of ingredients needed
-     - Step-by-step recipe instructions
-   - Click **Generate JSON**. This will download a new recipe file (e.g., `something.json`).
+   - Open [`meal-ai.html`](website/meal-ai.html) in your browser.
+   - Enter the recipe details (link, ingredients, instructions).
+   - Click **Generate JSON** to download a new recipe file.
 
 2. **Add the Recipe File:**
-   - Move the downloaded `.json` file into `website/json/recipes/`.
+   - Move the downloaded `.json` file into [`website/json/recipes/`](website/json/recipes/).
 
 3. **Update the Recipe Index:**
    - From the project root, run:
      ```bash
      node website/scripts/buildAllRecipes.js
      ```
-   - This script collects all recipe files in `website/json/recipes/` and updates `all-recipes.json` for the site.
+   - This script collects all recipe files and updates [`all-recipes.json`](website/all-recipes.json).
 
 4. **Assign the Recipe to the Weekly Plan:**
    - **Manual Option:**
@@ -216,10 +209,9 @@ Adding a new recipe to meals.stellation.one is simple and can be done with famil
        ```bash
        node website/scripts/setWeeklySchedule.js
        ```
-     - This script lets you pick recipes for each weekday (Mon–Fri) from all available recipes.
+     - Pick recipes for each weekday (Mon–Fri) from all available recipes.
    - **Automatic Option:**
      - The `surprise-plan-lambda` function runs automatically early Saturday morning, randomly assigning recipes for the upcoming week.
-     - This updates the schedule so you get a fresh, surprise meal plan each week!
 
 Your new recipe will now appear in the recipe browser and can be included in the weekly meal plan.
 
@@ -258,4 +250,5 @@ Your new recipe will now appear in the recipe browser and can be included in the
 ---
 
 ## 👨‍👩‍👧‍👦 Built for the Miles Family
+
 Handcrafted with ❤️ to make weeknight dinners easier, faster, and yummier.
