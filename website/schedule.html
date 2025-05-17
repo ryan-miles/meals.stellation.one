@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weekly Meal Schedule Builder</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .schedule-container {
+      max-width: 500px;
+      margin: 2em auto;
+      background: #f9f9f9;
+      border-radius: 10px;
+      padding: 2em 2em 1.5em 2em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .schedule-container h1 {
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    .schedule-form label {
+      font-weight: 500;
+      margin-top: 1em;
+      display: block;
+    }
+    .schedule-form select, .schedule-form input[type="date"] {
+      width: 100%;
+      padding: 0.5em;
+      margin-top: 0.2em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    .schedule-form button {
+      margin-top: 2em;
+      width: 100%;
+      padding: 0.8em;
+      font-size: 1.1em;
+      border-radius: 8px;
+      background: var(--primary-color, #2a7cff);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .schedule-form button:hover {
+      background: #174ea6;
+    }
+    .result-box {
+      margin-top: 2em;
+      background: #eaf6ff;
+      border-radius: 8px;
+      padding: 1em;
+      font-size: 1em;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="schedule-container">
+    <h1>🗓️ Build Your Weekly Meal Plan</h1>
+    <form class="schedule-form" id="scheduleForm">
+      <label for="weekStart">Week Start Date (Monday):</label>
+      <input type="date" id="weekStart" name="weekStart" required />
+      <div id="weekday-selects"></div>
+      <button type="submit">Download Schedule JSON</button>
+    </form>
+    <div id="result" class="result-box" style="display:none;"></div>
+  </div>
+  <script>
+    const apiUrl = "https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes";
+    const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+    let recipes = [];
+
+    async function fetchRecipes() {
+      const res = await fetch(apiUrl);
+      if (!res.ok) throw new Error("Failed to fetch recipes: " + res.status);
+      const data = await res.json();
+      // If the API returns an array of recipes
+      return data.map(r => ({ name: `${r.title} (${r.id})`, value: r.id }));
+    }
+
+    function createWeekdaySelects(recipes) {
+      const container = document.getElementById('weekday-selects');
+      container.innerHTML = '';
+      weekdays.forEach(day => {
+        const label = document.createElement('label');
+        label.htmlFor = day;
+        label.textContent = day.charAt(0).toUpperCase() + day.slice(1) + ':';
+        const select = document.createElement('select');
+        select.id = day;
+        select.name = day;
+        select.required = true;
+        recipes.forEach(recipe => {
+          const option = document.createElement('option');
+          option.value = recipe.value;
+          option.textContent = recipe.name;
+          select.appendChild(option);
+        });
+        container.appendChild(label);
+        container.appendChild(select);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        recipes = await fetchRecipes();
+        createWeekdaySelects(recipes);
+      } catch (err) {
+        document.getElementById('weekday-selects').innerHTML = `<div style="color:red;">Failed to load recipes: ${err.message}</div>`;
+      }
+    });
+
+    document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const weekStart = document.getElementById('weekStart').value;
+      if (!weekStart) {
+        alert('Please select a week start date.');
+        return;
+      }
+      const schedule = { weekStart };
+      weekdays.forEach(day => {
+        schedule[day] = document.getElementById(day).value;
+      });
+      // Show result and offer download
+      const resultBox = document.getElementById('result');
+      resultBox.style.display = 'block';
+      resultBox.textContent = JSON.stringify(schedule, null, 2);
+      // Download as file
+      const blob = new Blob([JSON.stringify(schedule, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'scheduledynamo.json';
+      a.textContent = '⬇️ Download scheduledynamo.json';
+      a.style.display = 'inline-block';
+      a.style.marginTop = '1em';
+      resultBox.appendChild(document.createElement('br'));
+      resultBox.appendChild(a);
+    });
+  </script>
+</body>
+</html>

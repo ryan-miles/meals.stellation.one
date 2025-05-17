@@ -238,7 +238,6 @@ Your new recipe will now appear in the recipe browser and can be included in the
 
 ## 📋 To-Do / Roadmap
 
-- [ ] Add Saturday/Sunday support
 - [ ] Frontend UI to modify `schedule.json`
 - [ ] Grocery list persistence via LocalStorage
 - [ ] Print button for grocery list

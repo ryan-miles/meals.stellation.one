@@ -49,6 +49,15 @@
       <div class="container" style="text-align: center;">
         <h1>🤖 Meal Planning with AI</h1>
         <p>Enter a recipe below. Our AI will generate a downloadable JSON for your meal planner.</p>
+        <div class="ai-instructions" style="background:#f3f7fa;border-radius:8px;padding:1em;margin-bottom:1em;text-align:left;max-width:600px;margin-left:auto;margin-right:auto;font-size:1em;">
+          <strong>What to enter:</strong>
+          <ol style="margin-top:0.5em;margin-bottom:0.5em;padding-left:1.2em;">
+            <li><b>Recipe link</b> (optional): Paste the URL to the original recipe if you have one.</li>
+            <li><b>Ingredients</b>: List all ingredients, one per line. Include quantities and any grouping (e.g., Pantry, Produce, etc.) if possible.</li>
+            <li><b>Instructions</b>: Write the step-by-step cooking instructions, each step on a new line or as a numbered list.</li>
+          </ol>
+          <div style="font-size:0.95em;color:#666;">Tip: The more detail you provide, the better the AI can structure your recipe!</div>
+        </div>
 
         <textarea
           id="recipeInput"
