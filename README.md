@@ -10,65 +10,90 @@ Live site: [meals.stellation.one](https://meals.stellation.one)
 
 ```
 meals.stellation.one/
-├── website/                        # Static frontend files served via S3/CloudFront
-│   ├── meals.html                  # Landing hub for the weekly plan (Mon–Fri)
-│   ├── monday.html                 # Daily meal pages (Mon–Fri)
-│   ├── tuesday.html
-│   ├── wednesday.html
-│   ├── thursday.html
-│   ├── friday.html
-│   ├── week.html                   # Grocery list view
-│   ├── all-recipes.html            # Dynamic recipe browser
-│   ├── meal-ai.html                # Cognito-authenticated AI tool (interfaces with Lambda)
-│   ├── all-recipes.json            # 🔄 Auto-generated from /json/recipes/*.json
-│   ├── schedule.json               # Weekly mapping of meals to days
-│   ├── css/
-│   │   └── styles.css
-│   ├── js/
-│   │   ├── config.js               # API endpoint configuration
-│   │   ├── loadRecipe.js           # Loads daily meals
-│   │   ├── loadWeek.js             # Populates weekly grid
-│   │   └── loadGroceryList.js      # Builds grocery checklist
-│   ├── json/
-│   │   └── recipes/                # Source-of-truth JSON recipes
-│   │       ├── butter-chicken.json
-│   │       ├── dominos-pizza-night.json
-│   │       ├── hot-honey-ground-beef-bowls.json
-│   │       ├── meatballs-with-zoodles.json
-│   │       ├── pams-ranch-chicken.json
-│   │       ├── shrimp-bowl-with-avocado-crema.json
-│   │       ├── spaghetti.json
-│   │       ├── spinach-artichoke-gnocchi-skillet-with-feta.json
-│   │       ├── tacos.json
-│   │       └── tuna-melt.json
-│   ├── scripts/                    # Node.js helper scripts
-│   │   ├── buildAllRecipes.js      # Builds all-recipes.json from recipes/
-│   │   ├── setWeeklySchedule.js    # Interactive CLI to set weekly plan
-│   │   ├── validateAllRecipes.js   # Validates all recipe files
-│   │   └── validateRecipe.js       # Validates a single recipe file
-│   ├── .github/workflows/
-│   │   └── deploy.yml              # GitHub Action CI/CD pipeline for website
-│   ├── images/
-│   │   └── tes-tile.png            # Background pattern
-│   └── favicon.ico
-│
-├── meals-gemini-api/               # Backend API (Lambda + API Gateway)
-│   ├── lambda_code/                # Node.js code for the Lambda function
-│   │   ├── index.js
-│   │   ├── package.json
-│   │   └── test-G-API.ps1          # Local test script
-│   └── terraform/                  # Terraform IaC for Lambda, API Gateway, IAM roles
-│       ├── main.tf
-│       ├── providers.tf
-│       ├── variables.tf
-│       ├── lambda_deployment_package.zip # Built Lambda code
-│       ├── apply.bat
-│       ├── destroy.bat
-│       └── plan.bat
-└── surprisePlan/                   # Lambda for automatic weekly meal plan
-    ├── lambda_code/
-    └── terraform/
+├── website/                  # Static frontend web app (HTML, CSS, JS, recipes, scripts)
+│   ├── all-recipes.html      # Recipe browser page
+│   ├── all-recipes.json      # Aggregated recipes (plain JSON)
+│   ├── all-recipesdynamo.html# Recipe browser (DynamoDB version)
+│   ├── all-recipesdynamo.json# Aggregated recipes (DynamoDB format)
+│   ├── favicon.ico           # Site icon
+│   ├── friday.html           # Friday meal page
+│   ├── meal-ai.html          # AI-powered recipe builder UI
+│   ├── meals.html            # Weekly meal plan overview
+│   ├── mealsdynamo.html      # Weekly plan (DynamoDB version)
+│   ├── mealsux2.html         # Alternate UI/UX for meals
+│   ├── monday.html           # Monday meal page
+│   ├── package.json          # Frontend dependencies (Node.js scripts)
+│   ├── schedule.html         # Schedule UI
+│   ├── schedule.json         # Weekly meal schedule (plain JSON)
+│   ├── scheduledynamo.json   # Weekly meal schedule (DynamoDB format)
+│   ├── thursday.html         # Thursday meal page
+│   ├── tuesday.html          # Tuesday meal page
+│   ├── wednesday.html        # Wednesday meal page
+│   ├── week.html             # Grocery list page
+│   ├── css/                  # Stylesheets
+│   ├── images/               # Static images/assets
+│   ├── js/                   # Frontend JavaScript modules
+│   ├── json/                 # Recipe data (plain and DynamoDB)
+│   └── scripts/              # Node.js helper/build scripts
+├── meals-gemini-api/         # AWS Lambda (Node.js) for AI recipe API + Terraform IaC
+│   ├── lambda_code/          # Lambda function source code
+│   └── terraform/            # Infrastructure as Code for Lambda/API Gateway/IAM
+├── surprisePlan/             # AWS Lambda (Node.js) for automatic weekly meal plan + Terraform IaC
+│   ├── lambda_code/          # Lambda function source code
+│   └── terraform/            # Infrastructure as Code for Lambda/IAM
+├── get-recipes-dynamo/       # AWS Lambda (Node.js) for DynamoDB recipe access + Terraform IaC
+│   ├── lambda_code/          # Lambda function source code
+│   └── terraform/            # Infrastructure as Code for Lambda/DynamoDB/IAM
+├── README.md                 # Project documentation
+├── .gitignore                # Git ignore rules
 ```
+
+---
+
+## 📦 Website & Backend File Reference
+
+Below is a reference for key files in the `/website` folder and backend Lambda `index.js` files. Each entry lists the file's purpose, its inputs, outputs, and dependencies, so you always know why a file exists and how it fits into the project.
+
+### Website Folder
+
+| File / Script                | Purpose / Description                                              | Inputs / Reads From                                 | Outputs / Generates                | Dependencies / Interacts With                |
+|-----------------------------|-------------------------------------------------------------------|-----------------------------------------------------|-------------------------------------|----------------------------------------------|
+| all-recipes.html            | Recipe browser UI (static, plain JSON)                            | all-recipes.json                                    | -                                   | JS: loadRecipe.js, loadWeek.js              |
+| all-recipes.json            | Aggregated recipes (plain JSON format for static site)             | Built from /json/recipes/*.json via build script    | -                                   | Used by all-recipes.html, loadRecipe.js      |
+| all-recipesdynamo.html      | Recipe browser UI (DynamoDB version)                              | all-recipesdynamo.json (or API)                     | -                                   | JS: fetchAllRecipesDynamo.js                |
+| all-recipesdynamo.json      | Aggregated recipes (DynamoDB export format)                        | Built from DynamoDB or /json/recipes-dynamo/*.json  | -                                   | Used by all-recipesdynamo.html, scripts      |
+| meals.html                  | Weekly meal plan overview (static, plain JSON)                     | schedule.json, all-recipes.json                     | -                                   | JS: loadWeek.js                             |
+| mealsdynamo.html            | Weekly meal plan (DynamoDB version)                                | scheduledynamo.json (or API)                        | -                                   | JS: setWeeklyScheduleDynamo.js              |
+| mealsux2.html               | Alternate UI/UX for meals (experimental/variant)                   | schedule.json, all-recipes.json                     | -                                   | JS: loadWeek.js                             |
+| meal-ai.html                | AI-powered recipe builder UI (Cognito-protected)                   | User input, backend API                             | Downloadable recipe JSON            | Backend: meals-gemini-api Lambda             |
+| schedule.html               | Schedule UI (may be legacy/alternate)                              | schedule.json                                       | -                                   | JS: loadWeek.js                             |
+| schedule.json               | Weekly meal schedule (plain JSON for static site)                  | Manually edited or setWeeklySchedule.js             | -                                   | Used by meals.html, loadWeek.js              |
+| scheduledynamo.json         | Weekly meal schedule (DynamoDB format/export)                      | Built from DynamoDB or scripts                      | -                                   | Used by mealsdynamo.html, scripts            |
+| friday.html, monday.html,   | Daily meal pages (static, one per weekday)                         | schedule.json, all-recipes.json                     | -                                   | JS: loadRecipe.js                            |
+| tuesday.html, wednesday.html, thursday.html |                                                         |                                                     |                                     |                                              |
+| week.html                   | Grocery list page (interactive checklist)                          | schedule.json, all-recipes.json                     | -                                   | JS: loadGroceryList.js                      |
+| css/                        | Stylesheets (site-wide CSS)                                        | -                                                   | -                                   | Used by all HTML pages                       |
+| images/                     | Static images/assets                                               | -                                                   | -                                   | Used by HTML/CSS                             |
+| js/                         | Frontend JavaScript modules (loaders, config)                      | -                                                   | -                                   | Used by HTML pages                           |
+| json/recipes/               | Source-of-truth recipe JSON files (plain format)                   | Manually added or via meal-ai.html                  | -                                   | Used by buildAllRecipes.js                   |
+| json/recipes-dynamo/        | Recipe JSON files in DynamoDB export format                        | Scripts or DynamoDB export                          | -                                   | Used by convertDynamoToPlainJson.js          |
+| scripts/buildAllRecipes.js  | Builds all-recipes.json from /json/recipes/                        | /json/recipes/*.json                                | all-recipes.json                    | Node.js, used in dev workflow                |
+| scripts/validateAllRecipes.js| Validates all recipe files in /json/recipes/                       | /json/recipes/*.json                                | -                                   | Node.js, used in dev workflow                |
+| scripts/setWeeklySchedule.js| Interactive CLI to set weekly plan (plain JSON)                    | schedule.json, all-recipes.json                     | schedule.json                       | Node.js, used in dev workflow                |
+| scripts/convertDynamoToPlainJson.js | Converts DynamoDB recipe JSON to plain JSON format         | /json/recipes-dynamo/*.json                         | /json/recipes/*.json                | Node.js, used in dev workflow                |
+| scripts/convertRecipesForDynamo.js | Converts plain JSON recipes to DynamoDB format             | /json/recipes/*.json                                | /json/recipes-dynamo/*.json         | Node.js, used in dev workflow                |
+| scripts/fetchAllRecipesDynamo.js | Fetches all recipes from DynamoDB and saves as JSON         | DynamoDB                                            | all-recipesdynamo.json              | Node.js, AWS SDK                             |
+| scripts/setWeeklyScheduleDynamo.js | CLI to set weekly plan in DynamoDB format                 | scheduledynamo.json, all-recipesdynamo.json         | scheduledynamo.json                  | Node.js, used in dev workflow                |
+| scripts/surprisePlan.js     | Generates a random meal plan for the week (plain or DynamoDB)      | all-recipes.json or all-recipesdynamo.json          | schedule.json or scheduledynamo.json| Node.js, used in dev workflow                |
+| scripts/uploadRecipesToDynamo.js | Uploads recipes to DynamoDB                                 | /json/recipes/*.json                                | DynamoDB                            | Node.js, AWS SDK                             |
+
+### Backend Lambda Functions (index.js)
+
+| Path                                      | Purpose / Description                                 | Inputs / Reads From         | Outputs / Generates         | Dependencies / Interacts With         |
+|-------------------------------------------|------------------------------------------------------|----------------------------|-----------------------------|---------------------------------------|
+| meals-gemini-api/lambda_code/index.js     | Handles AI recipe generation API requests             | API Gateway event, user input| AI-generated recipe JSON    | Google Gemini API, AWS Lambda         |
+| surprisePlan/lambda_code/index.js         | Generates and stores a random weekly meal plan        | DynamoDB (recipes table)    | Updated meal plan in DynamoDB| AWS SDK, DynamoDB                     |
+| get-recipes-dynamo/lambda_code/index.js   | Provides recipe data from DynamoDB for frontend/API   | DynamoDB (recipes table)    | Recipe JSON for frontend/API | AWS SDK, DynamoDB                     |
 
 ---
 
