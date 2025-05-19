@@ -61,7 +61,8 @@
   <div class="schedule-container">
     <h1>🗓️ Build Your Weekly Meal Plan</h1>
     <form class="schedule-form" id="scheduleForm">
-      <label for="weekStart">Week Start Date (Monday):</label>
+      <div style="margin-bottom:0.5em;"><strong>Week Start Date</strong></div>
+      <label for="weekStart">(Monday):</label>
       <input type="date" id="weekStart" name="weekStart" required />
       <div id="weekday-selects"></div>
       <button type="submit">Download Schedule JSON</button>
@@ -85,9 +86,14 @@
       const container = document.getElementById('weekday-selects');
       container.innerHTML = '';
       weekdays.forEach(day => {
+        const dayHeader = document.createElement('div');
+        dayHeader.style.fontWeight = 'bold';
+        dayHeader.style.marginTop = '1.2em';
+        dayHeader.textContent = day.charAt(0).toUpperCase() + day.slice(1);
+        container.appendChild(dayHeader);
         const label = document.createElement('label');
         label.htmlFor = day;
-        label.textContent = day.charAt(0).toUpperCase() + day.slice(1) + ':';
+        label.textContent = 'Select recipe:';
         const select = document.createElement('select');
         select.id = day;
         select.name = day;
