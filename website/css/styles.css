@@ -597,3 +597,58 @@ nav a {
 .menu-bar.open .hamburger span:nth-child(3) {
   transform: translateY(-8px) rotate(-45deg);
 }
+
+/* --- Schedule Builder Styles --- */
+.schedule-container {
+  max-width: 500px;
+  margin: 2em auto;
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 2em 2em 1.5em 2em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.schedule-container h1 {
+  text-align: center;
+  margin-bottom: 1em;
+  color: var(--text-color, #222);
+}
+.schedule-form label,
+.schedule-form div[style*='font-weight: bold'] {
+  color: var(--text-color, #222);
+}
+.schedule-form strong {
+  color: var(--text-color, #222);
+}
+.schedule-form select,
+.schedule-form input[type="date"] {
+  width: 100%;
+  padding: 0.5em;
+  margin-top: 0.2em;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+.schedule-form button {
+  margin-top: 2em;
+  width: 100%;
+  padding: 0.8em;
+  font-size: 1.1em;
+  border-radius: 8px;
+  background: var(--primary-color, #2a7cff);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.schedule-form button:hover {
+  background: #174ea6;
+}
+.result-box {
+  margin-top: 2em;
+  background: #eaf6ff;
+  border-radius: 8px;
+  padding: 1em;
+  font-size: 1em;
+  word-break: break-all;
+}
