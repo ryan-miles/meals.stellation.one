@@ -1,3 +1,4 @@
+/docs/*
 /website/node_modules/
 /website/package-lock.json
 /meals-gemini-api/*
