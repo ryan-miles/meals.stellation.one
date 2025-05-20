@@ -715,3 +715,40 @@ nav a {
   font-size: 1em;
   word-break: break-all;
 }
+
+/* Tooltip container for inline help */
+.tooltip {
+  position: relative;
+  cursor: help;
+  border-bottom: 1px dotted var(--text-link);
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 10;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
