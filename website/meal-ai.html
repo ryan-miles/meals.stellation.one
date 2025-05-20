@@ -5,38 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Meal Tools</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    /* Basic styling for recipe display - adjust as needed in styles.css */
-    .recipe-display {
-      text-align: left;
-      background-color: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 20px;
-    }
-    .recipe-display h2 {
-      margin-top: 0;
-      color: var(--primary-color); /* Assuming you have a primary color variable */
-    }
-    .recipe-display h3 {
-      margin-top: 15px;
-      color: var(--secondary-color); /* Assuming secondary color */
-      border-bottom: 1px solid #eee;
-      padding-bottom: 5px;
-    }
-    .recipe-display ul {
-      list-style-type: disc;
-      margin-left: 20px;
-      padding-left: 0;
-    }
-    .recipe-display li {
-      margin-bottom: 5px;
-      line-height: 1.6;
-    }
-    .recipe-display p {
-        white-space: pre-wrap; /* To respect newlines in instruction items */
-    }
-  </style>
 </head>
 <body>
   <div class="main-container">
@@ -45,11 +13,11 @@
       <button id="logoutBtn" class="logout-button" onclick="logout()">🚪 Logout</button>
     </nav>
 
-    <main class="bento-box" id="mainContent" style="display: none;">
-      <div class="container" style="text-align: center;">
+    <main class="bento-box" id="mainContent">
+      <div class="container">
         <h1>🤖 Meal Planning with AI</h1>
         <p>Enter a recipe below. Our AI will generate a downloadable JSON for your meal planner.</p>
-        <div class="ai-instructions" style="background:#f3f7fa;border-radius:8px;padding:1em;margin-bottom:1em;text-align:left;max-width:600px;margin-left:auto;margin-right:auto;font-size:1em;">
+        <div class="ai-instructions">
           <strong>What to enter:</strong>
           <ol style="margin-top:0.5em;margin-bottom:0.5em;padding-left:1.2em;">
             <li><b>Recipe link</b> (optional): Paste the URL to the original recipe if you have one.</li>
@@ -63,20 +31,19 @@
           id="recipeInput"
           class="ai-input-box"
           rows="14"
-          style="width: 100%; border-radius: 12px; padding: 1rem; font-family: monospace; font-size: 1rem;"
         ></textarea>
 
         <br>
         <button onclick="submitToAI()" class="tool-button">Generate JSON</button>
 
-        <div id="result" style="margin-top: 2rem;"></div>
+        <div id="result"></div>
       </div>
     </main>
 
-    <footer class="footer" style="text-align: center; padding: 20px; margin-top: auto;">
+    <footer class="footer">
       <div class="container">
         <p>© 2025 Meals.Stellation.One</p>
-        <p style="font-size: 0.8em; color: var(--text-muted);">
+        <p class="api-info">
           API Gateway: <span id="apiId"></span> | Lambda: <span id="lambdaName"></span>
         </p>
       </div>

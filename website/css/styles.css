@@ -443,17 +443,76 @@ nav a {
   background-color: #ddd;
 }
 
+/* Recipe display styling */
+.recipe-display {
+  text-align: left;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+.recipe-display h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+.recipe-display h3 {
+  margin-top: 15px;
+  color: var(--secondary-color);
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+.recipe-display ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  padding-left: 0;
+}
+.recipe-display li {
+  margin-bottom: 5px;
+  line-height: 1.6;
+}
+.recipe-display p {
+  white-space: pre-wrap;
+}
+
+/* Meal AI layout overrides */
+#mainContent {
+  display: none;
+}
+#mainContent.active {
+  display: block;
+}
+.container {
+  text-align: center;
+}
+.ai-instructions {
+  background: #f3f7fa;
+  border-radius: 8px;
+  padding: 1em;
+  margin-bottom: 1em;
+  text-align: left;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1em;
+}
 .ai-input-box {
   width: 100%;
-  min-height: 300px;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 12px;
+  padding: 1rem;
   font-family: monospace;
-  font-size: 14px;
+  font-size: 1rem;
   resize: vertical;
-  box-sizing: border-box;
-  overflow: auto;
-  white-space: pre-wrap;
+}
+#result {
+  margin-top: 2rem;
+}
+.footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: auto;
+}
+.api-info {
+  font-size: 0.8em;
+  color: var(--text-muted);
 }
 
 /* --- Hide unused elements for clean look --- */
