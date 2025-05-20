@@ -16,19 +16,16 @@
     <main class="bento-box" id="mainContent">
       <div class="container">
         <h1>🤖 Meal Planning with AI</h1>
-        <p>Enter a <span class="tooltip">recipe<span class="tooltiptext">
-<strong>How to format your recipe for best AI parsing:</strong>
-<ul>
-  <li><code>Title: [Recipe Title]</code> (first line)</li>
-  <li><code>Date: YYYY-MM-DD</code> (optional)</li>
-  <li><code>Description: [Brief description]</code></li>
-  <li><code>Link: [Recipe URL]</code> (optional)</li>
-  <li>Ingredients: group by category headings (e.g., <code>Pantry:</code>, <code>Produce:</code>) then list items prefixed with <code>- </code></li>
-  <li>Instructions: start with <code>Instructions:</code> then numbered steps</li>
-  <li>Nutrition: optional nutrition facts, each on its own line</li>
-</ul>
-<p>Example:</p>
-<pre>Title: Chocolate Cake
+        <p>Enter a <span class="tooltip">recipe<span class="tooltiptext"><strong>How to format your recipe for best AI parsing:</strong><br>
+• Title: [Recipe Title] (first line)<br>
+• Date: YYYY-MM-DD (optional)<br>
+• Description: [Brief description]<br>
+• Link: [Recipe URL] (optional)<br>
+• Ingredients: group by category headings (e.g., Pantry:, Produce:) then list items prefixed with -<br>
+• Instructions: start with Instructions: then numbered steps<br>
+• Nutrition: optional nutrition facts, each on its own line<br><br>
+<strong>Example:</strong><br>
+<code style="display:block; white-space:pre;">Title: Chocolate Cake
 Date: 2025-05-20
 Description: A rich, moist chocolate cake.
 Link: https://example.com/chocolate-cake
@@ -47,8 +44,7 @@ Instructions:
 
 Nutrition:
 Calories: 350
-Protein: 5g</pre>
-</span></span> below. Our AI will generate a downloadable JSON for your meal planner.</p>
+Protein: 5g</code></span></span> below. Our AI will generate a downloadable JSON for your meal planner.</p>
         <textarea
           id="recipeInput"
           class="ai-input-box"
