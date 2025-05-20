@@ -18,13 +18,39 @@
         <h1>🤖 Meal Planning with AI</h1>
         <p>Enter a recipe below. Our AI will generate a downloadable JSON for your meal planner.</p>
         <div class="ai-instructions">
-          <strong>What to enter:</strong>
-          <ol style="margin-top:0.5em;margin-bottom:0.5em;padding-left:1.2em;">
-            <li><b>Recipe link</b> (optional): Paste the URL to the original recipe if you have one.</li>
-            <li><b>Ingredients</b>: List all ingredients, one per line. Include quantities and any grouping (e.g., Pantry, Produce, etc.) if possible.</li>
-            <li><b>Instructions</b>: Write the step-by-step cooking instructions, each step on a new line or as a numbered list.</li>
-          </ol>
-          <div style="font-size:0.95em;color:#666;">Tip: The more detail you provide, the better the AI can structure your recipe!</div>
+          <strong>How to format your recipe for best AI parsing:</strong>
+          <ul>
+            <li><code>Title: [Recipe Title]</code> (first line)</li>
+            <li><code>Date: YYYY-MM-DD</code> (optional)</li>
+            <li><code>Description: [Brief description]</code></li>
+            <li><code>Link: [Recipe URL]</code> (optional)</li>
+            <li>Ingredients: group by category headings (e.g., <code>Pantry:</code>, <code>Produce:</code>) then list items prefixed with <code>- </code></li>
+            <li>Instructions: start with <code>Instructions:</code> then numbered steps</li>
+            <li>Nutrition: optional nutrition facts, each on its own line</li>
+          </ul>
+          <p>Example:</p>
+          <pre>
+Title: Chocolate Cake
+Date: 2025-05-20
+Description: A rich, moist chocolate cake.
+Link: https://example.com/chocolate-cake
+
+Pantry:
+- 2 cups flour
+- 1 cup sugar
+
+Produce:
+- 2 bananas
+
+Instructions:
+1. Preheat the oven to 350°F.
+2. Mix dry ingredients together.
+3. Bake for 35 minutes.
+
+Nutrition:
+Calories: 350
+Protein: 5g
+          </pre>
         </div>
 
         <textarea
