@@ -51,4 +51,4 @@ jobs:
       - name: GitHub Wiki Action
         uses: Andrew-Chen-Wang/github-wiki-action@v4.4.0
         with:
-          path: "docs/wiki"
+          path: "/meals.stellation.one/docs/wiki"
