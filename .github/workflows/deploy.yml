@@ -1,39 +1,52 @@
+# This workflow deploys the website assets to AWS S3 and invalidates CloudFront on each push to the main branch.
 name: Deploy Website to S3
 
+# Trigger the workflow on pushes to the 'main' branch only.
 on:
   push:
     branches: [main]      # trigger only on the default branch
 
 jobs:
   deploy:
-    # environment: prod   # <‑‑ uncomment if your secrets sit in an Environment
+    # environment: prod   # <-- uncomment if your secrets sit in a GitHub Environment
+    # Specify the virtual machine image for running the deployment steps.
     runs-on: ubuntu-latest
 
-    env:                  # values used by multiple steps
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      S3_BUCKET: ${{ secrets.S3_BUCKET_NAME }}
-      CF_DIST:   ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+    # Define environment variables referencing GitHub Secrets for AWS configuration.
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}        # AWS region where S3 bucket and CloudFront live
+      S3_BUCKET: ${{ secrets.S3_BUCKET_NAME }}     # Target S3 bucket name for website hosting
+      CF_DIST:   ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}  # CloudFront distribution ID for cache invalidation
 
+    # A sequence of steps to perform the deployment.
     steps:
+      # Check out repository code so that subsequent steps have access to files.
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Configure AWS CLI credentials using GitHub Secrets for authentication.
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:            ${{ env.AWS_REGION }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}       # AWS access key ID from repository secrets
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}   # AWS secret access key from repository secrets
+          aws-region:            ${{ env.AWS_REGION }}                 # Region parameter for AWS CLI commands
 
+      # Sync the local 'website/' folder contents to the configured S3 bucket,
+      # deleting any files in the bucket that no longer exist locally.
       - name: Sync site to S3
         run: |
           aws s3 sync website/ s3://${{ env.S3_BUCKET }} --delete
 
+      # Invalidate all paths in the specified CloudFront distribution so that
+      # edge caches fetch the updated content from S3.
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
               --distribution-id "$CF_DIST" \
               --paths '/*'
-      
+
+      # Automatically publish or update GitHub Wiki pages based on repository
+      # content using a community-maintained action.
       - name: GitHub Wiki Action
         uses: Andrew-Chen-Wang/github-wiki-action@v4.4.0

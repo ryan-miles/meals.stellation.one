@@ -1,4 +1,4 @@
-# 🍽️ meals.stellation.one — Miles Family Meal Planner
+# 🍽️ Family Meal Planner
 
 A sleek, static web app for planning and presenting weekly meals and grocery lists for the Miles family. Built for speed, style, and simplicity using pure HTML/CSS/JS, and deployed via AWS.
 
