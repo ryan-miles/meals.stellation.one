@@ -45,10 +45,3 @@ jobs:
           aws cloudfront create-invalidation \
               --distribution-id "$CF_DIST" \
               --paths '/*'
-
-      # Automatically publish or update GitHub Wiki pages based on repository
-      # content using a community-maintained action.
-      - name: GitHub Wiki Action
-        uses: Andrew-Chen-Wang/github-wiki-action@v4.4.0
-        with:
-          path: "/meals.stellation.one/docs/wiki"
