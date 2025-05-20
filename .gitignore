@@ -1,9 +1,5 @@
-# Node.js dependencies
-/node_modules/
-/package-lock.json
 /website/node_modules/
 /website/package-lock.json
-/website/recipes/recipes/*.fixed.json
 /meals-gemini-api/*
 /surprisePlan/*
 /get-recipes-dynamo/*
