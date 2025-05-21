@@ -154,19 +154,6 @@ nav a {
   border: 1.5px solid rgba(60,255,0,0.13);
 }
 
-/* BentoBox Grid Sections */
-/* --- Main Card/Box (now replaced by .card utility) --- */
-/* .bento-box, .main-card {
-  background: linear-gradient(135deg, rgba(60,255,0,0.10) 0%, rgba(24,26,32,0.97) 80%);
-  border-radius: 24px;
-  box-shadow: 0 6px 32px 0 rgba(60,255,0,0.04), 0 6px 32px 0 rgba(0,0,0,0.25);
-  padding: 2.5rem 2rem;
-  margin: 2rem auto;
-  max-width: 700px;
-  width: 100%;
-  border: 1.5px solid rgba(60,255,0,0.13);
-} */
-
 .bento-box.main-card:first-of-type {
   background: none;
   box-shadow: none;
@@ -853,3 +840,10 @@ nav a {
 .text-center {
   text-align: center !important;
 }
+
+/* --- Utility: spacing helpers --- */
+.mb-1-2em { margin-bottom: 1.2em !important; }
+.mb-0-5em { margin-bottom: 0.5em !important; }
+
+/* --- Utility: hidden elements --- */
+.hidden { display: none !important; }

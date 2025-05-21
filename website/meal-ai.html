@@ -13,7 +13,7 @@
       <button id="logoutBtn" class="logout-button" onclick="logout()">🚪 Logout</button>
     </nav>
 
-    <main class="bento-box" id="mainContent">
+    <main class="card bento-box" id="mainContent">
       <div class="container">
         <h1>🤖 Meal Planning with AI</h1>
         <p>Enter a <span class="tooltip">recipe<span class="tooltiptext">Include a link to the recipe, a list of required ingredients, and the steps to prepare the dish.</span></span> and Gemini will update/add it to the DynamoDB 'meals-recipes' Table.</p>
@@ -23,7 +23,7 @@
           rows="14"
         ></textarea>
 
-        <br>
+        <div class="mb-0-5em"></div>
         <button onclick="submitToAI()" class="tool-button">Generate JSON</button>
 
         <div id="result"></div>
