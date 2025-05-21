@@ -31,11 +31,9 @@
 
   <script>
     async function loadAllRecipes() {
-      const container = document.getElementById("recipe-grid");
-
-      try {
+      const container = document.getElementById("recipe-grid");      try {
         // Fetch all recipes from custom domain Dynamo endpoint
-        const res = await fetch("https://api.meals.stellation.one/dynamo");
+        const res = await fetch("https://api.meals.stellation.one/recipes");
         const recipes = await res.json();
 
         container.innerHTML = recipes.map(recipe => `
