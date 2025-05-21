@@ -28,15 +28,30 @@
       </section>
     </main>
   </div>
-
   <script>
     async function loadAllRecipes() {
       const container = document.getElementById("recipe-grid");
+      
+      async function fetchRecipes() {
+        try {
+          // First try the API
+          const res = await fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes", {
+            // Adding mode 'cors' explicitly to handle CORS issues more gracefully
+            mode: 'cors'
+          });
+          return await res.json();
+        } catch (apiErr) {
+          console.warn("API fetch failed, falling back to local data:", apiErr);
+          
+          // If API fails, fall back to local JSON file
+          const localRes = await fetch("all-recipes.json");
+          return await localRes.json();
+        }
+      }
 
       try {
-        const res = await fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes");
-        const recipes = await res.json();
-
+        const recipes = await fetchRecipes();
+        
         container.innerHTML = recipes.map(recipe => `
           <div class="recipe-card">
             <h3>${recipe.title}</h3>
@@ -46,8 +61,8 @@
         `).join("");
 
       } catch (err) {
-        console.error(err);
-        container.innerHTML = "<p>Error loading recipes.</p>";
+        console.error("All recipe loading methods failed:", err);
+        container.innerHTML = "<p>Error loading recipes. Please try refreshing the page.</p>";
       }
     }
 
