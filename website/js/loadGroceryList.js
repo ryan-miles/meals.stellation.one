@@ -6,7 +6,7 @@ async function loadGroceryList() {
   try {
     // Fetch schedule and recipes
     const [scheduleRes, recipesRes] = await Promise.all([
-      fetch("schedule.json"),
+      fetch("schedule.json?ts=" + Date.now()),
       fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes")
     ]);
     const schedule = await scheduleRes.json();
