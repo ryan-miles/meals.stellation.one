@@ -17,7 +17,7 @@
       <label for="weekStart">(Monday):</label>
       <input type="date" id="weekStart" name="weekStart" required />
       <div id="weekday-selects"></div>
-      <button type="submit">Download Schedule JSON</button>
+      <button type="submit">Update Schedule</button>
     </form>
     <div id="result" class="result-box" style="display:none;"></div>
   </div>
@@ -25,6 +25,8 @@
     const apiUrl = "https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes";
     const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
     let recipes = [];
+    // Replace with your real API endpoint for updating the schedule
+    const SCHEDULE_API_ENDPOINT = "<PASTE_YOUR_API_ENDPOINT_HERE>";
 
     async function fetchRecipes() {
       const res = await fetch(apiUrl);
@@ -70,7 +72,7 @@
       }
     });
 
-    document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+    document.getElementById('scheduleForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const weekStart = document.getElementById('weekStart').value;
       if (!weekStart) {
@@ -81,10 +83,24 @@
       weekdays.forEach(day => {
         schedule[day] = document.getElementById(day).value;
       });
-      // Show result and offer download
+      // Save to localStorage for meals.html to use
+      localStorage.setItem('weeklySchedule', JSON.stringify(schedule));
+      // POST to API
       const resultBox = document.getElementById('result');
       resultBox.style.display = 'block';
-      resultBox.textContent = JSON.stringify(schedule, null, 2);
+      resultBox.textContent = "Saving schedule to server...";
+      try {
+        const res = await fetch(SCHEDULE_API_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(schedule)
+        });
+        if (!res.ok) throw new Error("Server error: " + res.status);
+        const data = await res.json();
+        resultBox.textContent = "✅ Schedule updated on server!\n" + JSON.stringify(schedule, null, 2);
+      } catch (err) {
+        resultBox.textContent = "❌ Failed to update schedule on server: " + err.message;
+      }
       // Download as file
       const blob = new Blob([JSON.stringify(schedule, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -96,6 +112,15 @@
       a.style.marginTop = '1em';
       resultBox.appendChild(document.createElement('br'));
       resultBox.appendChild(a);
+      // Add a link to view the updated meal plan
+      const viewLink = document.createElement('a');
+      viewLink.href = 'meals.html';
+      viewLink.textContent = '→ View Updated Meal Plan';
+      viewLink.style.display = 'inline-block';
+      viewLink.style.marginLeft = '1em';
+      viewLink.style.fontWeight = 'bold';
+      viewLink.style.color = '#2a7cff';
+      resultBox.appendChild(viewLink);
     });
   </script>
 </body>

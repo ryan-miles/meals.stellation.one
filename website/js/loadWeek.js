@@ -3,12 +3,18 @@ async function loadWeekPlan() {
   const header = document.getElementById("week-dates");
 
   try {
-    const [scheduleRes, recipesRes] = await Promise.all([
-      fetch("schedule.json"),
-      fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes")
-    ]);
+    let schedule;
+    // Check localStorage for the latest schedule
+    const localSchedule = localStorage.getItem('weeklySchedule');
+    if (localSchedule) {
+      schedule = JSON.parse(localSchedule);
+    } else {
+      // Fallback to schedule.json
+      const scheduleRes = await fetch("schedule.json");
+      schedule = await scheduleRes.json();
+    }
 
-    const schedule = await scheduleRes.json();
+    const recipesRes = await fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes");
     const recipes = await recipesRes.json();
 
     const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
