@@ -7,111 +7,160 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="schedule-container">
-    <nav class="mb-1-2em">
-      <a href="meals.html" class="text-center" style="font-weight:bold; font-size:1.1em; color:#2a7cff; text-decoration:none;">← Home</a>
-    </nav>
-    <h1 class="schedule-title mb-0-5em">🗓️ Build Your Weekly Meal Plan</h1>
-    <form class="schedule-form" id="scheduleForm">
-      <div style="margin-bottom:0.5em;"><strong>Week Start Date</strong></div>
-      <label for="weekStart">(Monday):</label>
-      <input type="date" id="weekStart" name="weekStart" required />
-      <div id="weekday-selects"></div>
-      <button type="submit">Update Schedule</button>
-    </form>
-    <div id="result" class="result-box" style="display:none;"></div>
-  </div>
-  <script>
-    const apiUrl = "https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes";
-    const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-    let recipes = [];
-    // Use the correct API endpoint for updating the schedule
-    const SCHEDULE_API_ENDPOINT = "https://eyfzhv6w38.execute-api.us-east-1.amazonaws.com/recipes";
+    <div class="schedule-container" id="mainContent" style="display:none;">
+      <nav class="mb-1-2em">
+        <a href="meals.html" class="text-center" style="font-weight:bold; font-size:1.1em; color:#2a7cff; text-decoration:none;">← Home</a>
+        <button id="logoutBtn" class="logout-button" onclick="logout()" style="float:right; display:none;">🚪 Logout</button>
+      </nav>
+      <h1 class="schedule-title mb-0-5em">🗓️ Build Your Weekly Meal Plan</h1>
+      <form class="schedule-form" id="scheduleForm">
+        <div style="margin-bottom:0.5em;"><strong>Week Start Date</strong></div>
+        <label for="weekStart">(Monday):</label>
+        <input type="date" id="weekStart" name="weekStart" required />
+        <div id="weekday-selects"></div>
+        <button type="submit">Update Schedule</button>
+      </form>
+      <div id="result" class="result-box" style="display:none;"></div>
+    </div>
+    <script>
+      // --- Cognito Auth Code (copied from meal-ai.html) ---
+      const COGNITO_DOMAIN = 'https://us-east-1s3w0rq4v6.auth.us-east-1.amazoncognito.com';
+      const CLIENT_ID = '1qi2sj7lbi13k4v21b5rr7d6nm';
+      const REDIRECT_URI = 'https://meals.stellation.one/schedule.html';
 
-    async function fetchRecipes() {
-      const res = await fetch(apiUrl);
-      if (!res.ok) throw new Error("Failed to fetch recipes: " + res.status);
-      const data = await res.json();
-      // If the API returns an array of recipes
-      return data.map(r => ({ name: `${r.title} (${r.id})`, value: r.id }));
-    }
-
-    function createWeekdaySelects(recipes) {
-      const container = document.getElementById('weekday-selects');
-      container.innerHTML = '';
-      weekdays.forEach(day => {
-        const dayHeader = document.createElement('div');
-        dayHeader.style.fontWeight = 'bold';
-        dayHeader.style.marginTop = '1.2em';
-        dayHeader.textContent = day.charAt(0).toUpperCase() + day.slice(1);
-        container.appendChild(dayHeader);
-        const label = document.createElement('label');
-        label.htmlFor = day;
-        label.textContent = 'Select recipe:';
-        const select = document.createElement('select');
-        select.id = day;
-        select.name = day;
-        select.required = true;
-        recipes.forEach(recipe => {
-          const option = document.createElement('option');
-          option.value = recipe.value;
-          option.textContent = recipe.name;
-          select.appendChild(option);
+      const code = new URLSearchParams(window.location.search).get('code');
+      if (code) {
+        fetch(`${COGNITO_DOMAIN}/oauth2/token`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            grant_type: 'authorization_code',
+            client_id: CLIENT_ID,
+            code,
+            redirect_uri: REDIRECT_URI
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.id_token) {
+            sessionStorage.setItem('id_token', data.id_token);
+            sessionStorage.setItem('access_token', data.access_token);
+            window.location.href = REDIRECT_URI.split('?')[0]; // Remove query params on redirect
+          } else {
+            alert('Failed to authenticate.');
+          }
+        })
+        .catch(err => {
+          console.error('Login failed:', err);
+          alert('Login failed. Check console for details.');
         });
-        container.appendChild(label);
-        container.appendChild(select);
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        recipes = await fetchRecipes();
-        createWeekdaySelects(recipes);
-      } catch (err) {
-        document.getElementById('weekday-selects').innerHTML = `<div style="color:red;">Failed to load recipes: ${err.message}</div>`;
+      } else {
+        const token = sessionStorage.getItem('id_token');
+        if (token) {
+          document.getElementById('mainContent').style.display = 'block';
+          document.getElementById('logoutBtn').style.display = 'inline-block';
+        } else {
+          const loginUrl = `${COGNITO_DOMAIN}/login?client_id=${CLIENT_ID}&response_type=code&scope=email+openid+profile&redirect_uri=${REDIRECT_URI}`;
+          window.location.href = loginUrl;
+        }
       }
-    });
 
-    document.getElementById('scheduleForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const weekStart = document.getElementById('weekStart').value;
-      if (!weekStart) {
-        alert('Please select a week start date.');
-        return;
+      function logout() {
+        sessionStorage.clear();
+        window.location.href = `${COGNITO_DOMAIN}/logout?client_id=${CLIENT_ID}&logout_uri=https://meals.stellation.one`;
       }
-      const schedule = { weekStart };
-      weekdays.forEach(day => {
-        schedule[day] = document.getElementById(day).value;
-      });
-      // Save to localStorage for meals.html to use
-      localStorage.setItem('weeklySchedule', JSON.stringify(schedule));
-      // POST to API
-      const resultBox = document.getElementById('result');
-      resultBox.style.display = 'block';
-      resultBox.innerHTML = "Saving schedule to server...";
-      try {
-        const res = await fetch(SCHEDULE_API_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(schedule)
+      // --- End Cognito Auth Code ---
+
+      const apiUrl = "https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes";
+      const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+      let recipes = [];
+      // Use the correct API endpoint for updating the schedule
+      const SCHEDULE_API_ENDPOINT = "https://eyfzhv6w38.execute-api.us-east-1.amazonaws.com/recipes";
+
+      async function fetchRecipes() {
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error("Failed to fetch recipes: " + res.status);
+        const data = await res.json();
+        // If the API returns an array of recipes
+        return data.map(r => ({ name: `${r.title} (${r.id})`, value: r.id }));
+      }
+
+      function createWeekdaySelects(recipes) {
+        const container = document.getElementById('weekday-selects');
+        container.innerHTML = '';
+        weekdays.forEach(day => {
+          const dayHeader = document.createElement('div');
+          dayHeader.style.fontWeight = 'bold';
+          dayHeader.style.marginTop = '1.2em';
+          dayHeader.textContent = day.charAt(0).toUpperCase() + day.slice(1);
+          container.appendChild(dayHeader);
+          const label = document.createElement('label');
+          label.htmlFor = day;
+          label.textContent = 'Select recipe:';
+          const select = document.createElement('select');
+          select.id = day;
+          select.name = day;
+          select.required = true;
+          recipes.forEach(recipe => {
+            const option = document.createElement('option');
+            option.value = recipe.value;
+            option.textContent = recipe.name;
+            select.appendChild(option);
+          });
+          container.appendChild(label);
+          container.appendChild(select);
         });
-        if (!res.ok) throw new Error("Server error: " + res.status);
-        await res.json();
-        resultBox.innerHTML = "✅ Schedule updated on server!";
-        // Add a link to view the updated meal plan
-        const viewLink = document.createElement('a');
-        viewLink.href = 'meals.html';
-        viewLink.textContent = '→ View Updated Meal Plan';
-        viewLink.style.display = 'inline-block';
-        viewLink.style.marginLeft = '1em';
-        viewLink.style.fontWeight = 'bold';
-        viewLink.style.color = '#2a7cff';
-        resultBox.appendChild(document.createElement('br'));
-        resultBox.appendChild(viewLink);
-      } catch (err) {
-        resultBox.innerHTML = `❌ Failed to update schedule on server: ${err.message}`;
       }
-    });
-  </script>
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          recipes = await fetchRecipes();
+          createWeekdaySelects(recipes);
+        } catch (err) {
+          document.getElementById('weekday-selects').innerHTML = `<div style="color:red;">Failed to load recipes: ${err.message}</div>`;
+        }
+      });
+
+      document.getElementById('scheduleForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const weekStart = document.getElementById('weekStart').value;
+        if (!weekStart) {
+          alert('Please select a week start date.');
+          return;
+        }
+        const schedule = { weekStart };
+        weekdays.forEach(day => {
+          schedule[day] = document.getElementById(day).value;
+        });
+        // Save to localStorage for meals.html to use
+        localStorage.setItem('weeklySchedule', JSON.stringify(schedule));
+        // POST to API
+        const resultBox = document.getElementById('result');
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = "Saving schedule to server...";
+        try {
+          const res = await fetch(SCHEDULE_API_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(schedule)
+          });
+          if (!res.ok) throw new Error("Server error: " + res.status);
+          await res.json();
+          resultBox.innerHTML = "✅ Schedule updated on server!";
+          // Add a link to view the updated meal plan
+          const viewLink = document.createElement('a');
+          viewLink.href = 'meals.html';
+          viewLink.textContent = '→ View Updated Meal Plan';
+          viewLink.style.display = 'inline-block';
+          viewLink.style.marginLeft = '1em';
+          viewLink.style.fontWeight = 'bold';
+          viewLink.style.color = '#2a7cff';
+          resultBox.appendChild(document.createElement('br'));
+          resultBox.appendChild(viewLink);
+        } catch (err) {
+          resultBox.innerHTML = `❌ Failed to update schedule on server: ${err.message}`;
+        }
+      });
+    </script>
 </body>
 </html>
