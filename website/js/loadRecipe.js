@@ -4,7 +4,7 @@ async function loadRecipeForDay(day) {
   try {
     const [scheduleRes, recipesRes] = await Promise.all([
       fetch("schedule.json"),
-      fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes")
+      fetch("https://api.meals.stellation.one/gemini")
     ]);
 
     const schedule = await scheduleRes.json();
