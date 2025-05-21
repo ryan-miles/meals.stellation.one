@@ -6,33 +6,6 @@
   <title>All Recipes</title>
   <link rel="icon" href="favicon.ico" />
   <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    .recipe-card {
-      padding: 20px;
-      background: var(--bento-color);
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
-    }
-
-    .recipe-card:hover {
-      transform: scale(1.02);
-    }
-
-    .recipe-card h3 {
-      margin-bottom: 0.5em;
-    }
-
-    .recipe-card a {
-      color: var(--link-color);
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .recipe-card a:hover {
-      text-decoration: underline;
-    }
-  </style>
 </head>
 <body>
   <div class="main-container">
@@ -41,15 +14,15 @@
     </nav>
 
     <main>
-      <section class="bento-box">
+      <section class="bento-box main-card">
         <div class="container">
-          <h1 style="text-align: center;">📚 All Recipes</h1>
-          <p style="text-align: center;">Browse everything in the recipe library.</p>
+          <h1>📚 All Recipes</h1>
+          <div class="subheadline">Browse everything in the recipe library.</div>
         </div>
       </section>
 
-      <section class="bento-box">
-        <div class="container grid" id="recipe-grid">
+      <section class="bento-box main-card">
+        <div class="container recipe-list" id="recipe-grid">
           <!-- JS will inject recipes here -->
         </div>
       </section>
