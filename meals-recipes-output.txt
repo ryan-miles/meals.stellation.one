@@ -1,0 +1,159 @@
+{
+    "Items": [
+        {
+            "day": {
+                "S": ""
+            },
+            "link": {
+                "S": "https://www.myprotein.com/thezone/recipe/one-pot-creamy-garlic-chicken-rice/"
+            },
+            "sections": {
+                "L": [
+                    {
+                        "M": {
+                            "title": {
+                                "S": "Quick Ingredient Checklist"
+                            },
+                            "type": {
+                                "S": "checklist"
+                            },
+                            "items": {
+                                "L": [
+                                    {
+                                        "S": "Pantry: Olive oil"
+                                    },
+                                    {
+                                        "S": "Pantry: Brown rice"
+                                    },
+                                    {
+                                        "S": "Pantry: Mixed herbs"
+                                    },
+                                    {
+                                        "S": "Pantry: Chicken stock"
+                                    },
+                                    {
+                                        "S": "Pantry: Salt"
+                                    },
+                                    {
+                                        "S": "Pantry: Black pepper"
+                                    },
+                                    {
+                                        "S": "Refrigerator: Chicken breast"
+                                    },
+                                    {
+                                        "S": "Refrigerator: Low-fat Greek yoghurt"
+                                    },
+                                    {
+                                        "S": "Produce: Garlic cloves"
+                                    },
+                                    {
+                                        "S": "Produce: Lemon"
+                                    },
+                                    {
+                                        "S": "Produce: Green beans"
+                                    },
+                                    {
+                                        "S": "Produce: Spinach"
+                                    },
+                                    {
+                                        "S": "Produce: Fresh parsley"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "M": {
+                            "title": {
+                                "S": "Ingredients"
+                            },
+                            "type": {
+                                "S": "ingredients"
+                            },
+                            "items": {
+                                "L": [
+                                    {
+                                        "S": "1 tbsp. olive oil"
+                                    },
+                                    {
+                                        "S": "500 g chicken breast"
+                                    },
+                                    {
+                                        "S": "300 g brown rice"
+                                    },
+                                    {
+                                        "S": "2 tbsp. mixed herbs"
+                                    },
+                                    {
+                                        "S": "3 garlic cloves"
+                                    },
+                                    {
+                                        "S": "1 lemon"
+                                    },
+                                    {
+                                        "S": "750 ml chicken stock"
+                                    },
+                                    {
+                                        "S": "200 g green beans"
+                                    },
+                                    {
+                                        "S": "200 g low-fat Greek yoghurt"
+                                    },
+                                    {
+                                        "S": "250 g spinach"
+                                    },
+                                    {
+                                        "S": "Handful fresh parsley"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "M": {
+                            "title": {
+                                "S": "Instructions"
+                            },
+                            "type": {
+                                "S": "steps"
+                            },
+                            "items": {
+                                "L": [
+                                    {
+                                        "S": "1. Heat the olive oil in a large pan over a medium heat. Add the chicken and fry until itÆs fully cooked."
+                                    },
+                                    {
+                                        "S": "2. Add the brown rice, mixed herbs, garlic and lemon zest. Stir well, and season with salt and black pepper to taste."
+                                    },
+                                    {
+                                        "S": "3. Pour in the chicken stock, mix thoroughly, and cover the pan with a lid. Leave it to simmer for 15 minutes."
+                                    },
+                                    {
+                                        "S": "4. Pour in the chicken stock, mix thoroughly, and cover the pan with a lid. Leave it to simmer for 15 minutes."
+                                    },
+                                    {
+                                        "S": "5. Stir in the Greek yoghurt and add the spinach. Cook for a few minutes until the spinach has wilted."
+                                    },
+                                    {
+                                        "S": "6. Finally, sprinkle with fresh parsley. Serve immediately or portion into containers for meal prep."
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "description": {
+                "S": "A simple one-pot recipe for creamy garlic chicken and rice."
+            },
+            "id": {
+                "S": "one-pot-creamy-garlic-chicken-rice"
+            },
+            "title": {
+                "S": "One-Pot Creamy Garlic Chicken Rice"
+            }
+        }
+    ],
+    "Count": 1,
+    "ScannedCount": 1
+}

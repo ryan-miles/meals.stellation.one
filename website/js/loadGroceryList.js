@@ -41,11 +41,23 @@ async function loadGroceryList() {
       if (Array.isArray(recipe.sections)) {
         for (const section of recipe.sections) {
           if (!section.items) continue;
-          // Treat any array of items as pantry ingredients
-          if (Array.isArray(section.items)) {
+          // Special handling for Quick Ingredient Checklist with storage prefixes
+          if (section.type === "checklist" && Array.isArray(section.items)) {
             for (const ing of section.items) {
-              if (typeof ing === "string") grouped.pantry.push({ name: ing });
-              else if (typeof ing === "object" && ing) grouped.pantry.push(ing);
+              if (typeof ing === "string") {
+                let matched = false;
+                for (const storage of ["freezer", "refrigerator", "pantry"]) {
+                  const prefix = storage.charAt(0).toUpperCase() + storage.slice(1) + ":";
+                  if (ing.toLowerCase().startsWith(prefix.toLowerCase())) {
+                    grouped[storage].push({ name: ing.slice(prefix.length).trim() });
+                    matched = true;
+                    break;
+                  }
+                }
+                if (!matched) grouped.pantry.push({ name: ing }); // fallback
+              } else if (typeof ing === "object" && ing) {
+                grouped.pantry.push(ing);
+              }
             }
             continue;
           }
