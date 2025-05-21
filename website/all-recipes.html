@@ -1,11 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
+<head>  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>All Recipes</title>
   <link rel="icon" href="favicon.ico" />
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .error-notice {
+      padding: 15px;
+      margin-bottom: 20px;
+      background-color: #f8d7da;
+      color: #842029;
+      border-radius: 4px;
+      border-left: 5px solid #842029;
+    }
+    .error-notice details {
+      margin-top: 10px;
+    }
+    .error-notice pre {
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: 200px;
+      font-size: 0.85em;
+    }
+  </style>
 </head>
 <body>  <div class="main-container">
     <nav>
@@ -30,86 +50,59 @@
       </section>
     </main>
   </div>
-    <script>
-    async function loadAllRecipes() {
+    <script>    async function loadAllRecipes() {
       const recipeContainer = document.getElementById("recipe-grid");
       const statusContainer = document.getElementById("status-container");
       
-      async function fetchRecipes() {
-        try {          // First try the API with a cache-busting query parameter
-          const timestamp = new Date().getTime();
-          // Make sure there's only one slash after the domain
-          const res = await fetch(`https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes?_=${timestamp}`, {
-            // Adding mode 'cors' explicitly to handle CORS issues more gracefully
-            mode: 'cors'
-            // Removed Content-Type header as it's not needed for GET requests and might cause CORS issues
-          });
-            if (!res.ok) {
-            throw new Error(`API returned status ${res.status}`);
-          }
-          
-          const data = await res.json();
-          if (Array.isArray(data)) {
-            console.log(`Successfully loaded ${data.length} recipes from API`);
-          } else {
-            console.warn("API response is not an array:", data);
-          }
-          return data;
-        } catch (apiErr) {
-          console.warn("API fetch failed, falling back to local data:", apiErr);
-          console.error("API Error details:", apiErr);
-          
-          // If API fails, fall back to local JSON file
-          const localRes = await fetch("all-recipes.json");
-          return await localRes.json();
+      async function fetchFromApi() {
+        // Use a cache-busting query parameter
+        const timestamp = new Date().getTime();
+        // Make sure there's only one slash after the domain
+        const res = await fetch(`https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes?_=${timestamp}`, {
+          // Adding mode 'cors' explicitly to handle CORS issues more gracefully
+          mode: 'cors'
+          // Removed Content-Type header as it's not needed for GET requests and might cause CORS issues
+        });
+        
+        if (!res.ok) {
+          throw new Error(`API returned status ${res.status}: ${res.statusText}`);
         }
+        
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          console.log(`Successfully loaded ${data.length} recipes from API`);
+        } else {
+          throw new Error("API response is not an array");
+        }
+        return data;
       }
       
-      try {        // Add debug info about where recipes are loaded from
-        console.log("Starting recipe fetch...");
+      try {
+        console.log("Starting recipe fetch from DynamoDB API...");
         
-        let apiSucceeded = false;
-        let debugInfo = { source: "unknown" };
-        
-        // First try API explicitly
-        try {
-          const timestamp = new Date().getTime();
-          const apiRes = await fetch(`https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes?_=${timestamp}`, { 
-            mode: 'cors'
-          });
-          console.log("API response:", apiRes.status, apiRes.statusText);
-          if (apiRes.ok) {
-            const apiData = await apiRes.json();
-            console.log("API data successfully retrieved:", apiData.length, "recipes");
-            apiSucceeded = true;
-            debugInfo = { 
-              source: "api", 
-              count: apiData.length,
-              sample: apiData.slice(0, 2)
-            };
-          }
-        } catch (err) {
-          console.log("API fetch explicitly failed:", err);
-        }
-        
+        // Measure performance
         const startTime = performance.now();
-        const recipes = await fetchRecipes();
-        const endTime = performance.now();
         
-        // Determine data source with more explicit logging
+        // Get recipes exclusively from the API
+        const recipes = await fetchFromApi();
+        
+        const endTime = performance.now();
         const loadTime = endTime - startTime;
         console.log(`Recipe fetch completed in ${loadTime.toFixed(2)}ms`);
         console.log("Recipes loaded:", recipes);
         
-        let isUsingApi = apiSucceeded;
-        let dataSource = apiSucceeded ? "API" : "local JSON";
-        
-        console.log(`Data source determined: ${dataSource}`);
+        // Clear any previous error messages
+        statusContainer.innerHTML = '';
         
         if (!recipes || recipes.length === 0) {
-          console.warn("No recipes were loaded from either source!");
-        }
-          // Create HTML for recipes with more detailed info
+          console.warn("No recipes were returned from the API!");
+          statusContainer.innerHTML = `
+            <div class="error-notice">
+              <h3>⚠️ Warning</h3>
+              <p>API returned zero recipes. The database may be empty.</p>
+              <p><small>Time: ${new Date().toLocaleTimeString()}</small></p>
+            </div>`;
+        }        // Create HTML for recipes with more detailed info
         console.log("Creating HTML for", recipes.length, "recipes");
         const recipesHtml = recipes.map(recipe => {
           console.log("Processing recipe:", recipe.title);
@@ -123,12 +116,32 @@
           </div>
         `;        }).join("");
         
-        // Directly set the recipes HTML without the troubleshooting notice
+        // Set the recipe content
         recipeContainer.innerHTML = recipesHtml;
         
       } catch (err) {
-        console.error("All recipe loading methods failed:", err);
-        recipeContainer.innerHTML = "<p>Error loading recipes. Please try refreshing the page.</p>";
+        console.error("API fetch failed:", err);
+          // Create detailed error notice with debugging information
+        const errorHtml = `
+          <div class="error-notice">
+            <h3>⚠️ Error Loading Recipes</h3>
+            <p>Could not load recipes from the DynamoDB API.</p>
+            <div class="error-details">
+              <p><strong>Error Message:</strong> ${err.message}</p>
+              <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
+              <p><strong>Error Type:</strong> ${err.name}</p>
+              <details>
+                <summary>Technical Details (click to expand)</summary>
+                <pre>${err.stack || 'No stack trace available'}</pre>
+                <p><small>If this error persists, please contact the administrator.</small></p>
+              </details>
+            </div>
+          </div>
+        `;
+        
+        // Display the error in both containers
+        statusContainer.innerHTML = errorHtml;
+        recipeContainer.innerHTML = "<p>Please check the error details above and try again later.</p>";
       }
     }
 
