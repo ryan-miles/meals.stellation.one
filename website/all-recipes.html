@@ -7,8 +7,7 @@
   <link rel="icon" href="favicon.ico" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body>
-  <div class="main-container">
+<body>  <div class="main-container">
     <nav>
       <a href="meals.html">🏠 Home</a>
     </nav>
@@ -21,17 +20,20 @@
         </div>
       </section>
 
-      <section class="card bento-box main-card">
-        <div class="container recipe-list" id="recipe-grid">
+      <section class="card bento-box">
+        <div id="status-container">
+          <!-- Status will be injected here -->
+        </div>
+        <div class="recipe-list" id="recipe-grid">
           <!-- JS will inject recipes here -->
         </div>
       </section>
     </main>
   </div>
-  
-  <script>
+    <script>
     async function loadAllRecipes() {
-      const container = document.getElementById("recipe-grid");
+      const recipeContainer = document.getElementById("recipe-grid");
+      const statusContainer = document.getElementById("status-container");
       
       async function fetchRecipes() {
         try {          // First try the API with a cache-busting query parameter
@@ -135,14 +137,13 @@
                 `<a href="all-recipes.json" target="_blank" style="color: #007bff;">View Local JSON Data ↗️</a>`
               }
             </small>
-          </div>
-        `;
+          </div>        `;
         
-        container.innerHTML = dataSourceNotice + recipesHtml;
+        recipeContainer.innerHTML = dataSourceNotice + recipesHtml;
         
       } catch (err) {
         console.error("All recipe loading methods failed:", err);
-        container.innerHTML = "<p>Error loading recipes. Please try refreshing the page.</p>";
+        recipeContainer.innerHTML = "<p>Error loading recipes. Please try refreshing the page.</p>";
       }
     }
 
