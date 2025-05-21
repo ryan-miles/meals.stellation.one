@@ -794,7 +794,7 @@ nav a {
 /* All Recipes page styling */
 .recipe-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   padding: 1rem;
 }
@@ -839,6 +839,13 @@ nav a {
   color: #e0e0e0;
   margin: 0.3em 0 0 0;
   font-size: 1rem;
+}
+
+/* Recipe list responsive layout */
+@media (max-width: 700px) {
+  .recipe-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* --- Utility: text alignment --- */
