@@ -27,38 +27,73 @@
         </div>
       </section>
     </main>
-  </div>
-  <script>
+  </div>  <script>
     async function loadAllRecipes() {
       const container = document.getElementById("recipe-grid");
       
       async function fetchRecipes() {
         try {
-          // First try the API
-          const res = await fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes", {
+          // First try the API with a cache-busting query parameter
+          const timestamp = new Date().getTime();
+          const res = await fetch(`https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes?_=${timestamp}`, {
             // Adding mode 'cors' explicitly to handle CORS issues more gracefully
-            mode: 'cors'
+            mode: 'cors',
+            // Adding headers that match what the server expects
+            headers: {
+              'Content-Type': 'application/json'
+            }
           });
+          
+          if (!res.ok) {
+            throw new Error(`API returned status ${res.status}`);
+          }
+          
           return await res.json();
         } catch (apiErr) {
           console.warn("API fetch failed, falling back to local data:", apiErr);
+          console.error("API Error details:", apiErr);
           
           // If API fails, fall back to local JSON file
           const localRes = await fetch("all-recipes.json");
           return await localRes.json();
         }
-      }
-
-      try {
+      }      try {
+        const startTime = performance.now();
         const recipes = await fetchRecipes();
+        const endTime = performance.now();
         
-        container.innerHTML = recipes.map(recipe => `
+        // Determine if data came from API or local storage based on timing
+        // API calls typically take longer than local file access
+        let isUsingApi = false;
+        let dataSource = "local";
+        
+        // Check if the first recipe has a property that might only be in one data source
+        if (recipes && recipes.length > 0) {
+          // Look at data characteristics to guess the source
+          // This is a heuristic and might need adjustment based on your data
+          if (endTime - startTime > 100) { // If fetch took more than 100ms, likely API
+            isUsingApi = true;
+            dataSource = "api";
+          }
+          // Create HTML for recipes
+        const recipesHtml = recipes.map(recipe => `
           <div class="recipe-card">
             <h3>${recipe.title}</h3>
             <p><a href="${recipe.link}" target="_blank">View Recipe ↗️</a></p>
             <p>${recipe.description || "No description available."}</p>
           </div>
         `).join("");
+          // Add a visual indicator showing data source and additional info
+        const dataSourceNotice = `
+          <div class="data-source-notice" style="padding: 10px; margin-bottom: 15px; background-color: #f8f9fa; 
+                border-radius: 4px; font-size: 14px; border-left: 4px solid ${isUsingApi ? '#28a745' : '#ffc107'}">
+            ${isUsingApi ? '✅ Using live data from API' : '⚠️ Using local data (API unavailable)'}<br>
+            <small style="color: #6c757d">Loaded ${recipes.length} recipes from ${dataSource} in ${Math.round(endTime - startTime)}ms</small><br>
+            <small style="color: #6c757d">Data last fetched: ${new Date().toLocaleTimeString()}</small>
+          </div>
+        `;
+        
+        container.innerHTML = dataSourceNotice + recipesHtml;
 
       } catch (err) {
         console.error("All recipe loading methods failed:", err);
