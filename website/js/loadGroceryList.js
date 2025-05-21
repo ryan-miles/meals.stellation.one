@@ -40,16 +40,23 @@ async function loadGroceryList() {
     for (const recipe of weekRecipes) {
       if (Array.isArray(recipe.sections)) {
         for (const section of recipe.sections) {
-          if (section.items) {
-            for (const storage of ["freezer", "refrigerator", "pantry"]) {
-              if (Array.isArray(section.items[storage])) {
-                for (const ing of section.items[storage]) {
-                  // Store as string or object
-                  if (typeof ing === "string") {
-                    grouped[storage].push({ name: ing });
-                  } else if (typeof ing === "object" && ing !== null) {
-                    grouped[storage].push(ing);
-                  }
+          if (!section.items) continue;
+          // Treat any array of items as pantry ingredients
+          if (Array.isArray(section.items)) {
+            for (const ing of section.items) {
+              if (typeof ing === "string") grouped.pantry.push({ name: ing });
+              else if (typeof ing === "object" && ing) grouped.pantry.push(ing);
+            }
+            continue;
+          }
+          for (const storage of ["freezer", "refrigerator", "pantry"]) {
+            if (Array.isArray(section.items[storage])) {
+              for (const ing of section.items[storage]) {
+                // Store as string or object
+                if (typeof ing === "string") {
+                  grouped[storage].push({ name: ing });
+                } else if (typeof ing === "object" && ing !== null) {
+                  grouped[storage].push(ing);
                 }
               }
             }
