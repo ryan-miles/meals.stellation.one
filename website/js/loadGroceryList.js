@@ -1,18 +1,25 @@
+// loadGroceryList.js - Script for Weekly Grocery List page (week.html)
+// This script fetches the weekly meal schedule and recipe data,
+// aggregates ingredients by storage type, removes duplicates,
+// and renders a categorized grocery list on the page.
+
 async function loadGroceryList() {
+  // Reference page elements for content injection and date display
   const container = document.getElementById("grocery-list-container");
   const weekDates = document.getElementById("week-dates");
   container.innerHTML = "<p style='text-align:center;'>Loading grocery list...</p>";
 
   try {
-    // Fetch schedule and recipes
+    // Fetch the schedule JSON and recipe data from the API
     const [scheduleRes, recipesRes] = await Promise.all([
       fetch("schedule.json"),
       fetch("https://api.meals.stellation.one/dynamo")
     ]);
+    // Parse fetched responses into JavaScript objects
     const schedule = await scheduleRes.json();
     const recipes = await recipesRes.json();
 
-    // Set the week date range in the subtitle
+    // Compute and display the date range for the week
     if (schedule.weekStart && weekDates) {
       const [year, month, day] = schedule.weekStart.split("-").map(Number);
       const start = new Date(year, month - 1, day);
@@ -24,12 +31,12 @@ async function loadGroceryList() {
       weekDates.textContent = `Covers meals for ${startFormatted} - ${endFormatted}, ${year}`;
     }
 
-    // Get recipe IDs for the week
+    // Identify recipe IDs for each weekday and find full recipe objects
     const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
     const recipeIds = weekdays.map(day => schedule[day]).filter(Boolean);
     const weekRecipes = recipeIds.map(id => recipes.find(r => r && r.id === id)).filter(Boolean);
 
-    // Aggregate all ingredients by storage type from sections/items
+    // Aggregate ingredients from all recipes, grouped by storage location
     const storageTypes = [
       { key: "freezer", label: "🥶 Freezer" },
       { key: "refrigerator", label: "🥬 Refrigerator" },
@@ -58,7 +65,8 @@ async function loadGroceryList() {
       }
     }
 
-    // Remove duplicates (by name + unit + note)
+    // Helper function to de-duplicate ingredients by name, unit, and note
+    // Prevents listing the same ingredient multiple times
     function uniqueIngredients(ings) {
       const seen = new Set();
       return ings.filter(ing => {
@@ -69,6 +77,7 @@ async function loadGroceryList() {
       });
     }
 
+    // Build and inject HTML sections for each storage category
     let html = "";
     for (const { key, label } of storageTypes) {
       const ings = uniqueIngredients(grouped[key]);
@@ -92,9 +101,11 @@ async function loadGroceryList() {
     }
     container.innerHTML = html;
   } catch (err) {
+    // Log any errors and show a friendly message to the user
     console.error(err);
     container.innerHTML = "<p style='text-align:center;'>Error loading grocery list.</p>";
   }
 }
 
+// Kick off grocery list loading when the script runs
 loadGroceryList();
