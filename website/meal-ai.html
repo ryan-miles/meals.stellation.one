@@ -30,6 +30,28 @@
       </div>
     </main>
 
+    <style>
+      /* Ensure recipe display is visible and readable */
+      .recipe-display {
+        background: #fff;
+        color: #222;
+        border-radius: 8px;
+        padding: 1.5em 1.5em 1em 1.5em;
+        margin-top: 1.5em;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        font-size: 1.08em;
+        line-height: 1.6;
+        word-break: break-word;
+      }
+      .recipe-display h2, .recipe-display h3 {
+        color: #1a4a7a;
+        margin-top: 1em;
+      }
+      .recipe-display ul {
+        margin-left: 1.2em;
+      }
+    </style>
+
     <footer class="footer">
       <div class="container">
         <p>© 2025 Meals.Stellation.One</p>
@@ -184,28 +206,16 @@
         const responseData = await response.json();
         console.log("Response data from Lambda:", responseData);
 
-        const recipeObjectForDownloadAndDisplay = responseData.generatedRecipe;
-        const serverProvidedFilename = responseData.filename;
+        const recipeObjectForDisplay = responseData.generatedRecipe;
 
-        if (typeof recipeObjectForDownloadAndDisplay === 'undefined') {
+        if (typeof recipeObjectForDisplay === 'undefined') {
             console.error("Response data from Lambda:", responseData);
             throw new Error("AI response did not contain the expected 'generatedRecipe' object.");
         }
-        if (typeof serverProvidedFilename === 'undefined' || !serverProvidedFilename.endsWith('.json')) {
-            console.error("Response data from Lambda:", responseData);
-            throw new Error("AI response did not contain a valid 'filename' field ending with .json.");
-        }
-
-        const blob = new Blob([JSON.stringify(recipeObjectForDownloadAndDisplay, null, 2)], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
 
         // --- UPDATE RESULT HTML ---
-        let resultHTML = '<div>✅ Recipe JSON ready!</div>'; // Main status message
-        resultHTML += `<div style="margin-top: 10px;"><a href="${url}" download="${serverProvidedFilename}" class="tool-button">⬇️ Download JSON (${escapeHtml(serverProvidedFilename)})</a></div>`;
-
-        // Add the recipe display
-        resultHTML += displayRecipe(recipeObjectForDownloadAndDisplay);
-
+        let resultHTML = '<div>✅ Recipe saved to DynamoDB!</div>';
+        resultHTML += displayRecipe(recipeObjectForDisplay);
         resultEl.innerHTML = resultHTML;
         // --- END UPDATE ---
 
