@@ -105,16 +105,13 @@
         }        // Create HTML for recipes with more detailed info
         console.log("Creating HTML for", recipes.length, "recipes");
         const recipesHtml = recipes.map(recipe => {
-          console.log("Processing recipe:", recipe.title);
-          return `
+          console.log("Processing recipe:", recipe.title);          return `
           <div class="recipe-card">
-            <h3>${recipe.title}</h3>
-            <p><a href="${recipe.link}" target="_blank">View Recipe ↗️</a></p>
+            <h3><a href="${recipe.link}" target="_blank">${recipe.title} ↗️</a></h3>
             <p>${recipe.description || "No description available."}</p>
             ${recipe.day ? `<p><strong>Day:</strong> ${recipe.day}</p>` : ''}
-            ${recipe.id ? `<p><em>ID: ${recipe.id}</em></p>` : ''}
           </div>
-        `;        }).join("");
+        `;}).join("");
         
         // Set the recipe content
         recipeContainer.innerHTML = recipesHtml;

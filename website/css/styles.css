@@ -815,10 +815,14 @@ nav a {
   transform: scale(1.02);
 }
 .recipe-card h3 {
-  color: #7fff7f;
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0 0 0.5em 0;
+}
+.recipe-card h3 a {
+  color: #7fff7f;
+  text-decoration: none;
+  transition: color 0.18s;
 }
 .recipe-card a {
   color: #7fff7f;
