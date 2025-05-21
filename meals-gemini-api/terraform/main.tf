@@ -135,6 +135,12 @@ resource "aws_apigatewayv2_route" "post_route" {
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
 
+resource "aws_apigatewayv2_route" "post_recipes_route" {
+  api_id    = aws_apigatewayv2_api.gemini_api.id
+  route_key = "POST /recipes" # Route for POST requests to /recipes
+  target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
+
 # --- API Gateway Stage ---
 # Creates a deployment stage (e.g., 'prod') for the API
 
