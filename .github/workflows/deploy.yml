@@ -34,9 +34,9 @@ jobs:
 
       # Sync the local 'website/' folder contents to the configured S3 bucket,
       # deleting any files in the bucket that no longer exist locally.
-      - name: Sync site to S3
+      - name: Sync site to S3 (excluding schedule.json)
         run: |
-          aws s3 sync website/ s3://${{ env.S3_BUCKET }} --delete
+          aws s3 sync website/ s3://${{ env.S3_BUCKET }} --delete --exclude "schedule.json"
 
       # Invalidate all paths in the specified CloudFront distribution so that
       # edge caches fetch the updated content from S3.
