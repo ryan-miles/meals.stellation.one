@@ -27,7 +27,9 @@
         </div>
       </section>
     </main>
-  </div>  <script>
+  </div>
+  
+  <script>
     async function loadAllRecipes() {
       const container = document.getElementById("recipe-grid");
       
@@ -57,7 +59,9 @@
           const localRes = await fetch("all-recipes.json");
           return await localRes.json();
         }
-      }      try {
+      }
+      
+      try {
         const startTime = performance.now();
         const recipes = await fetchRecipes();
         const endTime = performance.now();
@@ -75,7 +79,9 @@
             isUsingApi = true;
             dataSource = "api";
           }
-          // Create HTML for recipes
+        }
+        
+        // Create HTML for recipes
         const recipesHtml = recipes.map(recipe => `
           <div class="recipe-card">
             <h3>${recipe.title}</h3>
@@ -83,7 +89,8 @@
             <p>${recipe.description || "No description available."}</p>
           </div>
         `).join("");
-          // Add a visual indicator showing data source and additional info
+        
+        // Add a visual indicator showing data source and additional info
         const dataSourceNotice = `
           <div class="data-source-notice" style="padding: 10px; margin-bottom: 15px; background-color: #f8f9fa; 
                 border-radius: 4px; font-size: 14px; border-left: 4px solid ${isUsingApi ? '#28a745' : '#ffc107'}">
@@ -94,7 +101,7 @@
         `;
         
         container.innerHTML = dataSourceNotice + recipesHtml;
-
+        
       } catch (err) {
         console.error("All recipe loading methods failed:", err);
         container.innerHTML = "<p>Error loading recipes. Please try refreshing the page.</p>";
