@@ -34,23 +34,25 @@
       const container = document.getElementById("recipe-grid");
       
       async function fetchRecipes() {
-        try {
-          // First try the API with a cache-busting query parameter
+        try {          // First try the API with a cache-busting query parameter
           const timestamp = new Date().getTime();
+          // Make sure there's only one slash after the domain
           const res = await fetch(`https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes?_=${timestamp}`, {
             // Adding mode 'cors' explicitly to handle CORS issues more gracefully
-            mode: 'cors',
-            // Adding headers that match what the server expects
-            headers: {
-              'Content-Type': 'application/json'
-            }
+            mode: 'cors'
+            // Removed Content-Type header as it's not needed for GET requests and might cause CORS issues
           });
-          
-          if (!res.ok) {
+            if (!res.ok) {
             throw new Error(`API returned status ${res.status}`);
           }
           
-          return await res.json();
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            console.log(`Successfully loaded ${data.length} recipes from API`);
+          } else {
+            console.warn("API response is not an array:", data);
+          }
+          return data;
         } catch (apiErr) {
           console.warn("API fetch failed, falling back to local data:", apiErr);
           console.error("API Error details:", apiErr);
@@ -61,42 +63,78 @@
         }
       }
       
-      try {
+      try {        // Add debug info about where recipes are loaded from
+        console.log("Starting recipe fetch...");
+        
+        let apiSucceeded = false;
+        let debugInfo = { source: "unknown" };
+        
+        // First try API explicitly
+        try {
+          const timestamp = new Date().getTime();
+          const apiRes = await fetch(`https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes?_=${timestamp}`, { 
+            mode: 'cors'
+          });
+          console.log("API response:", apiRes.status, apiRes.statusText);
+          if (apiRes.ok) {
+            const apiData = await apiRes.json();
+            console.log("API data successfully retrieved:", apiData.length, "recipes");
+            apiSucceeded = true;
+            debugInfo = { 
+              source: "api", 
+              count: apiData.length,
+              sample: apiData.slice(0, 2)
+            };
+          }
+        } catch (err) {
+          console.log("API fetch explicitly failed:", err);
+        }
+        
         const startTime = performance.now();
         const recipes = await fetchRecipes();
         const endTime = performance.now();
         
-        // Determine if data came from API or local storage based on timing
-        // API calls typically take longer than local file access
-        let isUsingApi = false;
-        let dataSource = "local";
+        // Determine data source with more explicit logging
+        const loadTime = endTime - startTime;
+        console.log(`Recipe fetch completed in ${loadTime.toFixed(2)}ms`);
+        console.log("Recipes loaded:", recipes);
         
-        // Check if the first recipe has a property that might only be in one data source
-        if (recipes && recipes.length > 0) {
-          // Look at data characteristics to guess the source
-          // This is a heuristic and might need adjustment based on your data
-          if (endTime - startTime > 100) { // If fetch took more than 100ms, likely API
-            isUsingApi = true;
-            dataSource = "api";
-          }
+        let isUsingApi = apiSucceeded;
+        let dataSource = apiSucceeded ? "API" : "local JSON";
+        
+        console.log(`Data source determined: ${dataSource}`);
+        
+        if (!recipes || recipes.length === 0) {
+          console.warn("No recipes were loaded from either source!");
         }
-        
-        // Create HTML for recipes
-        const recipesHtml = recipes.map(recipe => `
+          // Create HTML for recipes with more detailed info
+        console.log("Creating HTML for", recipes.length, "recipes");
+        const recipesHtml = recipes.map(recipe => {
+          console.log("Processing recipe:", recipe.title);
+          return `
           <div class="recipe-card">
             <h3>${recipe.title}</h3>
             <p><a href="${recipe.link}" target="_blank">View Recipe ↗️</a></p>
             <p>${recipe.description || "No description available."}</p>
+            ${recipe.day ? `<p><strong>Day:</strong> ${recipe.day}</p>` : ''}
+            ${recipe.id ? `<p><em>ID: ${recipe.id}</em></p>` : ''}
           </div>
-        `).join("");
-        
-        // Add a visual indicator showing data source and additional info
+        `;
+        }).join("");
+          // Add a visual indicator showing data source and additional info
         const dataSourceNotice = `
           <div class="data-source-notice" style="padding: 10px; margin-bottom: 15px; background-color: #f8f9fa; 
                 border-radius: 4px; font-size: 14px; border-left: 4px solid ${isUsingApi ? '#28a745' : '#ffc107'}">
-            ${isUsingApi ? '✅ Using live data from API' : '⚠️ Using local data (API unavailable)'}<br>
+            ${isUsingApi ? '✅ Using live data from DynamoDB' : '⚠️ Using local data (API unavailable)'}<br>
             <small style="color: #6c757d">Loaded ${recipes.length} recipes from ${dataSource} in ${Math.round(endTime - startTime)}ms</small><br>
             <small style="color: #6c757d">Data last fetched: ${new Date().toLocaleTimeString()}</small>
+            <small style="display: block; margin-top: 5px; color: #6c757d">
+              ${isUsingApi ? 
+                `<a href="https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes" target="_blank" style="color: #007bff;">View API Data ↗️</a>`
+                : 
+                `<a href="all-recipes.json" target="_blank" style="color: #007bff;">View Local JSON Data ↗️</a>`
+              }
+            </small>
           </div>
         `;
         
