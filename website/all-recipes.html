@@ -121,25 +121,10 @@
             ${recipe.day ? `<p><strong>Day:</strong> ${recipe.day}</p>` : ''}
             ${recipe.id ? `<p><em>ID: ${recipe.id}</em></p>` : ''}
           </div>
-        `;
-        }).join("");
-          // Add a visual indicator showing data source and additional info
-        const dataSourceNotice = `
-          <div class="data-source-notice" style="padding: 10px; margin-bottom: 15px; background-color: #f8f9fa; 
-                border-radius: 4px; font-size: 14px; border-left: 4px solid ${isUsingApi ? '#28a745' : '#ffc107'}">
-            ${isUsingApi ? '✅ Using live data from DynamoDB' : '⚠️ Using local data (API unavailable)'}<br>
-            <small style="color: #6c757d">Loaded ${recipes.length} recipes from ${dataSource} in ${Math.round(endTime - startTime)}ms</small><br>
-            <small style="color: #6c757d">Data last fetched: ${new Date().toLocaleTimeString()}</small>
-            <small style="display: block; margin-top: 5px; color: #6c757d">
-              ${isUsingApi ? 
-                `<a href="https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes" target="_blank" style="color: #007bff;">View API Data ↗️</a>`
-                : 
-                `<a href="all-recipes.json" target="_blank" style="color: #007bff;">View Local JSON Data ↗️</a>`
-              }
-            </small>
-          </div>        `;
+        `;        }).join("");
         
-        recipeContainer.innerHTML = dataSourceNotice + recipesHtml;
+        // Directly set the recipes HTML without the troubleshooting notice
+        recipeContainer.innerHTML = recipesHtml;
         
       } catch (err) {
         console.error("All recipe loading methods failed:", err);
