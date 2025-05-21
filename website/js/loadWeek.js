@@ -5,7 +5,7 @@ async function loadWeekPlan() {
   try {
     const [scheduleRes, recipesRes] = await Promise.all([
       fetch("schedule.json"),
-      fetch("https://api.meals.stellation.one/gemini")
+      fetch("https://api.meals.stellation.one/recipes")
     ]);
 
     const schedule = await scheduleRes.json();
