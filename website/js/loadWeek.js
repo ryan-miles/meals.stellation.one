@@ -4,15 +4,9 @@ async function loadWeekPlan() {
 
   try {
     let schedule;
-    // Check localStorage for the latest schedule
-    const localSchedule = localStorage.getItem('weeklySchedule');
-    if (localSchedule) {
-      schedule = JSON.parse(localSchedule);
-    } else {
-      // Fallback to schedule.json
-      const scheduleRes = await fetch("schedule.json");
-      schedule = await scheduleRes.json();
-    }
+    // Always fetch the latest schedule from the server (S3-backed API)
+    const scheduleRes = await fetch("https://eyfzhv6w38.execute-api.us-east-1.amazonaws.com/recipes");
+    schedule = await scheduleRes.json();
 
     const recipesRes = await fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes");
     const recipes = await recipesRes.json();
