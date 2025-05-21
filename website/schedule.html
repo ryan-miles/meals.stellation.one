@@ -88,7 +88,7 @@
       // POST to API
       const resultBox = document.getElementById('result');
       resultBox.style.display = 'block';
-      resultBox.textContent = "Saving schedule to server...";
+      resultBox.innerHTML = "Saving schedule to server...";
       try {
         const res = await fetch(SCHEDULE_API_ENDPOINT, {
           method: "POST",
@@ -96,31 +96,21 @@
           body: JSON.stringify(schedule)
         });
         if (!res.ok) throw new Error("Server error: " + res.status);
-        const data = await res.json();
-        resultBox.textContent = "✅ Schedule updated on server!\n" + JSON.stringify(schedule, null, 2);
+        await res.json();
+        resultBox.innerHTML = "✅ Schedule updated on server!";
+        // Add a link to view the updated meal plan
+        const viewLink = document.createElement('a');
+        viewLink.href = 'meals.html';
+        viewLink.textContent = '→ View Updated Meal Plan';
+        viewLink.style.display = 'inline-block';
+        viewLink.style.marginLeft = '1em';
+        viewLink.style.fontWeight = 'bold';
+        viewLink.style.color = '#2a7cff';
+        resultBox.appendChild(document.createElement('br'));
+        resultBox.appendChild(viewLink);
       } catch (err) {
-        resultBox.textContent = "❌ Failed to update schedule on server: " + err.message;
+        resultBox.innerHTML = `❌ Failed to update schedule on server: ${err.message}`;
       }
-      // Download as file
-      const blob = new Blob([JSON.stringify(schedule, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'scheduledynamo.json';
-      a.textContent = '⬇️ Download scheduledynamo.json';
-      a.style.display = 'inline-block';
-      a.style.marginTop = '1em';
-      resultBox.appendChild(document.createElement('br'));
-      resultBox.appendChild(a);
-      // Add a link to view the updated meal plan
-      const viewLink = document.createElement('a');
-      viewLink.href = 'meals.html';
-      viewLink.textContent = '→ View Updated Meal Plan';
-      viewLink.style.display = 'inline-block';
-      viewLink.style.marginLeft = '1em';
-      viewLink.style.fontWeight = 'bold';
-      viewLink.style.color = '#2a7cff';
-      resultBox.appendChild(viewLink);
     });
   </script>
 </body>
