@@ -105,12 +105,3 @@ async function loadGroceryList() {
 }
 
 loadGroceryList();
-[
-  {
-    "AllowedHeaders": ["*"],
-    "AllowedMethods": ["GET"],
-    "AllowedOrigins": ["https://meals.stellation.one"],
-    "ExposeHeaders": [],
-    "MaxAgeSeconds": 3000
-  }
-]

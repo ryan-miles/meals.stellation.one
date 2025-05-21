@@ -1,6 +1,7 @@
 /docs/*
 /website/node_modules/
 /website/package-lock.json
+/website/schedule.json
 /meals-gemini-api/*
 /surprisePlan/*
 /get-recipes-dynamo/*
