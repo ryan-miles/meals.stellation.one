@@ -46,6 +46,7 @@ async function loadGroceryList() {
             for (const ing of section.items) {
               if (typeof ing === "string") {
                 let matched = false;
+                // Check for storage prefixes
                 for (const storage of ["freezer", "refrigerator", "pantry"]) {
                   const prefix = storage.charAt(0).toUpperCase() + storage.slice(1) + ":";
                   if (ing.toLowerCase().startsWith(prefix.toLowerCase())) {
@@ -53,6 +54,11 @@ async function loadGroceryList() {
                     matched = true;
                     break;
                   }
+                }
+                // NEW: Check for Produce prefix and treat as refrigerator
+                if (!matched && ing.toLowerCase().startsWith("produce:")) {
+                  grouped.refrigerator.push({ name: ing.slice("produce:".length).trim() });
+                  matched = true;
                 }
                 if (!matched) grouped.pantry.push({ name: ing }); // fallback
               } else if (typeof ing === "object" && ing) {
