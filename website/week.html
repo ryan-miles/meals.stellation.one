@@ -29,7 +29,6 @@
     <main>
       <section class="card bento-box">
         <div class="container">
-          <h1 class="text-center">🛒 Weekly Grocery List</h1>
           <p id="week-dates" class="text-center">Covers meals for Monday through Friday</p>
         </div>
       </section>
@@ -40,5 +39,27 @@
     </main>
   </div>
   <script src="js/loadGroceryList.js"></script>
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const menuList = document.getElementById('main-menu');
+    const menuBar = document.querySelector('.menu-bar');
+    if (hamburger && menuList && menuBar) {
+      hamburger.addEventListener('click', function() {
+        const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', !expanded);
+        menuList.classList.toggle('open');
+        menuBar.classList.toggle('open');
+      });
+      // Optional: Close menu when clicking outside (mobile UX)
+      document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768 && !menuBar.contains(e.target)) {
+          menuList.classList.remove('open');
+          menuBar.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', false);
+        }
+      });
+    }
+  </script>
 </body>
 </html>
