@@ -863,16 +863,16 @@ nav a {
 /* --- Utility: hidden elements --- */
 .hidden { display: none !important; }
 
-.card.bento-box ul {
-  padding-left: 2em;
-  margin-left: 0;
-}
 .card.bento-box ul.grocery-list {
   padding-left: 1.7em;
+  padding-inline-start: 1.7em;
   margin-left: 0;
+  background: transparent;
   list-style-position: outside;
+  width: auto;
 }
 .card.bento-box li {
   margin-left: 0;
+  background: transparent;
 }
 
