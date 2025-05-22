@@ -150,7 +150,7 @@ nav a {
   box-shadow: 0 6px 32px 0 rgba(60,255,0,0.04), 0 6px 32px 0 rgba(0,0,0,0.25);
   padding: 0.5rem 0.5rem;
   margin: 0.5rem auto;
-  max-width: 650px;
+  max-width: 700px;
   width: 100%;
   border: 1.5px solid rgba(60,255,0,0.13);
 }
@@ -866,6 +866,11 @@ nav a {
 .card.bento-box ul {
   padding-left: 2em;
   margin-left: 0;
+}
+.card.bento-box ul.grocery-list {
+  padding-left: 2.2em;
+  margin-left: 0;
+  list-style-position: inside;
 }
 .card.bento-box li {
   margin-left: 0;
