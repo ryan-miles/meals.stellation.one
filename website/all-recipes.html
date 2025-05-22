@@ -28,8 +28,22 @@
   </style>
 </head>
 <body>  <div class="main-container">
-    <nav>
-      <a href="meals.html">🏠 Home</a>
+    <nav class="top-nav menu-bar">
+      <a href="meals.html" class="logo-link">
+        <img src="images/meals.svg" alt="Meals Stellation Logo" class="menu-logo" height="48" />
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="main-menu">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+      <ul class="menu-list" id="main-menu">
+        <li><a href="all-recipes.html">All Recipes</a></li>
+        <li><a href="week.html">Grocery List</a></li>
+        <li><a href="meal-ai.html">* AI Recipe Builder</a></li>
+        <li><a href="schedule.html"><strong>* Set Schedule</strong></a></li>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScOQ-orNTxratec234eh6yhWd85AW6FamRJcYCgKqWRk29-Jg/viewform?usp=sharing" target="_blank">Suggest a Recipe</a></li>
+      </ul>
     </nav>
 
     <main>
