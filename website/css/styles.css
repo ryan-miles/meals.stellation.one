@@ -55,6 +55,7 @@ h2, .subheadline {
   color: #e0e0e0;
   text-align: center;
   margin-bottom: 0.5rem;
+  text-shadow: 0 0 8px #3cff00, 0 0 2px #3cff00;
 }
 
 a {
