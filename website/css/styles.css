@@ -862,3 +862,11 @@ nav a {
 
 /* --- Utility: hidden elements --- */
 .hidden { display: none !important; }
+
+.card.bento-box ul {
+  padding-left: 2em;
+  margin-left: 0;
+}
+.card.bento-box li {
+  margin-left: 0;
+}
