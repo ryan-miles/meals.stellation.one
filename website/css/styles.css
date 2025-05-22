@@ -163,11 +163,6 @@ nav a {
   margin-bottom: 1.2rem;
 }
 
-/* --- Hide old tool section at bottom --- */
-.bento-box.main-card:last-of-type {
-  display: none !important;
-}
-
 /* Grid System */
 .grid {
   display: grid;
