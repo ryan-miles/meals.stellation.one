@@ -8,9 +8,23 @@
 </head>
 <body>
   <div class="main-container">
-    <nav>
-      <a href="meals.html">🏠 Home</a>
-      <button id="logoutBtn" class="logout-button" onclick="logout()">🚪 Logout</button>
+    <nav class="top-nav menu-bar">
+      <a href="meals.html" class="logo-link">
+        <img src="images/meals.svg" alt="Meals Stellation Logo" class="menu-logo" height="48" />
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="main-menu">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+      <ul class="menu-list" id="main-menu">
+        <li><a href="all-recipes.html">All Recipes</a></li>
+        <li><a href="week.html">Grocery List</a></li>
+        <li><a href="meal-ai.html"><strong>* AI Recipe Builder</strong></a></li>
+        <li><a href="schedule.html">* Set Schedule</a></li>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScOQ-orNTxratec234eh6yhWd85AW6FamRJcYCgKqWRk29-Jg/viewform?usp=sharing" target="_blank">Suggest a Recipe</a></li>
+        <li><button id="logoutBtn" class="logout-button" onclick="logout()">🚪 Logout</button></li>
+      </ul>
     </nav>
 
     <main class="card bento-box" id="mainContent">
@@ -227,6 +241,25 @@
 
     document.getElementById('apiId').textContent = API_CONFIG.gateway_id;
     document.getElementById('lambdaName').textContent = API_CONFIG.lambda_name;
+
+    // Hamburger menu toggle (copied from meals.html)
+    const hamburger = document.querySelector('.hamburger');
+    const menuList = document.getElementById('main-menu');
+    const menuBar = document.querySelector('.menu-bar');
+    hamburger.addEventListener('click', function() {
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', !expanded);
+      menuList.classList.toggle('open');
+      menuBar.classList.toggle('open');
+    });
+    // Optional: Close menu when clicking outside (mobile UX)
+    document.addEventListener('click', function(e) {
+      if (window.innerWidth <= 768 && !menuBar.contains(e.target)) {
+        menuList.classList.remove('open');
+        menuBar.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', false);
+      }
+    });
   </script>
 </body>
 </html>
