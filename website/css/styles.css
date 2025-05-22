@@ -868,10 +868,11 @@ nav a {
   margin-left: 0;
 }
 .card.bento-box ul.grocery-list {
-  padding-left: 2.2em;
-  margin-left: 1.5em;
-  list-style-position: inside;
+  padding-left: 1.7em;
+  margin-left: 0;
+  list-style-position: outside;
 }
 .card.bento-box li {
-  margin-left: 1.5em;
+  margin-left: 0;
 }
+
