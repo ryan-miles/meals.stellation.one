@@ -32,7 +32,6 @@
 /* --- Modern Gradient Background: dark blue-grey to lime green center --- */
 body {
   font-family: 'Inter', 'Trebuchet MS', Arial, sans-serif;
-  /* Remove green circle, use a nice dark blue-grey background */
   background: var(--body-bg);
   min-height: 100vh;
   color: var(--body-text);
@@ -135,7 +134,6 @@ nav a {
 }
 
 /* Main Content Styling */
-/* --- Section Container --- */
 .container {
   width: 100%;
   max-width: 900px;
@@ -213,7 +211,6 @@ nav a {
   transition: box-shadow 0.2s;
 }
 
-/* Center the bottom row (Thursday/Friday) by adding an empty grid item in the last cell if needed */
 .week-grid .grid-item.empty {
   background: none;
   border: none;
@@ -607,7 +604,6 @@ nav a {
   }
 }
 
-/* Dropdown arrow for future use */
 .menu-list li.has-dropdown > a:after {
   content: ' \25BC';
   font-size: 0.7em;
@@ -638,7 +634,6 @@ nav a {
   border: none;
   cursor: pointer;
   margin-left: auto;
-  /* Remove absolute positioning for better flex alignment */
   position: static;
   z-index: 1001;
 }
@@ -652,7 +647,6 @@ nav a {
   transition: 0.3s;
 }
 
-/* Responsive nav bar */
 @media (max-width: 768px) {
   .menu-bar {
     position: relative;
@@ -688,7 +682,6 @@ nav a {
   }
 }
 
-/* Hamburger animation when open */
 .menu-bar.open .hamburger span:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
@@ -844,7 +837,6 @@ nav a {
   font-size: 1rem;
 }
 
-/* Recipe list responsive layout */
 @media (max-width: 700px) {
   .recipe-list {
     grid-template-columns: 1fr;
@@ -863,16 +855,103 @@ nav a {
 /* --- Utility: hidden elements --- */
 .hidden { display: none !important; }
 
-.card.bento-box ul.grocery-list {
-  padding-left: 1.7em;
-  padding-inline-start: 1.7em;
-  margin-left: 0;
+/* Grocery List Styling - Enhanced for Checkable Checklists */
+.bento-box ul.grocery-list,
+.bento-box ul.grocery-checklist {
+  list-style: none !important;
+  margin: 1em 0 1em 0 !important;
+  padding: 0 !important;
   background: transparent;
-  list-style-position: outside;
   width: auto;
-}
-.card.bento-box li {
-  margin-left: 0;
-  background: transparent;
+  box-sizing: border-box;
 }
 
+.grocery-item {
+  display: flex !important;
+  align-items: flex-start !important;
+  margin: 0 0 0.8em 0 !important;
+  padding: 0 !important;
+  transition: opacity 0.3s ease, text-decoration 0.3s ease !important;
+}
+
+.grocery-checkbox {
+  appearance: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  border: 2px solid #7fff7f !important;
+  border-radius: 4px !important;
+  margin: 0 0.75em 0 0 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+  background: transparent !important;
+  transition: all 0.2s ease !important;
+}
+
+.grocery-checkbox:hover {
+  border-color: #baffba !important;
+  background: rgba(122, 255, 122, 0.1) !important;
+}
+
+.grocery-checkbox:checked {
+  background: #7fff7f !important;
+  border-color: #7fff7f !important;
+}
+
+.grocery-checkbox:checked::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: #23272f !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+}
+
+.grocery-label {
+  flex: 1 !important;
+  cursor: pointer !important;
+  line-height: 1.4 !important;
+  color: #e0e0e0 !important;
+  transition: all 0.3s ease !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  user-select: none !important;
+}
+
+.grocery-item.checked .grocery-label {
+  opacity: 0.6 !important;
+  text-decoration: line-through !important;
+  color: #a0a0a0 !important;
+}
+
+.grocery-label .note {
+  color: #b0b0b0 !important;
+  font-style: italic !important;
+}
+
+.grocery-item.checked .grocery-label .note {
+  color: #808080 !important;
+}
+
+/* Mobile responsiveness for checkboxes */
+@media (max-width: 768px) {
+  .grocery-checkbox {
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 0.6em !important;
+  }
+
+  .grocery-label {
+    font-size: 0.95rem !important;
+  }
+}
+
+/* Additional fix for the section container to ensure proper containment */
+.bento-box {
+  overflow-x: hidden;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}

@@ -95,19 +95,29 @@ async function loadGroceryList() {
     }
 
     let html = "";
+    let itemCounter = 0; // For unique IDs
+    
     for (const { key, label } of storageTypes) {
       const ings = uniqueIngredients(grouped[key]);
       html += `<section class="bento-box"><h2>${label}</h2>`;
       if (ings.length === 0) {
         html += `<p style='text-align:center;'>None</p>`;
       } else {
-        html += `<ul class="grocery-list">`;
+        html += `<ul class="grocery-list grocery-checklist">`;
         for (const ing of ings) {
-          let line = `<li>`;
+          itemCounter++;
+          const itemId = `grocery-item-${itemCounter}`;
+          
+          let line = `<li class="grocery-item">`;
+          line += `<input type="checkbox" id="${itemId}" class="grocery-checkbox">`;
+          line += `<label for="${itemId}" class="grocery-label">`;
+          
           if (ing.amount) line += `${ing.amount} `;
           if (ing.unit) line += `${ing.unit} `;
           line += `${ing.name || ing}`;
           if (ing.note) line += ` <span class="note">(${ing.note})</span>`;
+          
+          line += `</label>`;
           line += `</li>`;
           html += line;
         }
@@ -116,10 +126,41 @@ async function loadGroceryList() {
       html += `</section>`;
     }
     container.innerHTML = html;
+
+    // Add event listeners for checkbox interactions
+    addCheckboxListeners();
+    
   } catch (err) {
     console.error(err);
     container.innerHTML = "<p style='text-align:center;'>Error loading grocery list.</p>";
   }
+}
+
+// Function to handle checkbox interactions
+function addCheckboxListeners() {
+  const checkboxes = document.querySelectorAll('.grocery-checkbox');
+  
+  checkboxes.forEach(checkbox => {
+    // Load saved state from localStorage
+    const savedState = localStorage.getItem(checkbox.id);
+    if (savedState === 'true') {
+      checkbox.checked = true;
+      checkbox.closest('.grocery-item').classList.add('checked');
+    }
+    
+    // Add change event listener
+    checkbox.addEventListener('change', function() {
+      const listItem = this.closest('.grocery-item');
+      
+      if (this.checked) {
+        listItem.classList.add('checked');
+        localStorage.setItem(this.id, 'true');
+      } else {
+        listItem.classList.remove('checked');
+        localStorage.setItem(this.id, 'false');
+      }
+    });
+  });
 }
 
 loadGroceryList();
