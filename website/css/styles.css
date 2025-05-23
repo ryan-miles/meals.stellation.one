@@ -955,3 +955,20 @@ nav a {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+
+/* Style to remove background from the main recipe container on all-recipes page */
+#all-recipes-container {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important; /* Reset padding, direct children like .recipe-list will control inner spacing */
+  margin: 0.5rem auto !important; /* Retain original auto horizontal centering and vertical margin */
+}
+
+/* Optional: Adjust padding on the recipe list itself if needed after removing container padding */
+/*
+#all-recipes-container .recipe-list {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+*/
