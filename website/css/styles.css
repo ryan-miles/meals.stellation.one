@@ -652,7 +652,7 @@ nav a {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding-right: 0.5rem;
   }
   .menu-list {
@@ -919,6 +919,7 @@ nav a {
   margin: 0 !important;
   padding: 0 !important;
   user-select: none !important;
+  text-align: left !important;
 }
 
 .grocery-item.checked .grocery-label {
