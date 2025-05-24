@@ -298,7 +298,7 @@ nav a {
   margin-bottom: 0.5rem;
 }
 
-/* Responsive Design - Non-navigation elements */
+/* Responsive Design */
 @media (max-width: 768px) {
   .container,
   nav {
@@ -315,10 +315,51 @@ nav a {
     padding: 0.7rem 0.5rem 0.5rem;
     border-radius: 0 0 24px 24px;
   }
-  
   .top-nav .tool-button {
     margin: 0.3em 0;
     width: 100%;
+  }
+  
+  /* Override the general .top-nav mobile rule for pages using .menu-bar */
+  .top-nav.menu-bar {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0.7rem 0.5rem 0.5rem !important;
+  }
+  
+  /* Show logo on mobile */
+  .top-nav.menu-bar .logo-link {
+    display: block !important;
+  }
+  
+  .menu-list {
+    display: none;
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background: #181f2a;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    border-radius: 0 0 16px 16px;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+    z-index: 1000;
+    transition: max-height 0.3s ease;
+  }
+  .menu-list li {
+    margin: 0.5rem 0;
+  }
+  .menu-list.open {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+    margin-left: auto;
+    position: static;
+    top: unset;
+    right: unset;
   }
 }
 
@@ -533,7 +574,6 @@ nav a {
   display: none;
 }
 
-/* Desktop Menu List */
 .menu-list {
   display: flex;
   flex-direction: row;
@@ -545,7 +585,7 @@ nav a {
   padding: 0;
   width: 100%;
 }
-
+}
 .menu-list li {
   display: flex;
   flex-direction: column;
@@ -553,7 +593,6 @@ nav a {
   justify-content: center;
   line-height: 1.1;
 }
-
 .menu-list li a {
   color: #fff;
   font-weight: bold;
@@ -562,15 +601,18 @@ nav a {
   text-align: center;
   margin: 0;
   padding: 0;
-  text-decoration: none;
 }
-
 .menu-list li a strong {
   font-weight: bold;
 }
-
 .menu-list li a:hover {
   color: #3cff00;
+}
+@media (max-width: 900px) {
+  .menu-list {
+    flex-direction: column;
+    gap: 18px;
+  }
 }
 
 .menu-list li.has-dropdown > a:after {
@@ -580,7 +622,18 @@ nav a {
   vertical-align: middle;
 }
 
-/* Hamburger menu styles - hidden on desktop */
+@media (max-width: 700px) {
+  .menu-list {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem 1rem;
+  }
+  .menu-list li {
+    margin: 0.5rem 0;
+  }
+}
+
+/* Hamburger menu styles */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -595,40 +648,15 @@ nav a {
   position: static;
   z-index: 1001;
 }
-
 .hamburger span {
   display: block;
   width: 28px;
   height: 3px;
   margin: 5px 0;
-  background: linear-gradient(90deg, #7fff7f 0%, #00c853 100%);
+    background: linear-gradient(90deg, #7fff7f 0%, #00c853 100%);
   border-radius: 2px;
   transition: 0.3s;
 }
-
-/* Hamburger animation when open */
-.menu-bar.open .hamburger span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-.menu-bar.open .hamburger span:nth-child(2) {
-  opacity: 0;
-}
-.menu-bar.open .hamburger span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-}
-
-/* Medium screens */
-@media (max-width: 900px) {
-  .menu-list {
-    gap: 24px;
-  }
-}
-
-/* Mobile Navigation */
-@media (max-width: 768px) {
-  /* Override the general .top-nav mobile rule for pages using .menu-bar */
-  .top-nav.menu-bar {
-    flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
     padding: 0.7rem 0.5rem 0.5rem !important;
@@ -638,40 +666,12 @@ nav a {
   .top-nav.menu-bar .logo-link {
     display: block !important;
   }
-  
-  /* Show hamburger on mobile */
   .hamburger {
-    display: flex !important;
+    display: flex;
     margin-left: auto;
     position: static;
     top: unset;
     right: unset;
-  }
-  
-  /* Mobile menu list styling */
-  .menu-list {
-    display: none;
-    position: absolute;
-    top: 56px;
-    left: 0;
-    right: 0;
-    background: #181f2a;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    border-radius: 0 0 16px 16px;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px 0;
-    z-index: 1000;
-    transition: max-height 0.3s ease;
-    gap: 8px;
-  }
-  
-  .menu-list li {
-    margin: 0.5rem 0;
-  }
-  
-  .menu-list.open {
-    display: flex;
   }
 }
 
