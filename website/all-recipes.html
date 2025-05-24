@@ -61,17 +61,16 @@
           <!-- JS will inject recipes here -->
         </div>
       </section>
-    </main>
-  </div>
+    </main>  </div>
+    <script src="js/config-local.js"></script>
     <script>    async function loadAllRecipes() {
       const recipeContainer = document.getElementById("recipe-grid");
       const statusContainer = document.getElementById("status-container");
       
-      async function fetchFromApi() {
-        // Use a cache-busting query parameter
+      async function fetchFromApi() {        // Use configuration-based API endpoint with cache-busting
         const timestamp = new Date().getTime();
-        // Make sure there's only one slash after the domain
-        const res = await fetch(`https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes?_=${timestamp}`, {
+        const apiUrl = window.API_ENDPOINTS?.recipes_api || "https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes";
+        const res = await fetch(`${apiUrl}?_=${timestamp}`, {
           // Adding mode 'cors' explicitly to handle CORS issues more gracefully
           mode: 'cors'
           // Removed Content-Type header as it's not needed for GET requests and might cause CORS issues

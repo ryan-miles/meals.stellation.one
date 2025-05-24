@@ -1,10 +1,9 @@
 async function loadRecipeForDay(day) {
   const recipeContainer = document.getElementById("recipe-container");
 
-  try {
-    const [scheduleRes, recipesRes] = await Promise.all([
-      fetch("schedule.json"),
-      fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes")
+  try {    const [scheduleRes, recipesRes] = await Promise.all([
+      fetch(window.API_ENDPOINTS?.schedule_s3 || "schedule.json"),
+      fetch(window.API_ENDPOINTS?.recipes_api || "https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes")
     ]);
 
     const schedule = await scheduleRes.json();

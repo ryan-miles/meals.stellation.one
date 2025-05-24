@@ -3,11 +3,10 @@ async function loadGroceryList() {
   const weekDates = document.getElementById("week-dates");
   container.innerHTML = "<p style='text-align:center;'>Loading grocery list...</p>";
 
-  try {
-    // Fetch schedule and recipes
+  try {    // Fetch schedule and recipes using configuration
     const [scheduleRes, recipesRes] = await Promise.all([
-      fetch("https://s3.us-east-1.amazonaws.com/meals.stellation.one/schedule.json?ts=" + Date.now()),
-      fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes")
+      fetch(window.API_ENDPOINTS?.schedule_s3 || "https://s3.us-east-1.amazonaws.com/meals.stellation.one/schedule.json?ts=" + Date.now()),
+      fetch(window.API_ENDPOINTS?.recipes_api || "https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes")
     ]);
     const schedule = await scheduleRes.json();
     const recipes = await recipesRes.json();

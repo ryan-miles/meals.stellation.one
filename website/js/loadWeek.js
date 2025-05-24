@@ -4,11 +4,11 @@ async function loadWeekPlan() {
 
   try {
     let schedule;
-    // Always fetch the latest schedule from the server (S3-backed API)
-    const scheduleRes = await fetch("https://eyfzhv6w38.execute-api.us-east-1.amazonaws.com/recipes");
+    // Use configuration-based API endpoints
+    const scheduleRes = await fetch(window.API_ENDPOINTS?.schedule_api || "https://eyfzhv6w38.execute-api.us-east-1.amazonaws.com/recipes");
     schedule = await scheduleRes.json();
 
-    const recipesRes = await fetch("https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes");
+    const recipesRes = await fetch(window.API_ENDPOINTS?.recipes_api || "https://ida2uil5ed.execute-api.us-east-1.amazonaws.com/recipes");
     const recipes = await recipesRes.json();
 
     const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
